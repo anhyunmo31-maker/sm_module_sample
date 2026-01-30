@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SM Module</title>
+  <title>ERP UI - Home</title>
 
   <style>
     :root{
@@ -40,22 +40,15 @@
       justify-content:space-between;
       gap:12px;
     }
-
     .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      cursor:pointer;
-      white-space:nowrap;
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; cursor:pointer; white-space:nowrap;
     }
     .brand .logo{
-      width:28px; height:28px;
-      border-radius:8px;
+      width:28px; height:28px; border-radius:8px;
       background:rgba(255,255,255,.18);
       display:grid; place-items:center;
     }
-
     nav{ display:flex; gap:6px; }
     .nav-item{
       position:relative;
@@ -64,34 +57,11 @@
       font-weight:600;
       border-radius:10px;
       cursor:pointer;
+      user-select:none;
     }
     .nav-item:hover{ background:rgba(255,255,255,.14); }
 
-    .dropdown{
-      display:none;
-      position:absolute;
-      top:52px;
-      left:0;
-      min-width:220px;
-      background:#fff;
-      color:#111;
-      border:1px solid var(--line);
-      border-radius:12px;
-      box-shadow:var(--shadow);
-      padding:8px;
-    }
-    .nav-item:hover .dropdown{ display:block; }
-
-    .drop-item{
-      display:block;
-      padding:10px;
-      border-radius:10px;
-      font-size:13px;
-      color:#111;
-      text-decoration:none;
-    }
-    .drop-item:hover{ background:#f5f8ff; }
-
+    /* (원하면 나중에 드롭다운 붙여도 됨) */
     .userbox{
       background:rgba(255,255,255,.16);
       border:1px solid rgba(255,255,255,.18);
@@ -99,6 +69,7 @@
       border-radius:999px;
       font-size:13px;
       cursor:pointer;
+      user-select:none;
     }
 
     /* ===== MAIN ===== */
@@ -106,6 +77,16 @@
       max-width:1200px;
       margin:0 auto;
       padding:84px 14px 30px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    @media(max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
     }
 
     .panel{
@@ -116,56 +97,84 @@
       overflow:hidden;
     }
     .panel-head{
-      padding:14px 16px;
+      padding:12px 14px;
       border-bottom:1px solid #eef1f4;
-      font-weight:800;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
     }
-    .panel-body{ padding:18px; }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:14px;
-    }
-    @media(max-width:900px){
-      .grid{ grid-template-columns:1fr; }
-    }
-
-    .card{
-      background:#fff;
-      border:1px solid #e6ebf2;
-      border-radius:14px;
-      padding:16px;
-      transition:.15s;
-    }
-    .card:hover{
-      transform:translateY(-2px);
-      box-shadow:0 6px 16px rgba(0,0,0,.05);
-    }
-    .card h3{
-      margin:0 0 6px;
+    .panel-title{
+      font-weight:900;
       font-size:15px;
     }
-    .card p{
-      margin:0;
-      font-size:13px;
+    .panel-sub{
       color:var(--muted);
-      line-height:1.5;
-    }
-    .card a{
-      display:inline-block;
-      margin-top:10px;
-      font-size:13px;
+      font-size:12px;
       font-weight:700;
-      color:#1f6fb2;
-      text-decoration:none;
     }
-    .card a:hover{ text-decoration:underline; }
+    .panel-body{ padding:14px; }
+
+    .kpi-row{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:12px;
+      margin-bottom: 14px;
+    }
+    @media(max-width: 980px){
+      .kpi-row{ grid-template-columns: 1fr; }
+    }
+    .kpi{
+      border:1px solid #e6ebf2;
+      border-radius:14px;
+      padding:12px;
+      background:#fff;
+    }
+    .kpi .label{ font-size:12px; color:var(--muted); font-weight:800; }
+    .kpi .value{ margin-top:6px; font-size:20px; font-weight:950; letter-spacing:-.2px; }
+    .kpi .hint{ margin-top:4px; font-size:12px; color:var(--muted); }
+
+    .legend{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      font-size:12px; color:var(--muted); font-weight:700;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px; display:inline-block;
+      background:#999;
+      margin-right:6px;
+    }
+
+    canvas{
+      width:100%;
+      height:280px;
+      display:block;
+    }
+    .small canvas{ height:220px; }
+
+    .table{
+      width:100%;
+      border-collapse: collapse;
+      border:1px solid #e6ebf2;
+      border-radius: 12px;
+      overflow:hidden;
+    }
+    .table th, .table td{
+      padding:10px 10px;
+      font-size:13px;
+      border-bottom:1px solid #eef2f7;
+      text-align:left;
+      white-space:nowrap;
+    }
+    .table th{
+      background:#f7f9fc;
+      font-weight:900;
+    }
+    .right{ text-align:right; }
   </style>
 </head>
 
 <body>
-
 <header class="topbar">
   <div class="topbar-inner">
     <div class="brand" onclick="location.href='index.html'">
@@ -185,32 +194,276 @@
 </header>
 
 <main class="app">
-  <section class="panel">
-    <div class="panel-head">홈</div>
-
-    <div class="panel-body">
-      <div class="grid">
-
-        <div class="card">
-          <h3>빠른 이동</h3>
-          <p>자주 사용하는 메뉴로 바로 이동</p>
-          <a href="sales_list.html">매출목록 바로가기 →</a>
-        </div>
-
-        <div class="card">
-          <h3>공지 / 메모</h3>
-          <p>업무 공지, 참고 메모를 여기에 표시</p>
-        </div>
-
-        <div class="card">
-          <h3>오늘 요약</h3>
-          <p>오늘 주문/매출/미처리 현황 요약 표시</p>
-        </div>
-
-      </div>
+  <!-- KPI -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">이번달 매출(샘플)</div>
+      <div class="value" id="kpiSales">₩ 0</div>
+      <div class="hint">전월 대비 <strong id="kpiSalesMoM">0%</strong></div>
     </div>
-  </section>
+    <div class="kpi">
+      <div class="label">외주 마진율(샘플)</div>
+      <div class="value" id="kpiMargin">0%</div>
+      <div class="hint">최근 30일 평균</div>
+    </div>
+    <div class="kpi">
+      <div class="label">주문 건수(샘플)</div>
+      <div class="value" id="kpiOrders">0건</div>
+      <div class="hint">금주 누적</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Left: Trend chart -->
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">매출 추이 (최근 12개월)</div>
+          <div class="panel-sub">샘플 데이터 · 실제 연동 전 시각화용</div>
+        </div>
+        <div class="legend" aria-label="범례">
+          <span><span class="dot" style="background:#2b7bbb"></span>매출</span>
+          <span><span class="dot" style="background:#1f6fb2; opacity:.45"></span>목표</span>
+        </div>
+      </div>
+      <div class="panel-body">
+        <canvas id="trendChart" width="1200" height="420"></canvas>
+      </div>
+    </section>
+
+    <!-- Right: mix of charts + table -->
+    <div class="small" style="display:grid; gap:14px;">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">품목별 비중</div>
+            <div class="panel-sub">디자인/배송비/실사/패키지 등</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <canvas id="donutChart" width="800" height="420"></canvas>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Top 거래처 (샘플)</div>
+            <div class="panel-sub">이번달 매출 기준</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <table class="table" aria-label="Top 거래처 표">
+            <thead>
+              <tr>
+                <th>거래처</th>
+                <th class="right">매출</th>
+              </tr>
+            </thead>
+            <tbody id="topTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
 </main>
 
+<script>
+  // ===== 샘플 데이터(원하면 네 포맷에 맞춰 바꿔줄게) =====
+  const months = ["02","03","04","05","06","07","08","09","10","11","12","01"];
+  const sales =  [68, 72, 70, 78, 81, 79, 88, 92, 95, 90, 98, 105];  // 단위: 백만원(샘플)
+  const target = [70, 70, 72, 75, 80, 82, 85, 90, 92, 95, 100, 102];
+
+  const categories = [
+    { name: "디자인", value: 38 },
+    { name: "배송비", value: 14 },
+    { name: "실사", value: 20 },
+    { name: "패키지", value: 28 }
+  ];
+
+  const topVendors = [
+    ["ABC상사", 32.4],
+    ["오라그래픽", 28.1],
+    ["디자인팩토리", 21.8],
+    ["K-프린트", 18.6],
+    ["현대물류", 12.9]
+  ];
+
+  // ===== KPI 표시 =====
+  function fmtWon(nMillion){
+    const won = Math.round(nMillion * 1_000_000);
+    return "₩ " + won.toLocaleString("ko-KR");
+  }
+  const thisMonth = sales[sales.length - 1];
+  const prevMonth = sales[sales.length - 2];
+  const mom = ((thisMonth - prevMonth) / prevMonth) * 100;
+
+  document.getElementById("kpiSales").textContent = fmtWon(thisMonth);
+  document.getElementById("kpiSalesMoM").textContent = `${mom >= 0 ? "+" : ""}${mom.toFixed(1)}%`;
+  document.getElementById("kpiMargin").textContent = "18.7%";
+  document.getElementById("kpiOrders").textContent = "124건";
+
+  // ===== Top table =====
+  const tbody = document.getElementById("topTable");
+  topVendors.forEach(([name, val]) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${name}</td><td class="right">${fmtWon(val)}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // ===== Canvas helpers =====
+  function fitCanvasToCSS(canvas){
+    // canvas 실제 해상도 = CSS 크기 * devicePixelRatio
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width  = Math.round(rect.width  * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    return ctx;
+  }
+
+  function drawTrend(canvas, labels, seriesA, seriesB){
+    const ctx = fitCanvasToCSS(canvas);
+    const w = canvas.getBoundingClientRect().width;
+    const h = canvas.getBoundingClientRect().height;
+
+    // padding
+    const P = { l:42, r:16, t:14, b:30 };
+    const cw = w - P.l - P.r;
+    const ch = h - P.t - P.b;
+
+    // scale
+    const all = seriesA.concat(seriesB);
+    const minV = Math.min(...all) * 0.9;
+    const maxV = Math.max(...all) * 1.1;
+
+    const x = (i) => P.l + (cw * i) / (labels.length - 1);
+    const y = (v) => P.t + (ch * (maxV - v)) / (maxV - minV);
+
+    // bg
+    ctx.clearRect(0,0,w,h);
+
+    // grid lines (5)
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#eef2f7";
+    for(let g=0; g<=4; g++){
+      const yy = P.t + (ch * g) / 4;
+      ctx.beginPath();
+      ctx.moveTo(P.l, yy);
+      ctx.lineTo(P.l+cw, yy);
+      ctx.stroke();
+    }
+
+    // axis labels (min/max)
+    ctx.fillStyle = "#6b7280";
+    ctx.font = "12px system-ui";
+    ctx.fillText(Math.round(maxV) + "00만", 6, P.t + 12);
+    ctx.fillText(Math.round(minV) + "00만", 6, P.t + ch);
+
+    // goal (seriesB) as dotted line
+    ctx.setLineDash([6,6]);
+    ctx.strokeStyle = "rgba(31,111,178,.45)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    seriesB.forEach((v,i)=> (i===0?ctx.moveTo(x(i),y(v)):ctx.lineTo(x(i),y(v))));
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // sales (seriesA) as smooth-ish polyline
+    ctx.strokeStyle = "#2b7bbb";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    seriesA.forEach((v,i)=> (i===0?ctx.moveTo(x(i),y(v)):ctx.lineTo(x(i),y(v))));
+    ctx.stroke();
+
+    // points
+    ctx.fillStyle = "#2b7bbb";
+    seriesA.forEach((v,i)=>{
+      ctx.beginPath();
+      ctx.arc(x(i), y(v), 4, 0, Math.PI*2);
+      ctx.fill();
+    });
+
+    // x labels
+    ctx.fillStyle = "#6b7280";
+    ctx.font = "12px system-ui";
+    labels.forEach((lab,i)=>{
+      const xx = x(i);
+      const yy = P.t + ch + 22;
+      const text = lab;
+      const tw = ctx.measureText(text).width;
+      ctx.fillText(text, xx - tw/2, yy);
+    });
+  }
+
+  function drawDonut(canvas, items){
+    const ctx = fitCanvasToCSS(canvas);
+    const w = canvas.getBoundingClientRect().width;
+    const h = canvas.getBoundingClientRect().height;
+
+    ctx.clearRect(0,0,w,h);
+
+    const cx = w/2, cy = h/2;
+    const rOuter = Math.min(w,h) * 0.35;
+    const rInner = rOuter * 0.62;
+
+    const sum = items.reduce((a,b)=>a+b.value,0);
+
+    // muted palette (no hardcoding in CSS, but ok here)
+    const colors = ["#2b7bbb","#5aa1da","#9cc7ea","#cfe3f5"];
+
+    let start = -Math.PI/2;
+    items.forEach((it, idx)=>{
+      const ang = (it.value / sum) * Math.PI * 2;
+      const end = start + ang;
+
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.arc(cx,cy,rOuter,start,end);
+      ctx.closePath();
+      ctx.fillStyle = colors[idx % colors.length];
+      ctx.fill();
+
+      start = end;
+    });
+
+    // hole
+    ctx.beginPath();
+    ctx.arc(cx,cy,rInner,0,Math.PI*2);
+    ctx.fillStyle = "#fff";
+    ctx.fill();
+
+    // center label
+    ctx.fillStyle = "#111";
+    ctx.font = "800 16px system-ui";
+    ctx.textAlign = "center";
+    ctx.fillText("총합", cx, cy - 2);
+    ctx.fillStyle = "#6b7280";
+    ctx.font = "12px system-ui";
+    ctx.fillText(sum + "%", cx, cy + 16);
+    ctx.textAlign = "start";
+
+    // legend
+    const lx = 14, ly = 12;
+    ctx.font = "12px system-ui";
+    items.forEach((it, idx)=>{
+      const yy = ly + idx*18;
+      ctx.fillStyle = colors[idx % colors.length];
+      ctx.fillRect(lx, yy, 10, 10);
+      ctx.fillStyle = "#6b7280";
+      ctx.fillText(`${it.name}  ${it.value}%`, lx+16, yy+10);
+    });
+  }
+
+  function renderAll(){
+    drawTrend(document.getElementById("trendChart"), months, sales, target);
+    drawDonut(document.getElementById("donutChart"), categories);
+  }
+
+  // initial + responsive
+  renderAll();
+  window.addEventListener("resize", () => renderAll());
+</script>
 </body>
 </html>

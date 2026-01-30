@@ -1,13 +1,178 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>UI Preview</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>업무 메뉴</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif; }
+    body { margin: 0; background:#f6f7f9; color:#111; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 24px 16px 40px; }
+    header { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    h1 { font-size: 18px; margin: 0; font-weight: 700; }
+    .controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    select, input {
+      height: 40px; padding: 0 12px; border: 1px solid #d7dbe0; border-radius: 10px; background:#fff;
+      font-size: 14px; outline: none;
+    }
+    select:focus, input:focus { border-color:#8aa4ff; box-shadow: 0 0 0 3px rgba(138,164,255,.25); }
+    .card {
+      margin-top: 16px; background:#fff; border: 1px solid #e4e7eb; border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.04);
+    }
+    .card-head { padding: 14px 16px; border-bottom: 1px solid #eef1f4; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+    .badge { font-size: 12px; color:#555; background:#f1f3f7; padding: 6px 10px; border-radius: 999px; }
+    ul { list-style: none; margin: 0; padding: 10px; display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; }
+    @media (max-width: 640px) { ul { grid-template-columns: 1fr; } }
+    li a {
+      display:block; padding: 12px 12px; border: 1px solid #e7eaee; border-radius: 12px;
+      text-decoration:none; color:#111; background:#fff;
+    }
+    li a:hover { border-color:#cfd6ff; background:#fafbff; }
+    .hint { padding: 14px 16px; color:#666; font-size: 13px; }
+    footer { margin-top: 14px; color:#777; font-size: 12px; }
+  </style>
 </head>
 <body>
-  <h1>UI 미리보기</h1>
-  <p>GitHub Pages 테스트 화면입니다</p>
+  <div class="wrap">
+    <header>
+      <h1>업무 메뉴</h1>
+      <div class="controls">
+        <select id="categorySelect" aria-label="카테고리 선택"></select>
+        <input id="searchInput" type="text" placeholder="메뉴 검색" aria-label="메뉴 검색" />
+      </div>
+    </header>
 
-  <a href="page1.html">다음 화면</a>
+    <section class="card" aria-live="polite">
+      <div class="card-head">
+        <div>
+          <strong id="categoryTitle">-</strong>
+          <span class="badge" id="countBadge">0개</span>
+        </div>
+        <span class="badge">상단 셀렉트로 전환</span>
+      </div>
+
+      <div class="hint" id="hintText">카테고리를 선택하면 메뉴가 표시됩니다.</div>
+      <ul id="menuList"></ul>
+    </section>
+
+    <footer>
+      * 각 메뉴 링크는 현재 # 처리되어 있습니다. 나중에 실제 페이지 경로로 바꾸면 됩니다.
+    </footer>
+  </div>
+
+  <script>
+    const DATA = {
+      "정보관리": [
+        "사업자관리",
+        "고객관리",
+        "파트 및 어카운트매니저 목표 입력",
+        "주문목록",
+        "주문등록",
+        "별도사업주문목록",
+        "외주발주등록"
+      ],
+      "매출관리": [
+        "매출목록",
+        "발송완료목록",
+        "카드매출목록",
+        "선매출목록",
+        "선매출입력",
+        "비대면주문 등록",
+        "비대면주문 목록",
+        "비대면 정산",
+        "세금계산서발행",
+        "세금계산서수기발행",
+        "세금계산서 발행목록"
+      ],
+      "매입마감": [
+        "외주정산등록",
+        "외주정산현황",
+        "구매송장입력"
+      ],
+      "통계": [
+        "본부 및 팀 예상매출",
+        "본부 및 팀 매출목표 및 실적",
+        "팀 및 파트별 매출목표 및 실적(전년대비)",
+        "어카운트매니저 매출목표 및 실적(전년대비확인)",
+        "품목별 실적조회(디자인,배송비,실사,패키지 등)",
+        "거래처별 외주 마진율확인 - 담당자별로인지, 파트별인지",
+        "주문건별 외주 마진율확인"
+      ]
+    };
+
+    const categorySelect = document.getElementById("categorySelect");
+    const menuList = document.getElementById("menuList");
+    const categoryTitle = document.getElementById("categoryTitle");
+    const countBadge = document.getElementById("countBadge");
+    const hintText = document.getElementById("hintText");
+    const searchInput = document.getElementById("searchInput");
+
+    function slugify(text) {
+      return text
+        .trim()
+        .replace(/[^\w가-힣\s-]/g, "")
+        .replace(/\s+/g, "-");
+    }
+
+    function render() {
+      const category = categorySelect.value;
+      const q = searchInput.value.trim().toLowerCase();
+
+      const items = (DATA[category] || []).filter(x => x.toLowerCase().includes(q));
+
+      categoryTitle.textContent = category || "-";
+      countBadge.textContent = `${items.length}개`;
+
+      if (!category) {
+        hintText.textContent = "카테고리를 선택하면 메뉴가 표시됩니다.";
+      } else if (items.length === 0) {
+        hintText.textContent = "검색 결과가 없습니다.";
+      } else {
+        hintText.textContent = "";
+      }
+
+      menuList.innerHTML = "";
+      for (const name of items) {
+        const li = document.createElement("li");
+        // TODO: 실제 페이지 생기면 href를 `${slugify(category)}/${slugify(name)}.html` 같은 식으로 바꿔도 됨
+        const a = document.createElement("a");
+        a.href = "#";
+        a.textContent = name;
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          alert(`[${category}] ${name}`);
+        });
+        li.appendChild(a);
+        menuList.appendChild(li);
+      }
+    }
+
+    function init() {
+      // 기본 옵션
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = "카테고리 선택";
+      placeholder.disabled = true;
+      placeholder.selected = true;
+      categorySelect.appendChild(placeholder);
+
+      // 카테고리 목록
+      Object.keys(DATA).forEach((k) => {
+        const opt = document.createElement("option");
+        opt.value = k;
+        opt.textContent = k;
+        categorySelect.appendChild(opt);
+      });
+
+      categorySelect.addEventListener("change", render);
+      searchInput.addEventListener("input", render);
+
+      // 첫 렌더
+      render();
+    }
+
+    init();
+  </script>
 </body>
 </html>

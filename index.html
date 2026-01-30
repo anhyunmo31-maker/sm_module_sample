@@ -3,176 +3,432 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>업무 메뉴</title>
+  <title>ERP UI 샘플</title>
   <style>
-    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif; }
-    body { margin: 0; background:#f6f7f9; color:#111; }
-    .wrap { max-width: 920px; margin: 0 auto; padding: 24px 16px 40px; }
-    header { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    h1 { font-size: 18px; margin: 0; font-weight: 700; }
-    .controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    select, input {
-      height: 40px; padding: 0 12px; border: 1px solid #d7dbe0; border-radius: 10px; background:#fff;
-      font-size: 14px; outline: none;
+    :root{
+      --blue:#1f6fb2;
+      --blue2:#155a93;
+      --bg:#f3f6f9;
+      --line:#e3e7ee;
+      --text:#111;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --shadow: 0 10px 24px rgba(0,0,0,.10);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
     }
-    select:focus, input:focus { border-color:#8aa4ff; box-shadow: 0 0 0 3px rgba(138,164,255,.25); }
-    .card {
-      margin-top: 16px; background:#fff; border: 1px solid #e4e7eb; border-radius: 14px;
-      box-shadow: 0 4px 16px rgba(0,0,0,.04);
+    *{ box-sizing:border-box; }
+    body{ margin:0; background:var(--bg); color:var(--text); }
+
+    /* ===== Header (Fixed) ===== */
+    .topbar{
+      position: fixed;
+      top:0; left:0; right:0;
+      height: 58px;
+      background: linear-gradient(180deg, var(--blue) 0%, var(--blue2) 100%);
+      color:#fff;
+      z-index: 1000;
+      box-shadow: 0 6px 16px rgba(0,0,0,.18);
     }
-    .card-head { padding: 14px 16px; border-bottom: 1px solid #eef1f4; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;}
-    .badge { font-size: 12px; color:#555; background:#f1f3f7; padding: 6px 10px; border-radius: 999px; }
-    ul { list-style: none; margin: 0; padding: 10px; display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; }
-    @media (max-width: 640px) { ul { grid-template-columns: 1fr; } }
-    li a {
-      display:block; padding: 12px 12px; border: 1px solid #e7eaee; border-radius: 12px;
-      text-decoration:none; color:#111; background:#fff;
+    .topbar-inner{
+      max-width: 1200px;
+      height:100%;
+      margin:0 auto;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
-    li a:hover { border-color:#cfd6ff; background:#fafbff; }
-    .hint { padding: 14px 16px; color:#666; font-size: 13px; }
-    footer { margin-top: 14px; color:#777; font-size: 12px; }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      white-space: nowrap;
+    }
+    .brand .logo{
+      width:28px; height:28px; border-radius:8px;
+      background: rgba(255,255,255,.18);
+      display:grid; place-items:center;
+      font-size:14px;
+    }
+
+    /* ===== Nav ===== */
+    nav{ display:flex; align-items:stretch; gap:2px; }
+    .nav-item{
+      position: relative;
+      display:flex;
+      align-items:center;
+      padding:0 12px;
+      cursor:pointer;
+      user-select:none;
+      font-weight:600;
+      font-size:14px;
+      border-radius:10px;
+    }
+    .nav-item:hover{ background: rgba(255,255,255,.14); }
+
+    /* Dropdown */
+    .dropdown{
+      position:absolute;
+      top: 54px;
+      left:0;
+      min-width: 220px;
+      background:#fff;
+      color:#111;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 8px;
+      display:none;
+    }
+    .nav-item:hover .dropdown{ display:block; }
+
+    .drop-item{
+      display:block;
+      padding: 10px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      text-decoration:none;
+      color:#111;
+      border: 1px solid transparent;
+    }
+    .drop-item:hover{
+      background:#f5f8ff;
+      border-color:#d7e2ff;
+    }
+    .drop-sep{
+      margin: 6px 2px;
+      border-top: 1px solid #eef1f4;
+    }
+
+    .userbox{
+      display:flex; align-items:center; gap:10px;
+      font-size:13px; opacity:.95;
+      white-space:nowrap;
+    }
+    .pill{
+      background: rgba(255,255,255,.16);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    /* ===== Layout ===== */
+    .app{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 74px 14px 28px; /* header height + gap */
+    }
+    .breadcrumb{
+      display:flex; align-items:center; gap:8px;
+      color:#0b3f6a;
+      font-weight:700;
+      margin: 10px 0 12px;
+    }
+    .breadcrumb small{ color:var(--muted); font-weight:600; }
+
+    .panel{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.05);
+      overflow:hidden;
+    }
+    .panel-head{
+      padding: 12px 14px;
+      border-bottom: 1px solid #eef1f4;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .panel-title{
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .tools{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .btn{
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid #d8dee6;
+      background:#fff;
+      cursor:pointer;
+      font-weight:700;
+      font-size: 13px;
+    }
+    .btn.primary{
+      border-color:#1f6fb2;
+      background:#1f6fb2;
+      color:#fff;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .panel-body{ padding: 14px; }
+
+    /* Simple form & table mock */
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .field{
+      display:flex; align-items:center; gap:8px;
+      background:#fff;
+      border: 1px solid #d8dee6;
+      border-radius: 10px;
+      padding: 6px 10px;
+      height: 36px;
+    }
+    input[type="date"], input[type="text"]{
+      border:0; outline:0; font-size: 13px; background:transparent;
+    }
+    .table{
+      width:100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      border: 1px solid #e6ebf2;
+      border-radius: 12px;
+      overflow:hidden;
+    }
+    .table th, .table td{
+      padding: 10px 10px;
+      border-bottom: 1px solid #eef2f7;
+      font-size: 13px;
+      text-align:left;
+      white-space:nowrap;
+    }
+    .table th{ background:#f7f9fc; font-weight:800; }
+    .empty{
+      padding: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      border: 1px dashed #d7dde6;
+      border-radius: 12px;
+      background:#fbfcff;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 860px){
+      nav{ gap:0; }
+      .nav-item{ padding:0 8px; font-size:13px; }
+      .dropdown{ min-width: 200px; }
+    }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <h1>업무 메뉴</h1>
-      <div class="controls">
-        <select id="categorySelect" aria-label="카테고리 선택"></select>
-        <input id="searchInput" type="text" placeholder="메뉴 검색" aria-label="메뉴 검색" />
-      </div>
-    </header>
-
-    <section class="card" aria-live="polite">
-      <div class="card-head">
-        <div>
-          <strong id="categoryTitle">-</strong>
-          <span class="badge" id="countBadge">0개</span>
-        </div>
-        <span class="badge">상단 셀렉트로 전환</span>
+  <!-- Fixed Header -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo">◎</div>
+        <div>ERP UI</div>
       </div>
 
-      <div class="hint" id="hintText">카테고리를 선택하면 메뉴가 표시됩니다.</div>
-      <ul id="menuList"></ul>
+      <nav id="nav"></nav>
+
+      <div class="userbox">
+        <span class="pill">H.Q/안현모</span>
+        <span class="pill">내정보</span>
+        <span class="pill">로그아웃</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="app">
+    <div class="breadcrumb" id="breadcrumb">
+      <span id="bcCat">-</span>
+      <small>›</small>
+      <span id="bcMenu">-</span>
+    </div>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div class="panel-title" id="pageTitle">메뉴를 선택하세요</div>
+        <div class="tools" id="pageTools"></div>
+      </div>
+      <div class="panel-body" id="content">
+        <div class="empty">상단 메뉴에서 항목을 선택하면 화면이 여기에서 바뀝니다.</div>
+      </div>
     </section>
-
-    <footer>
-      * 각 메뉴 링크는 현재 # 처리되어 있습니다. 나중에 실제 페이지 경로로 바꾸면 됩니다.
-    </footer>
-  </div>
+  </main>
 
   <script>
-    const DATA = {
-      "정보관리": [
-        "사업자관리",
-        "고객관리",
-        "파트 및 어카운트매니저 목표 입력",
-        "주문목록",
-        "주문등록",
-        "별도사업주문목록",
-        "외주발주등록"
-      ],
-      "매출관리": [
-        "매출목록",
-        "발송완료목록",
-        "카드매출목록",
-        "선매출목록",
-        "선매출입력",
-        "비대면주문 등록",
-        "비대면주문 목록",
-        "비대면 정산",
-        "세금계산서발행",
-        "세금계산서수기발행",
-        "세금계산서 발행목록"
-      ],
-      "매입마감": [
-        "외주정산등록",
-        "외주정산현황",
-        "구매송장입력"
-      ],
-      "통계": [
-        "본부 및 팀 예상매출",
-        "본부 및 팀 매출목표 및 실적",
-        "팀 및 파트별 매출목표 및 실적(전년대비)",
-        "어카운트매니저 매출목표 및 실적(전년대비확인)",
-        "품목별 실적조회(디자인,배송비,실사,패키지 등)",
-        "거래처별 외주 마진율확인 - 담당자별로인지, 파트별인지",
-        "주문건별 외주 마진율확인"
-      ]
-    };
+    // ===== 메뉴 데이터 =====
+    const MENUS = [
+      {
+        title: "정보관리",
+        items: [
+          "사업자관리",
+          "고객관리",
+          "파트 및 어카운트매니저 목표 입력",
+          "주문목록",
+          "주문등록",
+          "별도사업주문목록",
+          "외주발주등록"
+        ]
+      },
+      {
+        title: "매출관리",
+        items: [
+          "매출목록",
+          "발송완료목록",
+          "카드매출목록",
+          "선매출목록",
+          "선매출입력",
+          "비대면주문 등록",
+          "비대면주문 목록",
+          "비대면 정산",
+          "세금계산서발행",
+          "세금계산서수기발행",
+          "세금계산서 발행목록"
+        ]
+      },
+      {
+        title: "매입마감",
+        items: [
+          "외주정산등록",
+          "외주정산현황",
+          "구매송장입력"
+        ]
+      },
+      {
+        title: "통계",
+        items: [
+          "본부 및 팀 예상매출",
+          "본부 및 팀 매출목표 및 실적",
+          "팀 및 파트별 매출목표 및 실적(전년대비)",
+          "어카운트매니저 매출목표 및 실적(전년대비확인)",
+          "품목별 실적조회(디자인,배송비,실사,패키지 등)",
+          "거래처별 외주 마진율확인 - 담당자별로인지, 파트별인지",
+          "주문건별 외주 마진율확인"
+        ]
+      }
+    ];
 
-    const categorySelect = document.getElementById("categorySelect");
-    const menuList = document.getElementById("menuList");
-    const categoryTitle = document.getElementById("categoryTitle");
-    const countBadge = document.getElementById("countBadge");
-    const hintText = document.getElementById("hintText");
-    const searchInput = document.getElementById("searchInput");
+    const nav = document.getElementById("nav");
+    const bcCat = document.getElementById("bcCat");
+    const bcMenu = document.getElementById("bcMenu");
+    const pageTitle = document.getElementById("pageTitle");
+    const pageTools = document.getElementById("pageTools");
+    const content = document.getElementById("content");
 
-    function slugify(text) {
-      return text
-        .trim()
-        .replace(/[^\w가-힣\s-]/g, "")
-        .replace(/\s+/g, "-");
+    // ===== 화면 템플릿(샘플) =====
+    function renderSalesList() {
+      pageTools.innerHTML = `
+        <button class="btn">조회</button>
+        <button class="btn primary">엑셀다운로드</button>
+      `;
+      content.innerHTML = `
+        <div class="row">
+          <div class="field"><strong style="font-size:12px;color:#555">기간</strong>
+            <input type="date" value="2026-01-30">
+          </div>
+          <div class="field">
+            <input type="date" value="2026-01-30">
+          </div>
+          <div class="field" style="min-width:260px">
+            <input type="text" placeholder="거래처명, 회사명으로 검색" style="width:100%">
+          </div>
+          <button class="btn">검색</button>
+        </div>
+
+        <table class="table" aria-label="매출목록 테이블">
+          <thead>
+            <tr>
+              <th style="width:60px">#</th>
+              <th>주문번호/제목</th>
+              <th>회사명</th>
+              <th>고객명</th>
+              <th>금액</th>
+              <th>매출확정</th>
+              <th>이력</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="7" style="color:#6b7280;">등록된 매출이 없습니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
     }
 
-    function render() {
-      const category = categorySelect.value;
-      const q = searchInput.value.trim().toLowerCase();
+    function renderSimpleForm(title) {
+      pageTools.innerHTML = `<button class="btn primary">저장</button>`;
+      content.innerHTML = `
+        <div class="row" style="margin-bottom:12px">
+          <div class="field" style="min-width:280px"><strong style="font-size:12px;color:#555">키워드</strong>
+            <input type="text" placeholder="${title} 검색/입력" style="width:100%">
+          </div>
+          <button class="btn">조회</button>
+        </div>
+        <div class="empty">${title} 화면(샘플). 실제 입력 폼/테이블은 여기에 배치하면 됩니다.</div>
+      `;
+    }
 
-      const items = (DATA[category] || []).filter(x => x.toLowerCase().includes(q));
+    function renderStats(title) {
+      pageTools.innerHTML = `
+        <button class="btn">기간</button>
+        <button class="btn primary">조회</button>
+      `;
+      content.innerHTML = `
+        <div class="empty">
+          <strong>${title}</strong><br/>
+          (샘플) 이 영역에 차트/표를 넣으면 됩니다.
+        </div>
+      `;
+    }
 
-      categoryTitle.textContent = category || "-";
-      countBadge.textContent = `${items.length}개`;
+    // ===== 메뉴 클릭 시 화면 변경 =====
+    function openPage(category, menu) {
+      bcCat.textContent = category;
+      bcMenu.textContent = menu;
+      pageTitle.textContent = `${category} · ${menu}`;
 
-      if (!category) {
-        hintText.textContent = "카테고리를 선택하면 메뉴가 표시됩니다.";
-      } else if (items.length === 0) {
-        hintText.textContent = "검색 결과가 없습니다.";
-      } else {
-        hintText.textContent = "";
+      // 메뉴별로 대표 화면 매핑(원하는대로 계속 늘리면 됨)
+      if (category === "매출관리" && menu === "매출목록") {
+        renderSalesList();
+        return;
       }
+      if (category === "통계") {
+        renderStats(menu);
+        return;
+      }
+      // 기본: 심플 폼 화면
+      renderSimpleForm(menu);
+    }
 
-      menuList.innerHTML = "";
-      for (const name of items) {
-        const li = document.createElement("li");
-        // TODO: 실제 페이지 생기면 href를 `${slugify(category)}/${slugify(name)}.html` 같은 식으로 바꿔도 됨
-        const a = document.createElement("a");
-        a.href = "#";
-        a.textContent = name;
-        a.addEventListener("click", (e) => {
-          e.preventDefault();
-          alert(`[${category}] ${name}`);
+    // ===== 상단 메뉴 렌더 =====
+    function buildNav() {
+      nav.innerHTML = "";
+      MENUS.forEach(group => {
+        const item = document.createElement("div");
+        item.className = "nav-item";
+        item.textContent = group.title;
+
+        const dropdown = document.createElement("div");
+        dropdown.className = "dropdown";
+
+        group.items.forEach(name => {
+          const a = document.createElement("a");
+          a.href = "#";
+          a.className = "drop-item";
+          a.textContent = name;
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            openPage(group.title, name);
+          });
+          dropdown.appendChild(a);
         });
-        li.appendChild(a);
-        menuList.appendChild(li);
-      }
-    }
 
-    function init() {
-      // 기본 옵션
-      const placeholder = document.createElement("option");
-      placeholder.value = "";
-      placeholder.textContent = "카테고리 선택";
-      placeholder.disabled = true;
-      placeholder.selected = true;
-      categorySelect.appendChild(placeholder);
-
-      // 카테고리 목록
-      Object.keys(DATA).forEach((k) => {
-        const opt = document.createElement("option");
-        opt.value = k;
-        opt.textContent = k;
-        categorySelect.appendChild(opt);
+        item.appendChild(dropdown);
+        nav.appendChild(item);
       });
-
-      categorySelect.addEventListener("change", render);
-      searchInput.addEventListener("input", render);
-
-      // 첫 렌더
-      render();
     }
 
-    init();
+    buildNav();
+    // 첫 화면 기본 선택(원하면 삭제)
+    openPage("매출관리", "매출목록");
   </script>
 </body>
 </html>

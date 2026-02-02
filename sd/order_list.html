@@ -264,7 +264,9 @@
               <th class="w-user">접수자</th>
               <th class="w-amt">금액</th>
               <th class="w-status">상태</th>
-              <th class="w-mng">관리</th>
+              <th class="w-mng" style="text-align:center;">
+                <input type="checkbox" id="chkAll" title="전체 선택">
+              </th>
             </tr>
           </thead>
           <tbody id="tbody">
@@ -383,9 +385,8 @@
         <td class="w-user">${r.owner}</td>
         <td class="w-amt">${fmt(r.amount)}</td>
         <td class="w-status">${badge(r.status)}</td>
-        <td class="w-mng">
-          <button class="mng-btn" title="배송" onclick="alert('프로토타입: 배송 처리 화면(미정)')">🚚</button>
-          <button class="mng-btn" title="상세" onclick="alert('프로토타입: 주문 상세 화면(미정)')">ℹ️</button>
+        <td class="w-mng" style="text-align:center;">
+          <input type="checkbox" class="rowChk" data-id="${r.id}">
         </td>
       `;
       tbody.appendChild(tr);
@@ -409,6 +410,29 @@
     }
     render(list);
   }
+
+  const chkAll = document.getElementById("chkAll");
+
+function bindCheckAll(){
+  if(!chkAll) return;
+
+  chkAll.onchange = () => {
+    document.querySelectorAll(".rowChk").forEach(chk => {
+      chk.checked = chkAll.checked;
+    });
+  };
+}
+
+function syncCheckAllState(){
+  const checks = [...document.querySelectorAll(".rowChk")];
+  if(!checks.length || !chkAll) return;
+  const allChecked = checks.every(c => c.checked);
+  const anyChecked = checks.some(c => c.checked);
+
+  chkAll.indeterminate = anyChecked && !allChecked;
+  chkAll.checked = allChecked;
+}
+
 
   btnSearch.addEventListener("click", doSearch);
   qEl.addEventListener("keydown", (e)=>{ if(e.key==="Enter") doSearch(); });

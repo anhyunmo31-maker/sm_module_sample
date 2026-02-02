@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>정보관리 > 사업자관리</title>
+
+  <!-- 🔧 경로는 네 실제 위치에 맞게 수정
+       (루트면 common.css / common.js 그대로 사용)
+       (폴더면 common/common.css 이런 식으로) -->
+  <link rel="stylesheet" href="common.css">
+  <script defer src="common.js"></script>
+
+  <style>
+    /* 페이지 전용 스타일만 최소로 */
+    .page-titlebar{
+      background:#1f6fb2;
+      color:#fff;
+      padding:18px 18px;
+      border-radius:14px;
+      box-shadow:0 8px 18px rgba(0,0,0,.06);
+      margin-bottom:12px;
+      font-weight:900;
+      letter-spacing:-.2px;
+    }
+    .page-titlebar .crumb{
+      font-size:18px;
+    }
+    .toolbar{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .toolbar-left{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .select{
+      height:36px;
+      border:1px solid #d8dee6;
+      border-radius:10px;
+      padding:0 10px;
+      background:#fff;
+      font-size:13px;
+      min-width:140px;
+      outline:none;
+    }
+    .searchbox{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid #d8dee6;
+      border-radius:10px;
+      padding:0 10px;
+      height:36px;
+      background:#fff;
+      min-width:360px;
+      max-width:520px;
+      flex: 1 1 360px;
+    }
+    .searchbox input{
+      border:0;
+      outline:0;
+      width:100%;
+      font-size:13px;
+      background:transparent;
+    }
+    .icon-btn{
+      height:36px;
+      width:40px;
+      border-radius:10px;
+      border:1px solid #1f6fb2;
+      background:#1f6fb2;
+      color:#fff;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .icon-btn:hover{ filter:brightness(.95); }
+
+    .table-wrap{
+      border:1px solid #e6ebf2;
+      border-radius:14px;
+      overflow:hidden;
+      background:#fff;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+    thead th{
+      background:#f7f9fc;
+      font-weight:900;
+      font-size:13px;
+      padding:10px 10px;
+      border-bottom:1px solid #eef2f7;
+      text-align:left;
+      white-space:nowrap;
+    }
+    tbody td{
+      font-size:13px;
+      padding:10px 10px;
+      border-bottom:1px solid #eef2f7;
+      white-space:nowrap;
+      vertical-align:middle;
+    }
+    tbody tr:hover{ background:#fafcff; }
+    .num{ width:70px; text-align:left; color:#111; }
+    .link{
+      color:#1f6fb2;
+      text-decoration:none;
+      font-weight:800;
+    }
+    .link:hover{ text-decoration:underline; }
+    .muted{ color:#6b7280; }
+    .addr{
+      max-width:420px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .hint{
+      margin-top:10px;
+      font-size:12px;
+      color:#6b7280;
+    }
+
+    @media (max-width: 860px){
+      .searchbox{ min-width: 240px; }
+      .addr{ max-width: 220px; }
+    }
+  </style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" onclick="location.href='index.html'">
+      <div class="logo">◎</div>
+      <div>ERP UI</div>
+    </div>
+
+    <!-- ✅ 공통 nav.html 불러오는 방식이면 이 컨테이너 그대로 -->
+    <div id="nav-container"></div>
+
+    <div class="userbox">H.Q / 안현모</div>
+  </div>
+</header>
+
+<main class="app">
+  <div class="page-titlebar">
+    <div class="crumb">정보관리 &gt; 사업자관리</div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">사업자 조회</div>
+        <div class="panel-sub">등록 기능 없음 · 조회 전용</div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <select class="select" id="branch">
+            <option value="">거래지점 (전체)</option>
+            <option value="서울">서울</option>
+            <option value="경기">경기</option>
+            <option value="부산">부산</option>
+            <option value="대구">대구</option>
+          </select>
+
+          <div class="searchbox">
+            <input id="q" type="text" placeholder="회사명, 사업자번호, 업태,

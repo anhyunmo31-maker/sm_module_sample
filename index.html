@@ -109,6 +109,57 @@
       height:360px;
       display:block;
     }
+
+    nav{ display:flex; align-items:stretch; gap:2px; }
+.nav-item{
+  position:relative;
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  height:38px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:10px;
+  cursor:pointer;
+  user-select:none;
+}
+.nav-item:hover{ background:rgba(255,255,255,.14); }
+
+/* 드롭다운 */
+.dropdown{
+  display:none;
+  position:absolute;
+  top:44px;
+  left:0;
+  min-width:230px;
+  background:#fff;
+  color:#111;
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  padding:8px;
+  z-index:1100;
+}
+.nav-item:hover .dropdown{ display:block; }
+
+.drop-item{
+  display:block;
+  padding:10px 10px;
+  border-radius:10px;
+  font-size:13px;
+  text-decoration:none;
+  color:#111;
+  border:1px solid transparent;
+}
+.drop-item:hover{
+  background:#f5f8ff;
+  border-color:#d7e2ff;
+}
+.drop-sep{
+  margin:6px 2px;
+  border-top:1px solid #eef1f4;
+}
+
   </style>
 </head>
 
@@ -122,11 +173,60 @@
     </div>
 
     <nav>
-      <div class="nav-item">정보관리</div>
-      <div class="nav-item">매출관리</div>
-      <div class="nav-item">매입마감</div>
-      <div class="nav-item">통계</div>
-    </nav>
+  <div class="nav-item">정보관리
+    <div class="dropdown">
+      <a class="drop-item" href="biz_owner.html">사업자관리</a>
+      <a class="drop-item" href="customer.html">고객관리</a>
+      <a class="drop-item" href="am_goal.html">파트 및 어카운트매니저 목표 입력</a>
+      <div class="drop-sep"></div>
+      <a class="drop-item" href="order_list.html">주문목록</a>
+      <a class="drop-item" href="order_create.html">주문등록</a>
+      <a class="drop-item" href="order_special_list.html">별도사업주문목록</a>
+      <a class="drop-item" href="outsourcing_po_create.html">외주발주등록</a>
+    </div>
+  </div>
+
+  <div class="nav-item">매출관리
+    <div class="dropdown">
+      <a class="drop-item" href="sales_list.html">매출목록</a>
+      <a class="drop-item" href="ship_done_list.html">발송완료목록</a>
+      <a class="drop-item" href="card_sales_list.html">카드매출목록</a>
+      <div class="drop-sep"></div>
+      <a class="drop-item" href="pre_sales_list.html">선매출목록</a>
+      <a class="drop-item" href="pre_sales_input.html">선매출입력</a>
+      <div class="drop-sep"></div>
+      <a class="drop-item" href="untact_order_create.html">비대면주문 등록</a>
+      <a class="drop-item" href="untact_order_list.html">비대면주문 목록</a>
+      <a class="drop-item" href="untact_settlement.html">비대면 정산</a>
+      <div class="drop-sep"></div>
+      <a class="drop-item" href="tax_issue.html">세금계산서발행</a>
+      <a class="drop-item" href="tax_issue_manual.html">세금계산서수기발행</a>
+      <a class="drop-item" href="tax_issue_list.html">세금계산서 발행목록</a>
+    </div>
+  </div>
+
+  <div class="nav-item">매입마감
+    <div class="dropdown">
+      <a class="drop-item" href="outsourcing_settlement_create.html">외주정산등록</a>
+      <a class="drop-item" href="outsourcing_settlement_status.html">외주정산현황</a>
+      <a class="drop-item" href="purchase_invoice_input.html">구매송장입력</a>
+    </div>
+  </div>
+
+  <div class="nav-item">통계
+    <div class="dropdown">
+      <a class="drop-item" href="stats_team_forecast.html">본부 및 팀 예상매출</a>
+      <a class="drop-item" href="stats_team_goal_actual.html">본부 및 팀 매출목표 및 실적</a>
+      <a class="drop-item" href="stats_part_goal_actual_yoy.html">팀 및 파트별 매출목표 및 실적(전년대비)</a>
+      <a class="drop-item" href="stats_am_goal_actual_yoy.html">어카운트매니저 매출목표 및 실적(전년대비확인)</a>
+      <div class="drop-sep"></div>
+      <a class="drop-item" href="stats_item_perf.html">품목별 실적조회</a>
+      <a class="drop-item" href="stats_vendor_margin.html">거래처별 외주 마진율확인</a>
+      <a class="drop-item" href="stats_order_margin.html">주문건별 외주 마진율확인</a>
+    </div>
+  </div>
+</nav>
+
 
     <div class="userbox">H.Q / 안현모</div>
   </div>

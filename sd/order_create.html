@@ -365,6 +365,82 @@
       .work-form{ grid-template-columns:1fr; }
       .sum-right{ width:100%; justify-self:stretch; }
     }
+
+    /* ===== common.css 충돌 방지(주문등록 전용) ===== */
+.order-create, .order-create *{
+  box-sizing:border-box;
+}
+
+.order-create input,
+.order-create select,
+.order-create textarea,
+.order-create button{
+  font: inherit;
+}
+
+.order-create .field{
+  display:grid;
+  grid-template-columns: 160px 1fr;
+  gap:10px;
+  align-items:center;
+  min-height:38px;
+}
+
+.order-create .label{
+  background:transparent !important;
+  border:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+  font-weight:900;
+  font-size:13px;
+  color:#111;
+}
+
+.order-create .ctl{
+  width:100% !important;
+  display:block;
+  height:36px;
+  border:1px solid #d8dee6 !important;
+  border-radius:10px !important;
+  background:#fff !important;
+  padding:0 10px !important;
+  outline:none;
+}
+
+.order-create textarea.ctl{
+  padding:10px !important;
+  min-height:92px;
+  height:auto !important;
+}
+
+.order-create .row{
+  display:flex !important;
+  gap:10px;
+  align-items:center;
+}
+
+.order-create .mini-btn{
+  height:36px;
+  min-width:42px;
+  border-radius:10px !important;
+  border:1px solid #cfe0f5 !important;
+  background:#fff !important;
+}
+
+.order-create .checkline{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 0;
+}
+
+.order-create input[type="checkbox"],
+.order-create input[type="radio"]{
+  width:auto !important;
+  height:auto !important;
+  accent-color:#1f6fb2;
+}
+
   </style>
 </head>
 
@@ -391,7 +467,7 @@
     <div class="panel-head">
       <div><div class="panel-title">주문등록</div></div>
     </div>
-
+    <div class="order-create">
     <div class="panel-body">
 
       <!-- Tabs -->
@@ -644,6 +720,7 @@
               </div>
 
             </div>
+          </div>
           </section>
 
         </div>

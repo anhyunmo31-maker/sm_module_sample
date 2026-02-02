@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>정보관리 > 고객관리</title>
+
+  <link rel="stylesheet" href="common.css">
+  <script defer src="common.js"></script>
+
+  <style>
+    /* 페이지 전용(최소) */
+    .titlebar{
+      background:#1f6fb2;
+      color:#fff;
+      padding:18px 18px;
+      border-radius:14px;
+      box-shadow:0 8px 18px rgba(0,0,0,.06);
+      margin-bottom:12px;
+      font-weight:900;
+      letter-spacing:-.2px;
+    }
+    .titlebar .crumb{ font-size:18px; }
+
+    .toolbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .toolbar-left{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      width:100%;
+    }
+    .select{
+      height:36px;
+      border:1px solid #d8dee6;
+      border-radius:10px;
+      padding:0 10px;
+      background:#fff;
+      font-size:13px;
+      min-width:140px;
+      outline:none;
+    }
+    .searchbox{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid #d8dee6;
+      border-radius:10px;
+      padding:0 10px;
+      height:36px;
+      background:#fff;
+      min-width:420px;
+      flex: 1 1 420px;
+    }
+    .searchbox input{
+      border:0;
+      outline:0;
+      width:100%;
+      font-size:13px;
+      background:transparent;
+    }
+    .btn-search{
+      height:36px;
+      padding:0 14px;
+      border-radius:10px;
+      border:1px solid #1f6fb2;
+      background:#1f6fb2;
+      color:#fff;
+      cursor:pointer;
+      font-weight:900;
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .btn-search:hover{ filter:brightness(.95); }
+
+    .grid-wrap{
+      border:1px solid #e6ebf2;
+      border-radius:14px;
+      overflow:hidden;
+      background:#fff;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+    thead th{
+      background:#f7f9fc;
+      font-weight:900;
+      font-size:13px;
+      padding:10px 10px;
+      border-bottom:1px solid #eef2f7;
+      text-align:left;
+      white-space:nowrap;
+    }
+    tbody td{
+      font-size:13px;
+      padding:10px 10px;
+      border-bottom:1px solid #eef2f7;
+      white-space:nowrap;
+      vertical-align:middle;
+    }
+    tbody tr:hover{ background:#fafcff; }
+
+    .num{ width:70px; }
+    .link{
+      color:#1f6fb2;
+      text-decoration:none;
+      font-weight:800;
+    }
+    .link:hover{ text-decoration:underline; }
+
+    .addr{
+      max-width:420px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .empty{
+      padding:18px;
+      color:#6b7280;
+      font-size:13px;
+    }
+
+    @media (max-width: 860px){
+      .searchbox{ min-width: 240px; }
+      .addr{ max-width: 220px; }
+    }
+  </style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" onclick="location.href='index.html'">
+      <div class="logo">◎</div>
+      <div>ERP UI</div>
+    </div>
+
+    <!-- 공통 nav 삽입 -->
+    <div id="nav-container"></div>
+
+    <div class="userbox">H.Q / 안현모</div>
+  </div>
+</header>
+
+<main class="app">
+  <div class="titlebar">
+    <div class="crumb">정보관리 &gt; 고객관리</div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">고객관리</div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <select class="select" id="branch">
+            <option value="전체">전체</option>
+            <option value="시청파트">시청파트</option>
+            <option value="역삼1파트">역삼1파트</option>
+            <option value="대치파트">대치파트</option>
+            <option value="을지로파트">을지로파트</option>
+          </select>
+
+          <div class="searchbox">
+            <input id="q" type="text" placeholder="고객명, 회사명으로 검색" />
+          </div>
+
+          <button class="btn-search" id="btnSearch">조회</button>
+        </div>
+      </div>
+
+      <div class="grid-wrap">
+        <table aria-label="고객명 조회 결과">
+          <thead>
+            <tr>
+              <th class="num">#</th>
+              <th>구분</th>
+              <th>사업자</th>
+              <th>회사명</th>
+              <th>고객명</th>
+              <th>거래지점</th>
+              <th>연락처</th>
+              <th>등록자</th>
+              <th>등록일</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <tr>
+              <td colspan="7" class="empty">
+                조회 조건을 입력한 후 <b>조회</b>를 눌러주세요.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script>
+  // 조회 눌렀을 때 보여줄 "예시 결과" (프로토타입용)
+  const sampleRows = [
+  { no: 51622, gubun:"사업자", biz:"176-81-02056", corp:"제이에스티나", customer:"홍길동", branch:"서초로2파트", phone:"1", registrar:"주인돈", regDt:"2026-01-30 14:43" },
+  { no: 51621, gubun:"사업자", biz:"280-82-00617", corp:"라인플러스 주식회사", customer:"배소현", branch:"강남1파트", phone:"", registrar:"김규수", regDt:"2026-01-30 12:49" },
+  { no: 51620, gubun:"사업자", biz:"309-87-01299", corp:"영진약품 주식회사", customer:"김나연", branch:"서초로2파트", phone:"", registrar:"주인돈", regDt:"2026-01-27 17:12" },
+  { no: 51619, gubun:"사업자", biz:"621-81-10769", corp:"시립서울청소년센터", customer:"안세은", branch:"을지로파트", phone:"", registrar:"정호동", regDt:"2026-01-27 10:07" },
+  { no: 51618, gubun:"사업자", biz:"124-83-00269", corp:"삼성화재해상보험(주)", customer:"김홍진", branch:"역삼2파트", phone:"", registrar:"김민주", regDt:"2026-01-27 08:54" },
+  { no: 51617, gubun:"사업자", biz:"104-81-57667", corp:"서울교육대학교", customer:"전찬용", branch:"역삼2파트", phone:"", registrar:"강석길", regDt:"2026-01-26 10:45" },
+  { no: 51616, gubun:"사업자", biz:"120-10-30791", corp:"핀인사이트", customer:"강우진", branch:"역삼1파트", phone:"", registrar:"주대덕", regDt:"2026-01-23 14:02" },
+  { no: 51615, gubun:"사업자", biz:"209-82-62007", corp:"라이나생명보험(주)", customer:"김민영", branch:"서초로1파트", phone:"", registrar:"조문형", regDt:"2026-01-23 12:51" },
+  { no: 51614, gubun:"사업자", biz:"513-81-17175", corp:"레벨스_인크(영업소)", customer:"김서연", branch:"강남파트", phone:"1", registrar:"송두석", regDt:"2026-01-23 09:42" },
+  { no: 51613, gubun:"사업자", biz:"215-81-36619", corp:"주식회사 그레이바랩", customer:"이범기", branch:"강남파트", phone:"1", registrar:"송두석", regDt:"2026-01-20 14:10" },
+  { no: 51612, gubun:"사업자", biz:"120-87-06065", corp:"(주) 썰트리온", customer:"정재영", branch:"강남파트", phone:"1", registrar:"송두석", regDt:"2026-01-20 09:00" },
+  { no: 51611, gubun:"사업자", biz:"205-88-01505", corp:"주식회사 포스코인재창조원", customer:"공승규", branch:"대치파트", phone:"", registrar:"최민학", regDt:"2026-01-19 09:09" },
+  { no: 51610, gubun:"사업자", biz:"461-87-00512", corp:"하나캐피탈(주)", customer:"손정연", branch:"역삼2파트", phone:"", registrar:"강석길", regDt:"2026-01-15 09:47" },
+  { no: 51609, gubun:"사업자", biz:"559-86-03065", corp:"한스바이오메드(주)", customer:"윤지환", branch:"강남파트", phone:"1", registrar:"송두석", regDt:"2026-01-14 09:25" },
+  { no: 51608, gubun:"사업자", biz:"215-81-99999", corp:"에이블현대호텔앤리조트 주식회사", customer:"김경진", branch:"을지로파트", phone:"", registrar:"정호동", regDt:"2026-01-12 09:36" }
+];
+
+
+  const tbody = document.getElementById("tbody");
+  const branchEl = document.getElementById("branch");
+  const qEl = document.getElementById("q");
+  const btn = document.getElementById("btnSearch");
+
+  function render(list){
+    tbody.innerHTML = "";
+
+    if (!list.length){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td colspan="7" class="empty">조회 결과가 없습니다.</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+
+    list.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+      <td class="num">${r.no}</td>
+      <td>${r.gubun}</td>
+      <td>${r.biz}</td>
+      <td><a class="link" href="#" onclick="return false;">${r.corp}</a></td>
+      <td>${r.customer}</td>
+      <td>${r.branch}</td>
+      <td>${r.phone || ""}</td>
+      <td>${r.registrar}</td>
+      <td>${r.regDt}</td>
+    `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function doSearch(){
+    const branch = branchEl.value;
+    const q = qEl.value.trim().toLowerCase();
+
+    // 프로토타입: branch는 “느낌만” 반영 (샘플에 branch가 없어서)
+    // 대신 키워드로 필터만 해줌
+    let list = sampleRows.slice();
+
+    if (q){
+      list = list.filter(r => {
+        const hay = `${r.name} ${r.biz} ${r.type} ${r.item} ${r.addr}`.toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    // branch가 전체/거래지점이면 그냥 통과 (시연용)
+    render(list);
+  }
+
+  btn.addEventListener("click", doSearch);
+  qEl.addEventListener("keydown", (e)=>{ if(e.key==="Enter") doSearch(); });
+</script>
+</body>
+</html>

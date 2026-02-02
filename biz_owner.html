@@ -5,15 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>정보관리 > 사업자관리</title>
 
-  <!-- 🔧 경로는 네 실제 위치에 맞게 수정
-       (루트면 common.css / common.js 그대로 사용)
-       (폴더면 common/common.css 이런 식으로) -->
+  <!-- 경로는 네 환경에 맞게 -->
   <link rel="stylesheet" href="common.css">
   <script defer src="common.js"></script>
 
   <style>
-    /* 페이지 전용 스타일만 최소로 */
-    .page-titlebar{
+    /* 페이지 전용(최소) */
+    .titlebar{
       background:#1f6fb2;
       color:#fff;
       padding:18px 18px;
@@ -23,22 +21,22 @@
       font-weight:900;
       letter-spacing:-.2px;
     }
-    .page-titlebar .crumb{
-      font-size:18px;
-    }
+    .titlebar .crumb{ font-size:18px; }
+
     .toolbar{
       display:flex;
-      gap:10px;
       align-items:center;
       justify-content:space-between;
+      gap:10px;
       flex-wrap:wrap;
-      margin-bottom:10px;
+      margin-bottom:12px;
     }
     .toolbar-left{
       display:flex;
       gap:10px;
       align-items:center;
       flex-wrap:wrap;
+      width:100%;
     }
     .select{
       height:36px;
@@ -59,9 +57,8 @@
       padding:0 10px;
       height:36px;
       background:#fff;
-      min-width:360px;
-      max-width:520px;
-      flex: 1 1 360px;
+      min-width:420px;
+      flex: 1 1 420px;
     }
     .searchbox input{
       border:0;
@@ -70,19 +67,21 @@
       font-size:13px;
       background:transparent;
     }
-    .icon-btn{
+    .btn-search{
       height:36px;
-      width:40px;
+      padding:0 14px;
       border-radius:10px;
       border:1px solid #1f6fb2;
       background:#1f6fb2;
       color:#fff;
       cursor:pointer;
       font-weight:900;
+      font-size:13px;
+      white-space:nowrap;
     }
-    .icon-btn:hover{ filter:brightness(.95); }
+    .btn-search:hover{ filter:brightness(.95); }
 
-    .table-wrap{
+    .grid-wrap{
       border:1px solid #e6ebf2;
       border-radius:14px;
       overflow:hidden;
@@ -109,14 +108,15 @@
       vertical-align:middle;
     }
     tbody tr:hover{ background:#fafcff; }
-    .num{ width:70px; text-align:left; color:#111; }
+
+    .num{ width:70px; }
     .link{
       color:#1f6fb2;
       text-decoration:none;
       font-weight:800;
     }
     .link:hover{ text-decoration:underline; }
-    .muted{ color:#6b7280; }
+
     .addr{
       max-width:420px;
       white-space:nowrap;
@@ -124,10 +124,10 @@
       text-overflow:ellipsis;
     }
 
-    .hint{
-      margin-top:10px;
-      font-size:12px;
+    .empty{
+      padding:18px;
       color:#6b7280;
+      font-size:13px;
     }
 
     @media (max-width: 860px){
@@ -145,7 +145,7 @@
       <div>ERP UI</div>
     </div>
 
-    <!-- ✅ 공통 nav.html 불러오는 방식이면 이 컨테이너 그대로 -->
+    <!-- 공통 nav 삽입 -->
     <div id="nav-container"></div>
 
     <div class="userbox">H.Q / 안현모</div>
@@ -153,15 +153,14 @@
 </header>
 
 <main class="app">
-  <div class="page-titlebar">
+  <div class="titlebar">
     <div class="crumb">정보관리 &gt; 사업자관리</div>
   </div>
 
   <section class="panel">
     <div class="panel-head">
       <div>
-        <div class="panel-title">사업자 조회</div>
-        <div class="panel-sub">등록 기능 없음 · 조회 전용</div>
+        <div class="panel-title">사업자관리</div>
       </div>
     </div>
 
@@ -169,7 +168,8 @@
       <div class="toolbar">
         <div class="toolbar-left">
           <select class="select" id="branch">
-            <option value="">거래지점 (전체)</option>
+            <option value="">거래지점</option>
+            <option value="전체">전체</option>
             <option value="서울">서울</option>
             <option value="경기">경기</option>
             <option value="부산">부산</option>
@@ -177,4 +177,106 @@
           </select>
 
           <div class="searchbox">
-            <input id="q" type="text" placeholder="회사명, 사업자번호, 업태,
+            <input id="q" type="text" placeholder="회사명, 사업자번호, 업태, 종목으로 검색" />
+          </div>
+
+          <button class="btn-search" id="btnSearch">조회</button>
+        </div>
+      </div>
+
+      <div class="grid-wrap">
+        <table aria-label="사업자 조회 결과">
+          <thead>
+            <tr>
+              <th class="num">#</th>
+              <th>회사명</th>
+              <th>사업자번호</th>
+              <th>업태</th>
+              <th>종목</th>
+              <th>주소</th>
+              <th>더존 코드</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <tr>
+              <td colspan="7" class="empty">
+                조회 조건을 입력한 후 <b>조회</b>를 눌러주세요.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script>
+  // 조회 눌렀을 때 보여줄 "예시 결과" (프로토타입용)
+  const sampleRows = [
+    { no: 9934, name:"주식회사 그레이바랩", biz:"176-81-02056", type:"정보통신업", item:"소프트웨어 개발 및 공급업", addr:"서울 관악구 낙성대로 2", douzone:"" },
+    { no: 9933, name:"서울대학교 탄소중립캠퍼스추진단", biz:"280-82-00617", type:".", item:".", addr:"서울 관악구 관악로 1", douzone:"" },
+    { no: 9932, name:"주식회사 코스믹앤에이", biz:"309-87-01299", type:"사업시설 관리, 사..", item:"전시, 컨벤션 및 행사 대..", addr:"대구 서구 와룡로 307", douzone:"" },
+    { no: 9931, name:"넥센타이어(주)", biz:"621-81-10769", type:"제조업", item:"타이어및튜브", addr:"경남 양산시 충렬로 355", douzone:"" },
+    { no: 9930, name:"경기도청", biz:"124-83-00269", type:"부동산업,의료업", item:"임대,한의원", addr:"경기 수원시 영통구 도청로 30", douzone:"" },
+    { no: 9929, name:"한화오션(주)", biz:"104-81-57667", type:"제조 외", item:"선박,강선건조 외", addr:"경남 거제시 거제대로 3370", douzone:"" },
+    { no: 9928, name:"더브레드앤버터", biz:"120-10-30791", type:"서비스", item:"브랜드컨설팅 외", addr:"서울 서초구 서초대로49길 17", douzone:"" },
+    { no: 9927, name:"시립성북청소년센터", biz:"209-82-62007", type:"교육서비스업 외", item:"청소년수련시설운영업 외", addr:"서울 성북구 한천로 660-9", douzone:"" },
+    { no: 9926, name:"환화시스템(주)", biz:"513-81-17175", type:"제조 외", item:"기타정밀기기 외", addr:"경북 구미시 산동대로 264-60", douzone:"" },
+    { no: 9925, name:"(주)보그레먼컨다이징", biz:"215-81-36619", type:"제조업 외", item:"가방(남여소아) 제조,..", addr:"서울 성동구 아차산로17길 49", douzone:"" }
+  ];
+
+  const tbody = document.getElementById("tbody");
+  const branchEl = document.getElementById("branch");
+  const qEl = document.getElementById("q");
+  const btn = document.getElementById("btnSearch");
+
+  function render(list){
+    tbody.innerHTML = "";
+
+    if (!list.length){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td colspan="7" class="empty">조회 결과가 없습니다.</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+
+    list.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="num">${r.no}</td>
+        <td><a class="link" href="#" onclick="return false;">${r.name}</a></td>
+        <td>${r.biz}</td>
+        <td>${r.type}</td>
+        <td>${r.item}</td>
+        <td class="addr" title="${r.addr}">${r.addr}</td>
+        <td>${r.douzone || ""}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function doSearch(){
+    const branch = branchEl.value;
+    const q = qEl.value.trim().toLowerCase();
+
+    // 프로토타입: branch는 “느낌만” 반영 (샘플에 branch가 없어서)
+    // 대신 키워드로 필터만 해줌
+    let list = sampleRows.slice();
+
+    if (q){
+      list = list.filter(r => {
+        const hay = `${r.name} ${r.biz} ${r.type} ${r.item} ${r.addr}`.toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    // branch가 전체/거래지점이면 그냥 통과 (시연용)
+    render(list);
+  }
+
+  btn.addEventListener("click", doSearch);
+  qEl.addEventListener("keydown", (e)=>{ if(e.key==="Enter") doSearch(); });
+</script>
+</body>
+</html>

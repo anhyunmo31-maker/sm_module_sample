@@ -274,7 +274,7 @@
 
     if (q){
       list = list.filter(r => {
-        const hay = `${r.name} ${r.biz} ${r.type} ${r.item} ${r.addr}`.toLowerCase();
+        const hay = `${r.gubun} ${r.biz} ${r.corp} ${r.customer} ${r.branch} ${r.phone} ${r.registrar} ${r.regDt}`.toLowerCase();
         return hay.includes(q);
       });
     }

@@ -12,74 +12,10 @@
   <div class="topbar-inner">
     <div class="brand" onclick="location.href='index.html'">
       <div class="logo">◎</div>
-      <div>ERP UI</div>
+      <div>SM Module</div>
     </div>
-
-    <nav>
-      <div class="nav-item">정보관리
-        <div class="dropdown">
-          <a class="drop-item" href="biz_owner.html">사업자관리</a>
-          <a class="drop-item" href="customer.html">고객관리</a>
-          <a class="drop-item" href="am_goal.html">파트 및 어카운트매니저 목표 입력</a>
-          <div class="drop-sep"></div>
-          <a class="drop-item" href="order_list.html">주문목록</a>
-          <a class="drop-item" href="order_create.html">주문등록</a>
-          <a class="drop-item" href="order_special_list.html">별도사업주문목록</a>
-          <a class="drop-item" href="outsourcing_po_create.html">외주발주등록</a>
-        </div>
-      </div>
-
-      <div class="nav-item">매출관리
-        <div class="dropdown">
-          <a class="drop-item" href="sales_list.html">매출목록</a>
-          <a class="drop-item" href="ship_done_list.html">발송완료목록</a>
-          <a class="drop-item" href="card_sales_list.html">카드매출목록</a>
-          <div class="drop-sep"></div>
-          <a class="drop-item" href="pre_sales_list.html">선매출목록</a>
-          <a class="drop-item" href="pre_sales_input.html">선매출입력</a>
-          <div class="drop-sep"></div>
-          <a class="drop-item" href="untact_order_create.html">비대면주문 등록</a>
-          <a class="drop-item" href="untact_order_list.html">비대면주문 목록</a>
-          <a class="drop-item" href="untact_settlement.html">비대면 정산</a>
-          <div class="drop-sep"></div>
-          <a class="drop-item" href="tax_issue.html">세금계산서발행</a>
-          <a class="drop-item" href="tax_issue_manual.html">세금계산서수기발행</a>
-          <a class="drop-item" href="tax_issue_list.html">세금계산서 발행목록</a>
-        </div>
-      </div>
-
-      <div class="nav-item">매입마감
-        <div class="dropdown">
-          <a class="drop-item" href="outsourcing_settlement_create.html">외주정산등록</a>
-          <a class="drop-item" href="outsourcing_settlement_status.html">외주정산현황</a>
-          <a class="drop-item" href="purchase_invoice_input.html">구매송장입력</a>
-        </div>
-      </div>
-
-      <div class="nav-item">통계
-        <div class="dropdown">
-          <a class="drop-item" href="stats_team_forecast.html">본부 및 팀 예상매출</a>
-          <a class="drop-item" href="stats_team_goal_actual.html">본부 및 팀 매출목표 및 실적</a>
-          <a class="drop-item" href="stats_part_goal_actual_yoy.html">팀 및 파트별 매출목표 및 실적(전년대비)</a>
-          <a class="drop-item" href="stats_am_goal_actual_yoy.html">어카운트매니저 매출목표 및 실적(전년대비확인)</a>
-          <div class="drop-sep"></div>
-          <a class="drop-item" href="stats_item_perf.html">품목별 실적조회</a>
-          <a class="drop-item" href="stats_vendor_margin.html">거래처별 외주 마진율확인</a>
-          <a class="drop-item" href="stats_order_margin.html">주문건별 외주 마진율확인</a>
-        </div>
-      </div>
-    </nav>
-
-    <div class="userbox">
-      <div class="menu-btn" id="userMenuBtn">
-        H.Q/안현모 <span class="caret">▾</span>
-        <div class="menu-dd" id="userMenu">
-          <a href="#" onclick="alert('내정보(샘플)');return false;">내정보</a>
-          <a href="#" onclick="alert('비밀번호변경(샘플)');return false;">비밀번호 변경</a>
-          <a href="#" onclick="alert('로그아웃(샘플)');return false;">로그아웃</a>
-        </div>
-      </div>
-    </div>
+    <div id="nav-container"></div>
+    <div class="userbox">H.Q / 안현모</div>
   </div>
 </header>
 

@@ -4,86 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ERP UI - 매출목록</title>
-  <style>
-    :root{
-      --blue:#1f6fb2; --blue2:#155a93; --bg:#f3f6f9; --line:#e3e7ee;
-      --text:#111; --muted:#6b7280; --card:#fff; --shadow:0 10px 24px rgba(0,0,0,.10);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
-    }
-    *{ box-sizing:border-box; }
-    body{ margin:0; background:var(--bg); color:var(--text); }
-
-    .topbar{
-      position:fixed; inset:0 0 auto 0; height:58px;
-      background:linear-gradient(180deg,var(--blue),var(--blue2));
-      color:#fff; z-index:1000; box-shadow:0 6px 16px rgba(0,0,0,.18);
-    }
-    .topbar-inner{
-      max-width:1200px; height:100%; margin:0 auto; padding:0 14px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
-    .brand{ display:flex; align-items:center; gap:10px; font-weight:800; white-space:nowrap; cursor:pointer; }
-    .brand .logo{ width:28px; height:28px; border-radius:8px; background:rgba(255,255,255,.18); display:grid; place-items:center; }
-
-    nav{ display:flex; align-items:stretch; gap:2px; }
-    .nav-item{ position:relative; display:flex; align-items:center; padding:0 12px; cursor:pointer; user-select:none; font-weight:600; font-size:14px; border-radius:10px; }
-    .nav-item:hover{ background:rgba(255,255,255,.14); }
-    .dropdown{
-      position:absolute; top:54px; left:0; min-width:220px;
-      background:#fff; color:#111; border:1px solid var(--line);
-      border-radius:12px; box-shadow:var(--shadow); padding:8px; display:none;
-    }
-    .nav-item:hover .dropdown{ display:block; }
-    .drop-item{ display:block; padding:10px 10px; border-radius:10px; font-size:13px; text-decoration:none; color:#111; border:1px solid transparent; }
-    .drop-item:hover{ background:#f5f8ff; border-color:#d7e2ff; }
-    .drop-sep{ margin:6px 2px; border-top:1px solid #eef1f4; }
-
-    .userbox{ display:flex; align-items:center; gap:10px; font-size:13px; white-space:nowrap; }
-    .menu-btn{
-      position:relative; height:34px; padding:0 12px; border-radius:999px;
-      background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.18);
-      display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none;
-    }
-    .caret{ opacity:.9; font-size:12px; }
-    .menu-dd{
-      position:absolute; top:40px; right:0; min-width:160px; background:#fff; color:#111;
-      border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); padding:8px; display:none;
-    }
-    .menu-dd a{ display:block; padding:10px 10px; border-radius:10px; font-size:13px; text-decoration:none; color:#111; }
-    .menu-dd a:hover{ background:#f5f8ff; }
-
-    .app{ max-width:1200px; margin:0 auto; padding:74px 14px 28px; }
-    .breadcrumb{ display:flex; align-items:center; gap:8px; color:#0b3f6a; font-weight:800; margin:10px 0 12px; }
-    .breadcrumb small{ color:var(--muted); font-weight:600; }
-
-    .panel{ background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.05); overflow:hidden; }
-    .panel-head{
-      padding:12px 14px; border-bottom:1px solid #eef1f4;
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-    }
-    .panel-title{ font-size:15px; font-weight:800; }
-    .tools{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-    .btn{ height:34px; padding:0 12px; border-radius:10px; border:1px solid #d8dee6; background:#fff; cursor:pointer; font-weight:700; font-size:13px; }
-    .btn.primary{ border-color:#1f6fb2; background:#1f6fb2; color:#fff; }
-
-    .panel-body{ padding:14px; }
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .field{
-      display:flex; align-items:center; gap:8px;
-      background:#fff; border:1px solid #d8dee6; border-radius:10px; padding:6px 10px; height:36px;
-    }
-    input[type="date"], input[type="text"]{ border:0; outline:0; font-size:13px; background:transparent; }
-    .table{
-      width:100%; border-collapse:collapse; margin-top:12px;
-      border:1px solid #e6ebf2; border-radius:12px; overflow:hidden;
-    }
-    .table th,.table td{ padding:10px 10px; border-bottom:1px solid #eef2f7; font-size:13px; text-align:left; white-space:nowrap; }
-    .table th{ background:#f7f9fc; font-weight:800; }
-
-    @media (max-width: 860px){
-      nav{ gap:0; } .nav-item{ padding:0 8px; font-size:13px; } .dropdown{ min-width:200px; }
-    }
-  </style>
+  <link rel="stylesheet" href="common.css">
+<script defer src="common.js"></script>
 </head>
 <body>
 <header class="topbar">

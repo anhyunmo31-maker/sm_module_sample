@@ -23,3 +23,41 @@ document.addEventListener("DOMContentLoaded", () => {
     navItems.forEach(x => x.classList.remove("open"));
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  // 🔹 공통 nav 로드
+  fetch("nav.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("nav-container").innerHTML = html;
+
+      // nav가 로드된 이후에 드롭다운 이벤트 다시 바인딩
+      bindNavDropdown();
+    });
+
+});
+
+/* 🔽 기존 드롭다운 로직을 함수로 분리 */
+function bindNavDropdown(){
+  const navItems = document.querySelectorAll("nav .nav-item");
+
+  navItems.forEach(item => {
+    item.addEventListener("click", (e) => {
+      const link = e.target.closest("a");
+      if (link) return;
+
+      e.stopPropagation();
+
+      navItems.forEach(x => {
+        if (x !== item) x.classList.remove("open");
+      });
+
+      item.classList.toggle("open");
+    });
+  });
+
+  document.addEventListener("click", () => {
+    navItems.forEach(x => x.classList.remove("open"));
+  });
+}

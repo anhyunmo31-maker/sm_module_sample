@@ -9,19 +9,29 @@
   <script defer src="../common.js"></script>
 
   <style>
-    .titlebar{
+    /* =========================
+      주문등록 페이지 전용(스코핑)
+      - common.css랑 클래스명 충돌 방지
+      - .oc 내부에서만 스타일 적용
+    ========================== */
+    .oc { font: inherit; color: inherit; }
+    .oc * { box-sizing: border-box; }
+    .oc input, .oc select, .oc textarea, .oc button { font: inherit; color: inherit; }
+    .oc button { cursor: pointer; }
+
+    .oc-titlebar{
       background:#1f6fb2;
       color:#fff;
-      padding:18px 18px;
+      padding:18px;
       border-radius:14px;
       box-shadow:0 8px 18px rgba(0,0,0,.06);
       margin-bottom:12px;
       font-weight:900;
       letter-spacing:-.2px;
     }
-    .titlebar .crumb{ font-size:18px; }
+    .oc-titlebar .crumb{ font-size:18px; }
 
-    .tabs{
+    .oc-tabs{
       display:flex;
       gap:10px;
       align-items:center;
@@ -29,43 +39,51 @@
       padding:0 6px 10px;
       margin-bottom:14px;
     }
-    .tab{
+    .oc-tab{
       padding:10px 14px;
       border-radius:12px;
-      cursor:pointer;
+      user-select:none;
       font-weight:900;
       font-size:14px;
       color:#6b7280;
-      user-select:none;
+      border:1px solid transparent;
+      background:transparent;
     }
-    .tab.active{
+    .oc-tab:hover{ background:#f4f8ff; }
+    .oc-tab.active{
       background:#eef6ff;
       color:#155a93;
-      border:1px solid #d7e8ff;
+      border-color:#d7e8ff;
     }
 
     /* form */
-    .form{
+    .oc-form{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:12px 18px;
       align-items:start;
     }
-    .field{
+    .oc-field{
       display:grid;
       grid-template-columns: 160px 1fr;
       gap:10px;
       align-items:center;
       min-height:38px;
     }
-    .label{
+    .oc-label{
       font-weight:900;
       font-size:13px;
       color:#111;
       white-space:nowrap;
+      background:transparent !important; /* common.css가 label에 배경 주는 경우 방지 */
+      border:0 !important;
+      padding:0 !important;
+      margin:0 !important;
     }
-    .req::after{ content:" *"; color:#e11d48; font-weight:900; }
-    .ctl{
+    .oc-req::after{ content:" *"; color:#e11d48; font-weight:900; }
+
+    .oc-ctl{
+      width:100%;
       height:36px;
       border:1px solid #d8dee6;
       border-radius:10px;
@@ -73,48 +91,63 @@
       background:#fff;
       font-size:13px;
       outline:none;
-      width:100%;
+      display:block;
     }
-    textarea.ctl{
+    .oc-ctl:focus{
+      border-color:#9cc3ea;
+      box-shadow:0 0 0 3px rgba(31,111,178,.12);
+    }
+    .oc-ctl[disabled]{
+      background:#f5f6f8;
+      color:#6b7280;
+    }
+    .oc-textarea{
       height:auto;
       min-height:92px;
       padding:10px;
       resize:vertical;
     }
 
-    .row{
-      display:flex; gap:10px; align-items:center;
+    .oc-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
     }
-    .row .ctl{ flex:1; }
-    .mini-btn{
+    .oc-row .oc-ctl{ flex:1; }
+
+    .oc-mini{
       height:36px;
       min-width:42px;
       border-radius:10px;
       border:1px solid #cfe0f5;
       background:#fff;
-      cursor:pointer;
       font-weight:900;
     }
-    .mini-btn:hover{ background:#f6fbff; }
+    .oc-mini:hover{ background:#f6fbff; }
 
-    .split{
+    .oc-split{
       grid-column:1 / -1;
       border-top:1px solid #eef2f7;
       margin:6px 0;
     }
 
-    .checkline{
-      grid-column:1 / -1;
+    .oc-checkline{
       display:flex;
       align-items:center;
       gap:10px;
       padding:6px 0;
-      color:#374151;
       font-weight:800;
       font-size:13px;
+      color:#374151;
+    }
+    .oc input[type="checkbox"],
+    .oc input[type="radio"]{
+      width:auto !important;
+      height:auto !important;
+      accent-color:#1f6fb2;
     }
 
-    .radio-line{
+    .oc-radio{
       display:flex;
       gap:18px;
       align-items:center;
@@ -123,59 +156,58 @@
       color:#374151;
       flex-wrap:wrap;
     }
-    .radio-line label{ display:flex; align-items:center; gap:8px; }
+    .oc-radio label{ display:flex; align-items:center; gap:8px; }
 
-    .actions{
+    .oc-actions{
       display:flex;
       justify-content:space-between;
       gap:10px;
       margin-top:14px;
     }
-    .btn{
+    .oc-btn{
       height:36px;
       padding:0 14px;
       border-radius:10px;
       font-weight:900;
       font-size:13px;
-      cursor:pointer;
       border:1px solid transparent;
       white-space:nowrap;
+      background:#fff;
     }
-    .btn.primary{ background:#1f6fb2; color:#fff; border-color:#1f6fb2; }
-    .btn.primary:hover{ filter:brightness(.95); }
-    .btn.ghost{ background:#fff; color:#1f6fb2; border-color:#cfe0f5; }
-    .btn.ghost:hover{ background:#f6fbff; }
-    .btn.success{ background:#18a058; color:#fff; border-color:#18a058; }
-    .btn.success:hover{ filter:brightness(.95); }
+    .oc-btn.primary{ background:#1f6fb2; color:#fff; border-color:#1f6fb2; }
+    .oc-btn.primary:hover{ filter:brightness(.95); }
+    .oc-btn.ghost{ background:#fff; color:#1f6fb2; border-color:#cfe0f5; }
+    .oc-btn.ghost:hover{ background:#f6fbff; }
+    .oc-btn.success{ background:#18a058; color:#fff; border-color:#18a058; }
+    .oc-btn.success:hover{ filter:brightness(.95); }
 
-    /* Work tab layout */
-    .work-layout{
+    /* Work tab */
+    .oc-work-layout{
       display:grid;
       grid-template-columns: 280px 1fr;
       gap:14px;
       align-items:start;
     }
 
-    .work-side{
+    .oc-side{
       border:1px solid #e6ebf2;
       border-radius:14px;
       background:#fff;
       overflow:hidden;
     }
-    .work-side-head{
+    .oc-side-head{
       padding:12px;
       border-bottom:1px solid #eef2f7;
       display:flex;
       flex-direction:column;
       gap:8px;
     }
-    .side-btn{
+    .oc-side-btn{
       height:42px;
       border-radius:10px;
       border:1px solid #bfe6f2;
       background:#14b8d4;
       color:#fff;
-      cursor:pointer;
       font-weight:900;
       text-align:left;
       padding:0 12px;
@@ -183,23 +215,24 @@
       align-items:center;
       gap:10px;
     }
-    .side-btn:hover{ filter:brightness(.96); }
-    .plus{
-      width:24px; height:24px; border-radius:999px;
+    .oc-side-btn:hover{ filter:brightness(.96); }
+    .oc-plus{
+      width:24px; height:24px;
+      border-radius:999px;
       background:rgba(255,255,255,.25);
       display:grid; place-items:center;
       font-weight:900;
     }
 
-    .work-list{
+    .oc-work-list{
       padding:8px;
       max-height:520px;
       overflow:auto;
     }
-    .work-item{
+    .oc-work-item{
       border:1px solid #eef2f7;
       border-radius:12px;
-      padding:10px 10px;
+      padding:10px;
       cursor:pointer;
       display:flex;
       align-items:center;
@@ -208,43 +241,42 @@
       margin-bottom:8px;
       background:#fff;
     }
-    .work-item.active{
+    .oc-work-item.active{
       border-color:#d7e8ff;
       background:#f5f8ff;
     }
-    .work-item .name{
+    .oc-work-name{
       font-weight:900;
       font-size:13px;
       color:#111;
       line-height:1.2;
     }
-    .work-item .meta{
+    .oc-work-meta{
       font-size:12px;
       color:#6b7280;
       font-weight:800;
       margin-top:2px;
     }
-    .del{
+    .oc-del{
       width:28px; height:28px;
       border-radius:8px;
       border:1px solid #f2c2c7;
       background:#fff;
-      cursor:pointer;
-      display:grid;
-      place-items:center;
       color:#e11d48;
       font-weight:900;
+      display:grid;
+      place-items:center;
       flex:0 0 auto;
     }
-    .del:hover{ background:#fff5f6; }
+    .oc-del:hover{ background:#fff5f6; }
 
-    .work-main{
+    .oc-main{
       border:1px solid #e6ebf2;
       border-radius:14px;
       background:#fff;
       overflow:hidden;
     }
-    .work-main-head{
+    .oc-main-head{
       padding:12px 14px;
       border-bottom:1px solid #eef2f7;
       display:flex;
@@ -253,17 +285,14 @@
       gap:10px;
       flex-wrap:wrap;
     }
-    .work-main-title{
+    .oc-main-title{
       font-weight:900;
       font-size:14px;
       color:#111;
     }
+    .oc-main-body{ padding:14px; }
 
-    .work-main-body{
-      padding:14px;
-    }
-
-    .work-form{
+    .oc-work-form{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:12px 18px;
@@ -271,35 +300,35 @@
       margin-bottom:12px;
     }
 
-    .grid-wrap{
+    .oc-grid{
       border:1px solid #e6ebf2;
       border-radius:14px;
       overflow:hidden;
       background:#fff;
       margin-top:10px;
     }
-    table{
+    .oc-table{
       width:100%;
       border-collapse:collapse;
     }
-    thead th{
+    .oc-table thead th{
       background:#f7f9fc;
       font-weight:900;
       font-size:13px;
-      padding:10px 10px;
+      padding:10px;
       border-bottom:1px solid #eef2f7;
       text-align:left;
       white-space:nowrap;
     }
-    tbody td{
+    .oc-table tbody td{
       font-size:13px;
       padding:8px 10px;
       border-bottom:1px solid #eef2f7;
       vertical-align:middle;
     }
-    tbody tr:hover{ background:#fafcff; }
+    .oc-table tbody tr:hover{ background:#fafcff; }
 
-    .cell-input{
+    .oc-cell{
       height:32px;
       border:1px solid #d8dee6;
       border-radius:10px;
@@ -309,28 +338,28 @@
       outline:none;
       background:#fff;
     }
-    .amt{ text-align:right; font-variant-numeric: tabular-nums; }
-    .tiny-btn{
+    .oc-amt{ text-align:right; font-variant-numeric: tabular-nums; }
+
+    .oc-tiny{
       height:32px;
       padding:0 10px;
       border-radius:10px;
       border:1px solid #cfe0f5;
       background:#fff;
-      cursor:pointer;
       font-weight:900;
       font-size:12px;
       white-space:nowrap;
     }
-    .tiny-btn:hover{ background:#f6fbff; }
+    .oc-tiny:hover{ background:#f6fbff; }
 
-    .summary{
+    .oc-summary{
       display:grid;
       grid-template-columns: 1fr 220px;
       gap:10px 18px;
       margin-top:12px;
       align-items:start;
     }
-    .sum-right{
+    .oc-sum-right{
       justify-self:end;
       width:260px;
       border:1px solid #eef2f7;
@@ -338,7 +367,7 @@
       padding:12px;
       background:#fbfdff;
     }
-    .sum-row{
+    .oc-sum-row{
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -347,8 +376,8 @@
       font-weight:800;
       color:#374151;
     }
-    .sum-row strong{ font-variant-numeric: tabular-nums; }
-    .sum-row.total{
+    .oc-sum-row strong{ font-variant-numeric: tabular-nums; }
+    .oc-sum-row.total{
       border-top:1px solid #e6ebf2;
       margin-top:6px;
       padding-top:10px;
@@ -356,91 +385,15 @@
       font-weight:900;
     }
 
-    .hidden{ display:none; }
+    .oc-hidden{ display:none; }
 
     @media (max-width: 980px){
-      .form{ grid-template-columns:1fr; }
-      .field{ grid-template-columns: 140px 1fr; }
-      .work-layout{ grid-template-columns:1fr; }
-      .work-form{ grid-template-columns:1fr; }
-      .sum-right{ width:100%; justify-self:stretch; }
+      .oc-form{ grid-template-columns:1fr; }
+      .oc-field{ grid-template-columns: 140px 1fr; }
+      .oc-work-layout{ grid-template-columns:1fr; }
+      .oc-work-form{ grid-template-columns:1fr; }
+      .oc-sum-right{ width:100%; justify-self:stretch; }
     }
-
-    /* ===== common.css 충돌 방지(주문등록 전용) ===== */
-.order-create, .order-create *{
-  box-sizing:border-box;
-}
-
-.order-create input,
-.order-create select,
-.order-create textarea,
-.order-create button{
-  font: inherit;
-}
-
-.order-create .field{
-  display:grid;
-  grid-template-columns: 160px 1fr;
-  gap:10px;
-  align-items:center;
-  min-height:38px;
-}
-
-.order-create .label{
-  background:transparent !important;
-  border:0 !important;
-  padding:0 !important;
-  margin:0 !important;
-  font-weight:900;
-  font-size:13px;
-  color:#111;
-}
-
-.order-create .ctl{
-  width:100% !important;
-  display:block;
-  height:36px;
-  border:1px solid #d8dee6 !important;
-  border-radius:10px !important;
-  background:#fff !important;
-  padding:0 10px !important;
-  outline:none;
-}
-
-.order-create textarea.ctl{
-  padding:10px !important;
-  min-height:92px;
-  height:auto !important;
-}
-
-.order-create .row{
-  display:flex !important;
-  gap:10px;
-  align-items:center;
-}
-
-.order-create .mini-btn{
-  height:36px;
-  min-width:42px;
-  border-radius:10px !important;
-  border:1px solid #cfe0f5 !important;
-  background:#fff !important;
-}
-
-.order-create .checkline{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:6px 0;
-}
-
-.order-create input[type="checkbox"],
-.order-create input[type="radio"]{
-  width:auto !important;
-  height:auto !important;
-  accent-color:#1f6fb2;
-}
-
   </style>
 </head>
 
@@ -451,15 +404,13 @@
       <div class="logo">◎</div>
       <div>ERP UI</div>
     </div>
-
     <div id="nav-container"></div>
-
     <div class="userbox">H.Q / 안현모</div>
   </div>
 </header>
 
-<main class="app">
-  <div class="titlebar">
+<main class="app oc">
+  <div class="oc-titlebar">
     <div class="crumb">주문관리 &gt; 주문등록</div>
   </div>
 
@@ -467,212 +418,209 @@
     <div class="panel-head">
       <div><div class="panel-title">주문등록</div></div>
     </div>
-    <div class="order-create">
+
     <div class="panel-body">
 
       <!-- Tabs -->
-      <div class="tabs">
-        <div class="tab active" data-tab="order">주문정보</div>
-        <div class="tab" data-tab="work">작업정보</div>
+      <div class="oc-tabs">
+        <button class="oc-tab active" type="button" data-tab="order">주문정보</button>
+        <button class="oc-tab" type="button" data-tab="work">작업정보</button>
       </div>
 
       <!-- TAB 1: 주문정보 -->
       <div id="tab-order">
-        <div class="form">
-          <div class="field">
-            <div class="label">접수자</div>
-            <input class="ctl" value="안현모" disabled />
+        <div class="oc-form">
+
+          <div class="oc-field">
+            <div class="oc-label">접수자</div>
+            <input class="oc-ctl" value="안현모" disabled />
           </div>
 
-          <div class="field">
-            <div class="label req">완료요청일시</div>
-            <input class="ctl" type="datetime-local" value="2026-02-05T16:00" />
+          <div class="oc-field">
+            <div class="oc-label oc-req">완료요청일시</div>
+            <input class="oc-ctl" type="datetime-local" value="2026-02-05T16:00" />
           </div>
 
-          <div class="field">
-            <div class="label req">접수일자</div>
-            <input class="ctl" type="date" value="2026-02-02" />
+          <div class="oc-field">
+            <div class="oc-label oc-req">접수일자</div>
+            <input class="oc-ctl" type="date" value="2026-02-02" />
           </div>
 
-          <div class="field">
-            <div class="label req">고객명</div>
-            <div class="row">
-              <input class="ctl" placeholder="고객명으로 검색 후 선택" />
-              <button class="mini-btn" type="button" onclick="alert('프로토타입: 고객 검색(미정)')">≡</button>
+          <div class="oc-field">
+            <div class="oc-label oc-req">고객명</div>
+            <div class="oc-row">
+              <input class="oc-ctl" placeholder="고객명으로 검색 후 선택" />
+              <button class="oc-mini" type="button" onclick="alert('프로토타입: 고객 검색(미정)')">≡</button>
             </div>
           </div>
 
-          <div class="field">
-            <div class="label req">회사명</div>
-            <div class="row">
-              <input class="ctl" placeholder="회사명으로 검색 후 선택" />
-              <button class="mini-btn" type="button" onclick="alert('프로토타입: 회사 검색(미정)')">≡</button>
+          <div class="oc-field">
+            <div class="oc-label oc-req">회사명</div>
+            <div class="oc-row">
+              <input class="oc-ctl" placeholder="회사명으로 검색 후 선택" />
+              <button class="oc-mini" type="button" onclick="alert('프로토타입: 회사 검색(미정)')">≡</button>
             </div>
           </div>
 
-          <div class="field">
-            <div class="label">연락처</div>
-            <input class="ctl" placeholder="연락처" />
+          <div class="oc-field">
+            <div class="oc-label">연락처</div>
+            <input class="oc-ctl" placeholder="연락처" />
           </div>
 
-          <div class="field">
-            <div class="label">이메일</div>
-            <input class="ctl" placeholder="이메일" />
+          <div class="oc-field">
+            <div class="oc-label">이메일</div>
+            <input class="oc-ctl" placeholder="이메일" />
           </div>
 
-          <div class="field">
-            <div class="label"> </div>
-            <div class="checkline">
+          <div class="oc-field">
+            <div class="oc-label"></div>
+            <div class="oc-checkline">
               <input id="same" type="checkbox" />
               <label for="same">주문고객 정보와 동일합니다</label>
             </div>
           </div>
 
-          <div class="split"></div>
+          <div class="oc-split"></div>
 
-          <div class="field">
-            <div class="label req">수취인명</div>
-            <input class="ctl" placeholder="수취인명" />
+          <div class="oc-field">
+            <div class="oc-label oc-req">수취인명</div>
+            <input class="oc-ctl" placeholder="수취인명" />
           </div>
 
-          <div class="field">
-            <div class="label req">수취인 연락처</div>
-            <input class="ctl" placeholder="수취인 연락처" />
+          <div class="oc-field">
+            <div class="oc-label oc-req">수취인 연락처</div>
+            <input class="oc-ctl" placeholder="수취인 연락처" />
           </div>
 
-          <div class="field" style="grid-column:1 / -1;">
-            <div class="label">주소</div>
+          <div class="oc-field" style="grid-column:1 / -1;">
+            <div class="oc-label">주소</div>
             <div style="width:100%;">
-              <div class="row" style="margin-bottom:8px;">
-                <input class="ctl" style="max-width:180px;" placeholder="우편번호" />
-                <button class="btn ghost" type="button" style="height:36px;" onclick="alert('프로토타입: 주소검색(미정)')">주소검색</button>
+              <div class="oc-row" style="margin-bottom:8px;">
+                <input class="oc-ctl" style="max-width:180px;" placeholder="우편번호" />
+                <button class="oc-btn ghost" type="button" style="height:36px;" onclick="alert('프로토타입: 주소검색(미정)')">주소검색</button>
               </div>
-              <div class="row">
-                <input class="ctl" placeholder="주소" />
-                <input class="ctl" placeholder="나머지 주소" />
+              <div class="oc-row">
+                <input class="oc-ctl" placeholder="주소" />
+                <input class="oc-ctl" placeholder="나머지 주소" />
               </div>
             </div>
           </div>
 
-          <div class="field">
-            <div class="label">작업분류</div>
-            <button class="btn ghost" type="button" onclick="alert('프로토타입: 작업분류 선택(미정)')">선택</button>
+          <div class="oc-field">
+            <div class="oc-label">작업분류</div>
+            <button class="oc-btn ghost" type="button" onclick="alert('프로토타입: 작업분류 선택(미정)')">선택</button>
           </div>
 
-          <div class="field">
-            <div class="label">별도 사업본부 매출</div>
-            <select class="ctl">
+          <div class="oc-field">
+            <div class="oc-label">별도 사업본부 매출</div>
+            <select class="oc-ctl">
               <option>그래픽스사업본부</option>
               <option>패키지사업본부</option>
               <option>실사사업본부</option>
             </select>
           </div>
 
-          <div class="field" style="grid-column:1 / -1;">
-            <div class="label">특이사항</div>
-            <textarea class="ctl" placeholder="특이사항"></textarea>
+          <div class="oc-field" style="grid-column:1 / -1;">
+            <div class="oc-label">특이사항</div>
+            <textarea class="oc-ctl oc-textarea" placeholder="특이사항"></textarea>
           </div>
 
-          <div class="field" style="grid-column:1 / -1;">
-            <div class="label req">결제방식</div>
-            <div class="radio-line">
+          <div class="oc-field" style="grid-column:1 / -1;">
+            <div class="oc-label oc-req">결제방식</div>
+            <div class="oc-radio">
               <label><input type="radio" name="pay" checked> 외상</label>
               <label><input type="radio" name="pay"> 결제(현금/카드/무통장/무선카드)</label>
             </div>
           </div>
         </div>
 
-        <div class="actions">
+        <div class="oc-actions">
           <div>
-            <button class="btn ghost" type="button" onclick="history.back()">이전</button>
+            <button class="oc-btn ghost" type="button" onclick="history.back()">이전</button>
           </div>
           <div style="display:flex; gap:10px;">
-            <button class="btn primary" type="button" id="goWork">다음</button>
-            <button class="btn success" type="button" onclick="alert('프로토타입: 등록(미정)')">등록</button>
+            <button class="oc-btn primary" type="button" id="goWork">다음</button>
+            <button class="oc-btn success" type="button" onclick="alert('프로토타입: 등록(미정)')">등록</button>
           </div>
         </div>
       </div>
 
       <!-- TAB 2: 작업정보 -->
-      <div id="tab-work" class="hidden">
-        <div class="work-layout">
+      <div id="tab-work" class="oc-hidden">
+        <div class="oc-work-layout">
 
-          <!-- Left: 작업 목록/추가 -->
-          <aside class="work-side">
-            <div class="work-side-head">
-              <button class="side-btn" type="button" id="btnAddWork"><span class="plus">＋</span> 작업추가</button>
-              <button class="side-btn" type="button" onclick="alert('프로토타입: 실사 작업추가(미정)')"><span class="plus">＋</span> 실사 작업추가</button>
-              <button class="side-btn" type="button" onclick="alert('프로토타입: 명함 작업추가(미정)')"><span class="plus">＋</span> 명함 작업추가</button>
-              <button class="side-btn" type="button" onclick="alert('프로토타입: 디자인 등록(미정)')"><span class="plus">＋</span> 디자인 등록</button>
+          <aside class="oc-side">
+            <div class="oc-side-head">
+              <button class="oc-side-btn" type="button" id="btnAddWork"><span class="oc-plus">＋</span> 작업추가</button>
+              <button class="oc-side-btn" type="button" onclick="alert('프로토타입: 실사 작업추가(미정)')"><span class="oc-plus">＋</span> 실사 작업추가</button>
+              <button class="oc-side-btn" type="button" onclick="alert('프로토타입: 명함 작업추가(미정)')"><span class="oc-plus">＋</span> 명함 작업추가</button>
+              <button class="oc-side-btn" type="button" onclick="alert('프로토타입: 디자인 등록(미정)')"><span class="oc-plus">＋</span> 디자인 등록</button>
             </div>
-
-            <div class="work-list" id="workList"></div>
+            <div class="oc-work-list" id="workList"></div>
           </aside>
 
-          <!-- Right: 작업 상세 -->
-          <section class="work-main">
-            <div class="work-main-head">
-              <div class="work-main-title" id="workTitle">작업 상세</div>
+          <section class="oc-main">
+            <div class="oc-main-head">
+              <div class="oc-main-title" id="workTitle">작업 상세</div>
               <div style="display:flex; gap:8px;">
-                <button class="tiny-btn" type="button" id="btnAddItem">품목행 추가</button>
-                <button class="tiny-btn" type="button" id="btnClearItems">품목 초기화</button>
+                <button class="oc-tiny" type="button" id="btnAddItem">품목행 추가</button>
+                <button class="oc-tiny" type="button" id="btnClearItems">품목 초기화</button>
               </div>
             </div>
 
-            <div class="work-main-body">
+            <div class="oc-main-body">
 
-              <div class="work-form">
-                <div class="field">
-                  <div class="label">외부생산</div>
+              <div class="oc-work-form">
+                <div class="oc-field">
+                  <div class="oc-label">외부생산</div>
                   <label style="font-weight:900; font-size:13px;">
                     <input type="checkbox" id="isOut"> 외부생산
                   </label>
                 </div>
 
-                <div class="field">
-                  <div class="label req">제작부수(B)</div>
-                  <div class="row">
-                    <input class="ctl" id="qtyB" type="number" min="1" value="1" />
+                <div class="oc-field">
+                  <div class="oc-label oc-req">제작부수(B)</div>
+                  <div class="oc-row">
+                    <input class="oc-ctl" id="qtyB" type="number" min="1" value="1" />
                     <div style="font-weight:900; color:#374151;">부</div>
                   </div>
                 </div>
 
-                <div class="field">
-                  <div class="label req">작업명</div>
-                  <input class="ctl" id="workName" placeholder="작업명" />
+                <div class="oc-field">
+                  <div class="oc-label oc-req">작업명</div>
+                  <input class="oc-ctl" id="workName" placeholder="작업명" />
                 </div>
 
-                <div class="field">
-                  <div class="label req">인쇄방향</div>
-                  <div class="radio-line">
+                <div class="oc-field">
+                  <div class="oc-label oc-req">인쇄방향</div>
+                  <div class="oc-radio">
                     <label><input type="radio" name="dir" checked> 머리-머리</label>
                     <label><input type="radio" name="dir"> 머리-꼬리</label>
                   </div>
                 </div>
 
-                <div class="field">
-                  <div class="label req">제작용지</div>
-                  <select class="ctl" id="paper">
+                <div class="oc-field">
+                  <div class="oc-label oc-req">제작용지</div>
+                  <select class="oc-ctl" id="paper">
                     <option>A4(210mm X 297mm)</option>
                     <option>A3(297mm X 420mm)</option>
                     <option>명함(90mm X 50mm)</option>
                   </select>
                 </div>
 
-                <div class="field">
-                  <div class="label">파일첨부</div>
-                  <input class="ctl" type="file" />
+                <div class="oc-field">
+                  <div class="oc-label">파일첨부</div>
+                  <input class="oc-ctl" type="file" />
                 </div>
 
-                <div class="field" style="grid-column:1 / -1;">
-                  <div class="label">기타사항</div>
-                  <textarea class="ctl" id="workMemo" placeholder="기타사항"></textarea>
+                <div class="oc-field" style="grid-column:1 / -1;">
+                  <div class="oc-label">기타사항</div>
+                  <textarea class="oc-ctl oc-textarea" id="workMemo" placeholder="기타사항"></textarea>
                 </div>
               </div>
 
-              <!-- Items table -->
-              <div class="grid-wrap">
-                <table aria-label="품목 그리드">
+              <div class="oc-grid">
+                <table class="oc-table" aria-label="품목 그리드">
                   <thead>
                     <tr>
                       <th style="width:130px;">품목</th>
@@ -687,40 +635,38 @@
                 </table>
               </div>
 
-              <!-- Summary -->
-              <div class="summary">
+              <div class="oc-summary">
                 <div></div>
-                <div class="sum-right">
-                  <div class="sum-row">
+                <div class="oc-sum-right">
+                  <div class="oc-sum-row">
                     <span>작업금액(C=A×B)</span>
                     <strong id="sumWork">0원</strong>
                   </div>
-                  <div class="sum-row">
+                  <div class="oc-sum-row">
                     <span>배송비(E)</span>
                     <strong id="sumShip">0원</strong>
                   </div>
-                  <div class="sum-row">
+                  <div class="oc-sum-row">
                     <span>할인(H)</span>
                     <strong id="sumDisc">0원</strong>
                   </div>
-                  <div class="sum-row total">
+                  <div class="oc-sum-row total">
                     <span>결제금액(G-H)</span>
                     <strong id="sumPay">0원</strong>
                   </div>
                 </div>
               </div>
 
-              <div class="actions">
+              <div class="oc-actions">
                 <div>
-                  <button class="btn ghost" type="button" id="backOrder">이전</button>
+                  <button class="oc-btn ghost" type="button" id="backOrder">이전</button>
                 </div>
                 <div style="display:flex; gap:10px;">
-                  <button class="btn success" type="button" onclick="alert('프로토타입: 등록(미정)')">등록</button>
+                  <button class="oc-btn success" type="button" onclick="alert('프로토타입: 등록(미정)')">등록</button>
                 </div>
               </div>
 
             </div>
-          </div>
           </section>
 
         </div>
@@ -732,14 +678,14 @@
 
 <script>
   // ===== Tabs =====
-  const tabs = document.querySelectorAll(".tab");
+  const tabs = document.querySelectorAll(".oc-tab");
   const tabOrder = document.getElementById("tab-order");
   const tabWork  = document.getElementById("tab-work");
 
   function openTab(name){
     tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === name));
-    tabOrder.classList.toggle("hidden", name !== "order");
-    tabWork.classList.toggle("hidden", name !== "work");
+    tabOrder.classList.toggle("oc-hidden", name !== "order");
+    tabWork.classList.toggle("oc-hidden", name !== "work");
   }
   tabs.forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab)));
   document.getElementById("goWork").addEventListener("click", () => openTab("work"));
@@ -751,7 +697,6 @@
   const workNameEl = document.getElementById("workName");
   const workMemoEl = document.getElementById("workMemo");
   const qtyBEl = document.getElementById("qtyB");
-
   const itemBody = document.getElementById("itemBody");
 
   const sumWork = document.getElementById("sumWork");
@@ -776,20 +721,20 @@
     workListEl.innerHTML = "";
     works.forEach(w => {
       const div = document.createElement("div");
-      div.className = "work-item" + (w.id === currentWorkId ? " active" : "");
+      div.className = "oc-work-item" + (w.id === currentWorkId ? " active" : "");
       div.innerHTML = `
         <div style="min-width:0;">
-          <div class="name">${escapeHtml(w.name || ("작업 #" + w.id))}</div>
-          <div class="meta">품목 ${w.items.length}개 · 부수 ${w.qtyB || 1}</div>
+          <div class="oc-work-name">${escapeHtml(w.name || ("작업 #" + w.id))}</div>
+          <div class="oc-work-meta">품목 ${w.items.length}개 · 부수 ${w.qtyB || 1}</div>
         </div>
-        <button class="del" title="삭제">×</button>
+        <button class="oc-del" title="삭제" type="button">×</button>
       `;
       div.addEventListener("click", (e) => {
-        if (e.target.closest(".del")) return;
+        if (e.target.closest(".oc-del")) return;
         currentWorkId = w.id;
         renderAll();
       });
-      div.querySelector(".del").addEventListener("click", (e) => {
+      div.querySelector(".oc-del").addEventListener("click", (e) => {
         e.stopPropagation();
         if (works.length === 1) { alert("최소 1개의 작업은 필요합니다."); return; }
         works = works.filter(x => x.id !== w.id);
@@ -807,17 +752,16 @@
     workMemoEl.value = w.memo || "";
     qtyBEl.value = w.qtyB || 1;
 
-    // items
     itemBody.innerHTML = "";
     w.items.forEach((it, idx) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><input class="cell-input" value="${escapeAttr(it.code||"")}" placeholder="품목"></td>
-        <td><input class="cell-input" value="${escapeAttr(it.name||"")}" placeholder="품목명"></td>
-        <td><input class="cell-input amt" type="number" min="0" value="${it.qtyA ?? 0}"></td>
-        <td><input class="cell-input amt" type="number" min="0" value="${it.priceB ?? 0}"></td>
-        <td class="amt" data-sub="1">0</td>
-        <td><button class="tiny-btn" type="button">삭제</button></td>
+        <td><input class="oc-cell" value="${escapeAttr(it.code||"")}" placeholder="품목"></td>
+        <td><input class="oc-cell" value="${escapeAttr(it.name||"")}" placeholder="품목명"></td>
+        <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA ?? 0}"></td>
+        <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB ?? 0}"></td>
+        <td class="oc-amt" data-sub="1">0</td>
+        <td><button class="oc-tiny" type="button">삭제</button></td>
       `;
 
       const inputs = tr.querySelectorAll("input");
@@ -832,7 +776,6 @@
         recalcSummary();
       }
 
-      // bind changes
       inputs[0].addEventListener("input", () => { it.code = inputs[0].value; });
       inputs[1].addEventListener("input", () => { it.name = inputs[1].value; });
       qtyInput.addEventListener("input", () => { it.qtyA = Number(qtyInput.value||0); recalcRow(); });
@@ -873,7 +816,6 @@
     renderWorkDetail();
   }
 
-  // Add work
   document.getElementById("btnAddWork").addEventListener("click", () => {
     const nextId = Math.max(...works.map(w => w.id)) + 1;
     works.push({
@@ -889,12 +831,14 @@
     renderAll();
   });
 
-  // Work detail inputs -> current work sync
-  workNameEl.addEventListener("input", () => { currentWork().name = workNameEl.value; renderWorkList(); workTitleEl.textContent = `작업 상세 · ${currentWork().name}`; });
+  workNameEl.addEventListener("input", () => {
+    currentWork().name = workNameEl.value;
+    renderWorkList();
+    workTitleEl.textContent = `작업 상세 · ${currentWork().name}`;
+  });
   workMemoEl.addEventListener("input", () => { currentWork().memo = workMemoEl.value; });
   qtyBEl.addEventListener("input", () => { currentWork().qtyB = Math.max(1, Number(qtyBEl.value||1)); recalcSummary(); renderWorkList(); });
 
-  // Item controls
   document.getElementById("btnAddItem").addEventListener("click", () => {
     currentWork().items.push({ code:"", name:"", qtyA: 1, priceB: 0 });
     renderWorkDetail();
@@ -907,10 +851,8 @@
     renderWorkList();
   });
 
-  // Start
   renderAll();
 
-  // helpers
   function escapeHtml(s){
     return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }

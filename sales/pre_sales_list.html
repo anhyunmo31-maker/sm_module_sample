@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ERP UI - 선매출목록</title>
+  <link rel="stylesheet" href="../common.css">
+  <script defer src="../common.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" onclick="location.href='index.html'">
+      <div class="logo">◎</div>
+      <div>SM Module</div>
+    </div>
+    <div id="nav-container"></div>
+    <div class="userbox">H.Q / 안현모</div>
+  </div>
+</header>
+
+<main class="app">
+ <div class="titlebar">
+    <div class="crumb">매출관리 &gt; 선매출목록</div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-title">선매출목록</div>
+      <div class="tools">
+        <button class="btn">조회</button>
+        <button class="btn primary">엑셀다운로드</button>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+        <div class="field"><strong style="font-size:12px;color:#555">기간</strong><input type="date" value="2026-01-30"></div>
+        <div class="field"><input type="date" value="2026-01-30"></div>
+        <!-- 🔽 부서 선택 -->
+        <div class="field select-field" style="min-width:160px">
+          <select>
+            <option value="">부서 전체</option>
+            <option value="1">강남파트</option>
+            <option value="2">시청파트</option>
+            <option value="3">서소문파트</option>
+            <option value="4">역삼1파트</option>
+          </select>
+        </div>
+        <div class="field" style="min-width:260px"><input type="text" placeholder="거래처명, 회사명으로 검색" style="width:100%"></div>
+        <button class="btn">검색</button>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:60px">#</th>
+            <th>선매출번호</th>
+            <th>등록일자</th>
+            <th>거래지점</th>
+            <th>카드사</th>
+            <th>카드번호</th>
+            <th>승인번호</th>
+            <th>금액</th>
+            <th>매출시간</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7" style="color:#6b7280;">등록된 매출이 없습니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+
+</body>
+</html>

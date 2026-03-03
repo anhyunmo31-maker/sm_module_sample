@@ -721,7 +721,6 @@ const qtyBEl = document.getElementById("qtyB");
 const itemBody = document.getElementById("itemBody");
 
 const sumWork = document.getElementById("sumWork");
-const sumShip = document.getElementById("sumShip");
 const sumDisc = document.getElementById("sumDisc");
 const sumPay  = document.getElementById("sumPay");
 
@@ -812,7 +811,6 @@ function recalcSummary(){
   const pay = Math.max(0, C + work.ship - work.disc);
 
   sumWork.textContent = money(C);
-  sumShip.textContent = money(work.ship);
   sumDisc.textContent = money(work.disc);
   sumPay.textContent  = money(pay);
 }

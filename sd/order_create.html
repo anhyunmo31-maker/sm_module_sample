@@ -513,8 +513,6 @@
       <div id="tab-work" class="oc-hidden">
         <div class="oc-work-layout">
 
-
-          <aside class="oc-side"> ... </aside>
           
           <section class="oc-main">
             <div class="oc-main-head">
@@ -671,39 +669,10 @@
   ship: 0,
   disc: 0
 };
-  let currentWorkId = 1;
 
-  function currentWork(){
-    return works.find(w => w.id === currentWorkId);
-  }
 
-  function renderWorkList(){
-    workListEl.innerHTML = "";
-    works.forEach(w => {
-      const div = document.createElement("div");
-      div.className = "oc-work-item" + (w.id === currentWorkId ? " active" : "");
-      div.innerHTML = `
-        <div style="min-width:0;">
-          <div class="oc-work-name">${escapeHtml(w.name || ("작업 #" + w.id))}</div>
-          <div class="oc-work-meta">품목 ${w.items.length}개 · 부수 ${w.qtyB || 1}</div>
-        </div>
-        <button class="oc-del" title="삭제" type="button">×</button>
-      `;
-      div.addEventListener("click", (e) => {
-        if (e.target.closest(".oc-del")) return;
-        currentWorkId = w.id;
-        renderAll();
-      });
-      div.querySelector(".oc-del").addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (works.length === 1) { alert("최소 1개의 작업은 필요합니다."); return; }
-        works = works.filter(x => x.id !== w.id);
-        if (currentWorkId === w.id) currentWorkId = works[0].id;
-        renderAll();
-      });
-      workListEl.appendChild(div);
-    });
-  }
+
+ 
 
   function renderWorkDetail(){
     const w = currentWork();
@@ -776,20 +745,110 @@
     renderWorkDetail();
   }
 
-  document.getElementById("btnAddWork").addEventListener("click", () => {
-    const nextId = Math.max(...works.map(w => w.id)) + 1;
-    works.push({
-      id: nextId,
-      name: `작업 #${nextId}`,
-      memo: "",
-      qtyB: 1,
-      items: [{ code:"", name:"", qtyA: 1, priceB: 0 }],
-      ship: 0,
-      disc: 0
-    });
-    currentWorkId = nextId;
-    renderAll();
+const workTitleEl = document.getElementById("workTitle");
+const workNameEl = document.getElementById("workName");
+const workMemoEl = document.getElementById("workMemo");
+const qtyBEl = document.getElementById("qtyB");
+const itemBody = document.getElementById("itemBody");
+
+const sumWork = document.getElementById("sumWork");
+const sumShip = document.getElementById("sumShip");
+const sumDisc = document.getElementById("sumDisc");
+const sumPay  = document.getElementById("sumPay");
+
+const money = (n) => (Math.round(n)).toLocaleString("ko-KR") + "원";
+
+let work = {
+  name: "",
+  memo: "",
+  qtyB: 1,
+  items: [{ code:"", name:"", qtyA:1, priceB:0 }],
+  ship: 0,
+  disc: 0
+};
+
+function renderWorkDetail(){
+  workTitleEl.textContent = `작업 상세`;
+  workNameEl.value = work.name;
+  workMemoEl.value = work.memo || "";
+  qtyBEl.value = work.qtyB || 1;
+
+  itemBody.innerHTML = "";
+
+  work.items.forEach((it, idx) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td><input class="oc-cell" value="${it.code || ""}" placeholder="품목"></td>
+      <td><input class="oc-cell" value="${it.name || ""}" placeholder="품목명"></td>
+      <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA}"></td>
+      <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB}"></td>
+      <td class="oc-amt">0원</td>
+      <td><button class="oc-tiny" type="button">삭제</button></td>
+    `;
+
+    const inputs = tr.querySelectorAll("input");
+    const qtyInput = inputs[2];
+    const priceInput = inputs[3];
+    const subTd = tr.children[4];
+
+    function recalcRow(){
+      const a = Number(qtyInput.value || 0);
+      const b = Number(priceInput.value || 0);
+      subTd.textContent = money(a * b);
+      recalcSummary();
+    }
+
+    inputs[0].oninput = () => it.code = inputs[0].value;
+    inputs[1].oninput = () => it.name = inputs[1].value;
+    qtyInput.oninput = () => { it.qtyA = Number(qtyInput.value); recalcRow(); };
+    priceInput.oninput = () => { it.priceB = Number(priceInput.value); recalcRow(); };
+
+    tr.querySelector("button").onclick = () => {
+      if (work.items.length === 1) {
+        alert("품목은 최소 1개 필요합니다.");
+        return;
+      }
+      work.items.splice(idx, 1);
+      renderWorkDetail();
+    };
+
+    itemBody.appendChild(tr);
+    recalcRow();
   });
+
+  recalcSummary();
+}
+
+function recalcSummary(){
+  const A = work.items.reduce((sum, it) => sum + (it.qtyA * it.priceB), 0);
+  const C = A * work.qtyB;
+  const pay = Math.max(0, C + work.ship - work.disc);
+
+  sumWork.textContent = money(C);
+  sumShip.textContent = money(work.ship);
+  sumDisc.textContent = money(work.disc);
+  sumPay.textContent  = money(pay);
+}
+
+document.getElementById("btnAddItem").onclick = () => {
+  work.items.push({ code:"", name:"", qtyA:1, priceB:0 });
+  renderWorkDetail();
+};
+
+document.getElementById("btnClearItems").onclick = () => {
+  work.items = [{ code:"", name:"", qtyA:1, priceB:0 }];
+  renderWorkDetail();
+};
+
+workNameEl.oninput = () => work.name = workNameEl.value;
+workMemoEl.oninput = () => work.memo = workMemoEl.value;
+qtyBEl.oninput = () => {
+  work.qtyB = Math.max(1, Number(qtyBEl.value));
+  recalcSummary();
+};
+
+renderWorkDetail();
 
   workNameEl.addEventListener("input", () => {
     currentWork().name = workNameEl.value;

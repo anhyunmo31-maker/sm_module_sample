@@ -183,7 +183,7 @@
 
     /* Work tab */
     .oc-work-layout{
-      display:grid;
+      display:block;
       grid-template-columns: 280px 1fr;
       gap:14px;
       align-items:start;
@@ -353,10 +353,10 @@
     .oc-tiny:hover{ background:#f6fbff; }
 
     .oc-summary{
-      display:grid;
+      display:block;
       grid-template-columns: 1fr 220px;
       gap:10px 18px;
-      margin-top:12px;
+      margin-top:20px;
       align-items:start;
     }
     .oc-sum-right{
@@ -663,11 +663,14 @@
 
   const money = (n) => (Math.round(n)).toLocaleString("ko-KR") + "원";
 
-  let works = [
-    { id: 1, name: "작업 #1", memo:"", qtyB: 1, items: [
-      { code:"", name:"", qtyA: 1, priceB: 0 }
-    ], ship:0, disc:0 }
-  ];
+  let work = {
+  name: "",
+  memo: "",
+  qtyB: 1,
+  items: [{ code:"", name:"", qtyA:1, priceB:0 }],
+  ship: 0,
+  disc: 0
+};
   let currentWorkId = 1;
 
   function currentWork(){

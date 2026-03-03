@@ -632,119 +632,23 @@
 </main>
 
 <script>
-  // ===== Tabs =====
-  const tabs = document.querySelectorAll(".oc-tab");
-  const tabOrder = document.getElementById("tab-order");
-  const tabWork  = document.getElementById("tab-work");
+// ===== Tabs =====
+const tabs = document.querySelectorAll(".oc-tab");
+const tabOrder = document.getElementById("tab-order");
+const tabWork  = document.getElementById("tab-work");
 
-  function openTab(name){
-    tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === name));
-    tabOrder.classList.toggle("oc-hidden", name !== "order");
-    tabWork.classList.toggle("oc-hidden", name !== "work");
-  }
-  tabs.forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab)));
-  document.getElementById("goWork").addEventListener("click", () => openTab("work"));
-  document.getElementById("backOrder").addEventListener("click", () => openTab("order"));
+function openTab(name){
+  tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+  tabOrder.classList.toggle("oc-hidden", name !== "order");
+  tabWork.classList.toggle("oc-hidden", name !== "work");
+}
 
-  // ===== Work items (N개) =====
-  const workListEl = document.getElementById("workList");
-  const workTitleEl = document.getElementById("workTitle");
-  const workNameEl = document.getElementById("workName");
-  const workMemoEl = document.getElementById("workMemo");
-  const qtyBEl = document.getElementById("qtyB");
-  const itemBody = document.getElementById("itemBody");
-
-  const sumWork = document.getElementById("sumWork");
-  const sumShip = document.getElementById("sumShip");
-  const sumDisc = document.getElementById("sumDisc");
-  const sumPay  = document.getElementById("sumPay");
-
-  const money = (n) => (Math.round(n)).toLocaleString("ko-KR") + "원";
-
-  let work = {
-  name: "",
-  memo: "",
-  qtyB: 1,
-  items: [{ code:"", name:"", qtyA:1, priceB:0 }],
-  ship: 0,
-  disc: 0
-};
+tabs.forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab)));
+document.getElementById("goWork").onclick = () => openTab("work");
+document.getElementById("backOrder").onclick = () => openTab("order");
 
 
-
- 
-
-  function renderWorkDetail(){
-    const w = currentWork();
-    workTitleEl.textContent = `작업 상세 · ${w.name}`;
-    workNameEl.value = w.name;
-    workMemoEl.value = w.memo || "";
-    qtyBEl.value = w.qtyB || 1;
-
-    itemBody.innerHTML = "";
-    w.items.forEach((it, idx) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td><input class="oc-cell" value="${escapeAttr(it.code||"")}" placeholder="품목"></td>
-        <td><input class="oc-cell" value="${escapeAttr(it.name||"")}" placeholder="품목명"></td>
-        <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA ?? 0}"></td>
-        <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB ?? 0}"></td>
-        <td class="oc-amt" data-sub="1">0</td>
-        <td><button class="oc-tiny" type="button">삭제</button></td>
-      `;
-
-      const inputs = tr.querySelectorAll("input");
-      const qtyInput = inputs[2];
-      const priceInput = inputs[3];
-      const subTd = tr.querySelector("[data-sub]");
-
-      function recalcRow(){
-        const a = Number(qtyInput.value || 0);
-        const b = Number(priceInput.value || 0);
-        subTd.textContent = money(a * b);
-        recalcSummary();
-      }
-
-      inputs[0].addEventListener("input", () => { it.code = inputs[0].value; });
-      inputs[1].addEventListener("input", () => { it.name = inputs[1].value; });
-      qtyInput.addEventListener("input", () => { it.qtyA = Number(qtyInput.value||0); recalcRow(); });
-      priceInput.addEventListener("input", () => { it.priceB = Number(priceInput.value||0); recalcRow(); });
-
-      tr.querySelector("button").addEventListener("click", () => {
-        const ww = currentWork();
-        if (ww.items.length === 1) { alert("품목은 최소 1개가 필요합니다."); return; }
-        ww.items.splice(idx, 1);
-        renderAll();
-      });
-
-      itemBody.appendChild(tr);
-      recalcRow();
-    });
-
-    recalcSummary();
-  }
-
-  function recalcSummary(){
-    const w = currentWork();
-    const A = w.items.reduce((sum, it) => sum + (Number(it.qtyA||0) * Number(it.priceB||0)), 0);
-    const B = Number(w.qtyB || 1);
-    const C = A * B;
-
-    const ship = Number(w.ship || 0);
-    const disc = Number(w.disc || 0);
-    const pay = Math.max(0, C + ship - disc);
-
-    sumWork.textContent = money(C);
-    sumShip.textContent = money(ship);
-    sumDisc.textContent = money(disc);
-    sumPay.textContent  = money(pay);
-  }
-
-  function renderAll(){
-    renderWorkList();
-    renderWorkDetail();
-  }
-
+// ===== 작업 단일 구조 =====
 const workTitleEl = document.getElementById("workTitle");
 const workNameEl = document.getElementById("workName");
 const workMemoEl = document.getElementById("workMemo");
@@ -768,10 +672,10 @@ let work = {
 };
 
 function renderWorkDetail(){
-  workTitleEl.textContent = `작업 상세`;
+  workTitleEl.textContent = "작업 상세";
   workNameEl.value = work.name;
-  workMemoEl.value = work.memo || "";
-  qtyBEl.value = work.qtyB || 1;
+  workMemoEl.value = work.memo;
+  qtyBEl.value = work.qtyB;
 
   itemBody.innerHTML = "";
 
@@ -779,8 +683,8 @@ function renderWorkDetail(){
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td><input class="oc-cell" value="${it.code || ""}" placeholder="품목"></td>
-      <td><input class="oc-cell" value="${it.name || ""}" placeholder="품목명"></td>
+      <td><input class="oc-cell" value="${it.code}" placeholder="품목"></td>
+      <td><input class="oc-cell" value="${it.name}" placeholder="품목명"></td>
       <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA}"></td>
       <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB}"></td>
       <td class="oc-amt">0원</td>
@@ -799,10 +703,10 @@ function renderWorkDetail(){
       recalcSummary();
     }
 
-    inputs[0].oninput = () => it.code = inputs[0].value;
-    inputs[1].oninput = () => it.name = inputs[1].value;
-    qtyInput.oninput = () => { it.qtyA = Number(qtyInput.value); recalcRow(); };
-    priceInput.oninput = () => { it.priceB = Number(priceInput.value); recalcRow(); };
+    inputs[0].oninput = () => work.items[idx].code = inputs[0].value;
+    inputs[1].oninput = () => work.items[idx].name = inputs[1].value;
+    qtyInput.oninput = () => { work.items[idx].qtyA = Number(qtyInput.value); recalcRow(); };
+    priceInput.oninput = () => { work.items[idx].priceB = Number(priceInput.value); recalcRow(); };
 
     tr.querySelector("button").onclick = () => {
       if (work.items.length === 1) {
@@ -831,6 +735,7 @@ function recalcSummary(){
   sumPay.textContent  = money(pay);
 }
 
+// ===== 버튼 이벤트 =====
 document.getElementById("btnAddItem").onclick = () => {
   work.items.push({ code:"", name:"", qtyA:1, priceB:0 });
   renderWorkDetail();
@@ -849,33 +754,6 @@ qtyBEl.oninput = () => {
 };
 
 renderWorkDetail();
-
-  workNameEl.addEventListener("input", () => {
-    currentWork().name = workNameEl.value;
-    renderWorkList();
-    workTitleEl.textContent = `작업 상세 · ${currentWork().name}`;
-  });
-  workMemoEl.addEventListener("input", () => { currentWork().memo = workMemoEl.value; });
-  qtyBEl.addEventListener("input", () => { currentWork().qtyB = Math.max(1, Number(qtyBEl.value||1)); recalcSummary(); renderWorkList(); });
-
-  document.getElementById("btnAddItem").addEventListener("click", () => {
-    currentWork().items.push({ code:"", name:"", qtyA: 1, priceB: 0 });
-    renderWorkDetail();
-    renderWorkList();
-  });
-
-  document.getElementById("btnClearItems").addEventListener("click", () => {
-    currentWork().items = [{ code:"", name:"", qtyA: 1, priceB: 0 }];
-    renderWorkDetail();
-    renderWorkList();
-  });
-
-  renderAll();
-
-  function escapeHtml(s){
-    return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-  function escapeAttr(s){ return escapeHtml(s); }
 </script>
 </body>
 </html>

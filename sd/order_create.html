@@ -680,14 +680,21 @@ function renderWorkDetail(){
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td><input class="oc-cell" value="${it.code}" placeholder="구분"></td>
-      <td><input class="oc-cell" value="${it.code}" placeholder="표지/본문등"></td>
-      <td><input class="oc-cell" value="${it.name}" placeholder="작업명"></td>
-      <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA}"></td>
-      <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB}"></td>
-      <td class="oc-amt">0원</td>
-      <td><button class="oc-tiny" type="button">삭제</button></td>
-    `;
+  <td>
+    <select class="oc-cell">
+      <option value="표지" ${it.type === "표지" ? "selected" : ""}>표지</option>
+      <option value="본문" ${it.type === "본문" ? "selected" : ""}>본문</option>
+      <option value="면지" ${it.type === "면지" ? "selected" : ""}>면지</option>
+      <option value="기타" ${it.type === "기타" ? "selected" : ""}>기타</option>
+    </select>
+  </td>
+  <td><input class="oc-cell" value="${it.code}" placeholder="표지/본문등"></td>
+  <td><input class="oc-cell" value="${it.name}" placeholder="작업명"></td>
+  <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA}"></td>
+  <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB}"></td>
+  <td class="oc-amt">0원</td>
+  <td><button class="oc-tiny" type="button">삭제</button></td>
+`;
 
     const inputs = tr.querySelectorAll("input");
     const qtyInput = inputs[2];

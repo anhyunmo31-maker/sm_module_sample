@@ -567,6 +567,7 @@
                       <th style="width:130px;">구분</th>
                       <th style="width:130px;">구성</th>
                       <th style="width:130px;">작업명</th>
+                      <th style="width:110px;">비고</th>
                       <th style="width:110px;">수량(a)</th>
                       <th style="width:110px;">단가(b)</th>
                       <th style="width:140px;">소계(a×b)</th>
@@ -690,6 +691,7 @@ function renderWorkDetail(){
   </td>
   <td><input class="oc-cell" value="${it.code}" placeholder="표지/본문등"></td>
   <td><input class="oc-cell" value="${it.name}" placeholder="작업명"></td>
+  <td><input class="oc-cell" value="${it.rmk}" placeholder="비고"></td>
   <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA}"></td>
   <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB}"></td>
   <td class="oc-amt">0원</td>

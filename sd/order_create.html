@@ -394,6 +394,50 @@
       .oc-work-form{ grid-template-columns:1fr; }
       .oc-sum-right{ width:100%; justify-self:stretch; }
     }
+
+
+    .oc-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.oc-modal.active{
+  display:flex;
+}
+
+.oc-modal-box{
+  width:600px;
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+  animation:modalFade .2s ease;
+}
+
+@keyframes modalFade{
+  from{ transform:translateY(10px); opacity:0 }
+  to{ transform:translateY(0); opacity:1 }
+}
+
+.oc-modal-head{
+  padding:14px;
+  border-bottom:1px solid #eee;
+  display:flex;
+  justify-content:space-between;
+  font-weight:900;
+}
+
+.oc-modal-body{
+  padding:20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px 20px;
+}
   </style>
 </head>
 
@@ -520,6 +564,7 @@
               <div style="display:flex; gap:8px;">
                 <button class="oc-tiny" type="button" id="btnAddItem">품목행 추가</button>
                 <button class="oc-tiny" type="button" id="btnClearItems">품목 초기화</button>
+                <button class="oc-tiny" type="button" id="btnOrderSheet">발주서</button>
               </div>
             </div>
 
@@ -622,6 +667,37 @@
     </div>
   </section>
 </main>
+
+  <div class="oc-modal" id="orderModal">
+  <div class="oc-modal-box">
+    <div class="oc-modal-head">
+      <div>발주서 작성</div>
+      <button id="closeOrderModal">✕</button>
+    </div>
+
+    <div class="oc-modal-body">
+      <div class="oc-field">
+        <div class="oc-label">거래처</div>
+        <input class="oc-ctl" placeholder="거래처명">
+      </div>
+
+      <div class="oc-field">
+        <div class="oc-label">납기일</div>
+        <input class="oc-ctl" type="date">
+      </div>
+
+      <div class="oc-field" style="grid-column:1/-1;">
+        <div class="oc-label">발주내용</div>
+        <textarea class="oc-ctl oc-textarea" placeholder="발주 내용 입력"></textarea>
+      </div>
+
+      <div style="margin-top:20px; text-align:right;">
+        <button class="oc-btn ghost" id="closeOrderModal2">취소</button>
+        <button class="oc-btn primary">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 // ===== Tabs =====
@@ -767,6 +843,26 @@ qtyBEl.oninput = () => {
 };
 
 renderWorkDetail();
+
+  const orderModal = document.getElementById("orderModal");
+
+document.getElementById("btnOrderSheet").onclick = () => {
+  orderModal.classList.add("active");
+};
+
+document.getElementById("closeOrderModal").onclick = () => {
+  orderModal.classList.remove("active");
+};
+
+document.getElementById("closeOrderModal2").onclick = () => {
+  orderModal.classList.remove("active");
+};
+
+orderModal.addEventListener("click", (e) => {
+  if(e.target === orderModal){
+    orderModal.classList.remove("active");
+  }
+});
 </script>
 </body>
 </html>

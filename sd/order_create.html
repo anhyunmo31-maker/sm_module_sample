@@ -686,8 +686,19 @@
 
         <div class="oc-field">
           <div class="oc-label">수량</div>
-          <input class="oc-ctl" type="date">
+          <input class="oc-ctl" placeholder="수량">
         </div>
+
+        <div class="oc-field">
+          <div class="oc-label">영업담당자</div>
+          <input class="oc-ctl" placeholder="영업담당자">
+        </div>
+
+        <div class="oc-field">
+          <div class="oc-label">납품일</div>
+          <input class="oc-ctl" placeholder="ex)20260101">
+        </div>
+        
         <div class="oc-field" style="grid-column:1/-1;">
             <div class="oc-label">작업주의사항</div>
             <input class="oc-ctl">
@@ -698,18 +709,20 @@
       <div class="oc-grid">
         <table class="oc-table">
           <thead>
-            <tr>
-              <th style="width:120px;">구분</th>
-              <th style="width:120px;">구성</th>
-              <th style="width:120px;">작업명</th>
-              <th style="width:120px;">페이지</th>
-              <th style="width:120px;">전</th>
-              <th style="width:120px;">후</th>
-              <th style="width:160px;">용지</th>
-              <th style="width:160px;">비고</th>
-              <th style="width:120px;">업체명</th>
-              <th style="width:80px;">관리</th>
-            </tr>
+          <tr>
+            <th rowspan="2" style="width:120px;">구분</th>
+            <th rowspan="2" style="width:120px;">페이지</th>
+            <th colspan="2" style="width:200px;">인쇄도수</th>
+            <th rowspan="2" style="width:160px;">용지</th>
+            <th rowspan="2" style="width:160px;">기타</th>
+            <th rowspan="2" style="width:120px;">업체명</th>
+            <th rowspan="2" style="width:80px;">관리</th>
+          </tr>
+          
+          <tr>
+            <th style="width:100px;">전</th>
+            <th style="width:100px;">후</th>
+          </tr>
           </thead>
           <tbody id="orderDetailBody"></tbody>
         </table>

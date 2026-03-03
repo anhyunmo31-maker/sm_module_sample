@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -706,6 +707,7 @@
               <th style="width:120px;">후</th>
               <th style="width:160px;">용지</th>
               <th style="width:160px;">비고</th>
+              <th style="width:120px;">업체명</th>
               <th style="width:80px;">관리</th>
             </tr>
           </thead>
@@ -920,6 +922,7 @@ function renderOrderDetails(){
       <td><input class="oc-cell oc-amt" type="number" value="${row.back || 0}"></td>
       <td><input class="oc-cell" value="${row.paper || ""}"></td>
       <td><input class="oc-cell" value="${row.etc || ""}"></td>
+      <td><input class="oc-cell" value="${row.partner || ""}"></td>
       <td><button class="oc-tiny" type="button">삭제</button></td>
     `;
 
@@ -933,6 +936,7 @@ function renderOrderDetails(){
     inputs[5].oninput = () => row.back = Number(inputs[5].value);
     inputs[6].oninput = () => row.paper = inputs[6].value;
     inputs[7].oninput = () => row.etc = inputs[7].value;
+    inputs[8].oninput = () => row.partner = inputs[8].value;
 
     tr.querySelector("button").onclick = () => {
       orderDetails.splice(idx,1);

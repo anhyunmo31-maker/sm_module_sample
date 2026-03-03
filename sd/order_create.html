@@ -527,10 +527,13 @@
 
               <div class="oc-work-form">
                 <div class="oc-field">
-                  <div class="oc-label">외부생산</div>
-                  <label style="font-weight:900; font-size:13px;">
-                    <input type="checkbox" id="isOut"> 외부생산
-                  </label>
+                  <div class="oc-label oc-req">작업처</div>
+                  <select class="oc-ctl" id="paper">
+                    <option>외주</option>
+                    <option>패키지</option>
+                    <option>P&D팀</option>
+                    <option>직접구매</option>
+                  </select>
                 </div>
 
                 <div class="oc-field">
@@ -544,23 +547,6 @@
                 <div class="oc-field">
                   <div class="oc-label oc-req">작업명</div>
                   <input class="oc-ctl" id="workName" placeholder="작업명" />
-                </div>
-
-                <div class="oc-field">
-                  <div class="oc-label oc-req">인쇄방향</div>
-                  <div class="oc-radio">
-                    <label><input type="radio" name="dir" checked> 머리-머리</label>
-                    <label><input type="radio" name="dir"> 머리-꼬리</label>
-                  </div>
-                </div>
-
-                <div class="oc-field">
-                  <div class="oc-label oc-req">제작용지</div>
-                  <select class="oc-ctl" id="paper">
-                    <option>A4(210mm X 297mm)</option>
-                    <option>A3(297mm X 420mm)</option>
-                    <option>명함(90mm X 50mm)</option>
-                  </select>
                 </div>
 
                 <div class="oc-field">
@@ -599,6 +585,10 @@
                   </div>
                   <div class="oc-sum-row">
                     <span>배송비(E)</span>
+                    <strong id="sumShip">0원</strong>
+                  </div>
+                  <div class="oc-sum-row">
+                    <span>디자인비(F)</span>
                     <strong id="sumShip">0원</strong>
                   </div>
                   <div class="oc-sum-row">

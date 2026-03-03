@@ -682,10 +682,10 @@ function renderWorkDetail(){
     tr.innerHTML = `
   <td>
     <select class="oc-cell">
-      <option value="표지" ${it.type === "표지" ? "selected" : ""}>표지</option>
-      <option value="본문" ${it.type === "본문" ? "selected" : ""}>본문</option>
-      <option value="면지" ${it.type === "면지" ? "selected" : ""}>면지</option>
-      <option value="기타" ${it.type === "기타" ? "selected" : ""}>기타</option>
+      <option value="용지" ${it.type === "용지" ? "selected" : ""}>용지</option>
+      <option value="인쇄" ${it.type === "인쇄" ? "selected" : ""}>인쇄</option>
+      <option value="후가공" ${it.type === "후가공" ? "selected" : ""}>후가공</option>
+      <option value="제본" ${it.type === "제본" ? "selected" : ""}>제본</option>
     </select>
   </td>
   <td><input class="oc-cell" value="${it.code}" placeholder="표지/본문등"></td>

@@ -657,7 +657,13 @@ let work = {
   name: "",
   memo: "",
   qtyB: 1,
-  items: [{ code:"", name:"", qtyA:1, priceB:0 }],
+  items: [{
+  type: "표지",
+  code:"",
+  name:"",
+  qtyA:1,
+  priceB:0
+}],
   ship: 0,
   disc: 0
 };
@@ -675,7 +681,7 @@ function renderWorkDetail(){
 
     tr.innerHTML = `
       <td><input class="oc-cell" value="${it.code}" placeholder="구분"></td>
-      <td><input class="oc-cell" value="${it.code}" placeholder="구성"></td>
+      <td><input class="oc-cell" value="${it.code}" placeholder="표지/본문등"></td>
       <td><input class="oc-cell" value="${it.name}" placeholder="작업명"></td>
       <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA}"></td>
       <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB}"></td>
@@ -729,7 +735,13 @@ function recalcSummary(){
 
 // ===== 버튼 이벤트 =====
 document.getElementById("btnAddItem").onclick = () => {
-  work.items.push({ code:"", name:"", qtyA:1, priceB:0 });
+  work.items.push({
+  type: "표지",
+  code: "",
+  name: "",
+  qtyA: 1,
+  priceB: 0
+});
   renderWorkDetail();
 };
 

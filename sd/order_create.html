@@ -699,11 +699,13 @@
           <thead>
             <tr>
               <th style="width:120px;">구분</th>
+              <th style="width:120px;">구성</th>
+              <th style="width:120px;">작업명</th>
               <th style="width:120px;">페이지</th>
               <th style="width:120px;">전</th>
               <th style="width:120px;">후</th>
               <th style="width:160px;">용지</th>
-              <th style="width:160px;">기타</th>
+              <th style="width:160px;">비고</th>
               <th style="width:80px;">관리</th>
             </tr>
           </thead>
@@ -912,6 +914,8 @@ function renderOrderDetails(){
     tr.innerHTML = `
       <td><input class="oc-cell" value="${row.type || ""}"></td>
       <td><input class="oc-cell" value="${row.page || ""}"></td>
+      <td><input class="oc-cell" value="${row.page1 || ""}"></td>
+      <td><input class="oc-cell" value="${row.page2 || ""}"></td>
       <td><input class="oc-cell oc-amt" type="number" value="${row.front || 0}"></td>
       <td><input class="oc-cell oc-amt" type="number" value="${row.back || 0}"></td>
       <td><input class="oc-cell" value="${row.paper || ""}"></td>
@@ -923,10 +927,12 @@ function renderOrderDetails(){
 
     inputs[0].oninput = () => row.type = inputs[0].value;
     inputs[1].oninput = () => row.page = inputs[1].value;
-    inputs[2].oninput = () => row.front = Number(inputs[2].value);
-    inputs[3].oninput = () => row.back = Number(inputs[3].value);
-    inputs[4].oninput = () => row.paper = inputs[4].value;
-    inputs[5].oninput = () => row.etc = inputs[5].value;
+    inputs[2].oninput = () => row.page1 = inputs[2].value;
+    inputs[3].oninput = () => row.page2 = inputs[3].value;
+    inputs[4].oninput = () => row.front = Number(inputs[4].value);
+    inputs[5].oninput = () => row.back = Number(inputs[5].value);
+    inputs[6].oninput = () => row.paper = inputs[6].value;
+    inputs[7].oninput = () => row.etc = inputs[7].value;
 
     tr.querySelector("button").onclick = () => {
       orderDetails.splice(idx,1);

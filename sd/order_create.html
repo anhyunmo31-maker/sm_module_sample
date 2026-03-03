@@ -621,11 +621,11 @@
                   </div>
                   <div class="oc-sum-row">
                     <span>배송비(E)</span>
-                    <strong id="sumShip">0원</strong>
+                    <strong id="sumDesign">0원</strong>
                   </div>
                   <div class="oc-sum-row">
                     <span>디자인비(F)</span>
-                    <strong id="sumShip">0원</strong>
+                    <strong id="sumdes">0원</strong>
                   </div>
                   <div class="oc-sum-row">
                     <span>할인(H)</span>
@@ -663,8 +663,16 @@
       <div>발주서 작성</div>
       <button id="closeOrderModal">✕</button>
     </div>
-
     <div class="oc-modal-body">
+      <div class="oc-field">
+  <div class="oc-label">제품명</div>
+  <input class="oc-ctl" id="modalProductName">
+</div>
+
+<div class="oc-field">
+  <div class="oc-label">수량</div>
+  <input class="oc-ctl" id="modalQty" type="number">
+</div>
       <div class="oc-field">
         <div class="oc-label">거래처</div>
         <input class="oc-ctl" placeholder="거래처명">
@@ -682,7 +690,7 @@
 
       <div style="margin-top:20px; text-align:right;">
         <button class="oc-btn ghost" id="closeOrderModal2">취소</button>
-        <button class="oc-btn primary">저장</button>
+        <button class="oc-btn primary" id="saveOrderSheet">저장</button>
       </div>
     </div>
   </div>
@@ -763,10 +771,12 @@ function renderWorkDetail(){
   <td><button class="oc-tiny" type="button">삭제</button></td>
 `;
 
-    const inputs = tr.querySelectorAll("input");
-    const qtyInput = inputs[2];
-    const priceInput = inputs[3];
-    const subTd = tr.children[4];
+    const selectType = tr.querySelector("select");
+const inputs = tr.querySelectorAll("input");
+
+const qtyInput = inputs[3];     // 수량
+const priceInput = inputs[4];   // 단가
+const subTd = tr.children[6];   // 소계
 
     function recalcRow(){
       const a = Number(qtyInput.value || 0);
@@ -775,10 +785,10 @@ function renderWorkDetail(){
       recalcSummary();
     }
 
-    inputs[0].oninput = () => work.items[idx].code = inputs[0].value;
-    inputs[1].oninput = () => work.items[idx].name = inputs[1].value;
-    qtyInput.oninput = () => { work.items[idx].qtyA = Number(qtyInput.value); recalcRow(); };
-    priceInput.oninput = () => { work.items[idx].priceB = Number(priceInput.value); recalcRow(); };
+   selectType.onchange = () => work.items[idx].type = selectType.value;
+inputs[0].oninput = () => work.items[idx].code = inputs[0].value;
+inputs[1].oninput = () => work.items[idx].name = inputs[1].value;
+inputs[2].oninput = () => work.items[idx].rmk  = inputs[2].value;
 
     tr.querySelector("button").onclick = () => {
       if (work.items.length === 1) {
@@ -820,7 +830,14 @@ document.getElementById("btnAddItem").onclick = () => {
 };
 
 document.getElementById("btnClearItems").onclick = () => {
-  work.items = [{ code:"", name:"", qtyA:1, priceB:0 }];
+  work.items = [{
+  type:"용지",
+  code:"",
+  name:"",
+  rmk:"",
+  qtyA:1,
+  priceB:0
+}];
   renderWorkDetail();
 };
 

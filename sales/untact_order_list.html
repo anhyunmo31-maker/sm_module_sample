@@ -288,22 +288,6 @@ data-paycode="etmpIDQJ9Q">
   <script>
 const modal = document.getElementById("payDetailModal");
 
-document.querySelectorAll(".btn-view").forEach(btn=>{
-
-btn.onclick = function(){
-
-document.getElementById("m_payno").value = this.dataset.payno;
-document.getElementById("m_work").value = this.dataset.work;
-document.getElementById("m_amount").value = Number(this.dataset.amount).toLocaleString();
-document.getElementById("m_customer").value = this.dataset.customer;
-document.getElementById("m_email").value = this.dataset.email;
-document.getElementById("m_paycode").value = this.dataset.paycode;
-
-modal.classList.add("active");
-
-}
-
-});
 
   document.getElementById("modalClose").onclick=()=>{
 modal.classList.remove("active");

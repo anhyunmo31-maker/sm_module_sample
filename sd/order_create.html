@@ -1012,6 +1012,22 @@ document.getElementById("closeOrderModal2").onclick = () => {
   orderModal.classList.remove("active");
 };
 
+  function execDaumPostcode() {
+  new daum.Postcode({
+    oncomplete: function(data) {
+
+      // 우편번호
+      document.getElementById("postcode").value = data.zonecode;
+
+      // 기본주소
+      document.getElementById("address").value = data.roadAddress || data.jibunAddress;
+
+      // 상세주소로 포커스
+      document.getElementById("detailAddress").focus();
+    }
+  }).open();
+}
+
   
 </script>
 </body>

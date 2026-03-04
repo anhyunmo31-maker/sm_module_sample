@@ -7,56 +7,7 @@
 
 <link rel="stylesheet" href="../common.css">
 <script defer src="../common.js"></script>
-<script>
-const modal = document.getElementById("payDetailModal");
 
-document.querySelectorAll(".btn-view").forEach(btn=>{
-
-btn.onclick = function(){
-
-document.getElementById("m_payno").value = this.dataset.payno;
-document.getElementById("m_work").value = this.dataset.work;
-document.getElementById("m_amount").value = Number(this.dataset.amount).toLocaleString();
-document.getElementById("m_customer").value = this.dataset.customer;
-document.getElementById("m_email").value = this.dataset.email;
-document.getElementById("m_paycode").value = this.dataset.paycode;
-
-modal.classList.add("active");
-
-}
-
-});
-
-  document.getElementById("modalClose").onclick=()=>{
-modal.classList.remove("active");
-}
-
-document.getElementById("btnClose").onclick=()=>{
-modal.classList.remove("active");
-}
-
-  document.getElementById("btnMail").onclick = function(){
-
-const email = document.getElementById("m_email").value;
-const paycode = document.getElementById("m_paycode").value;
-
-alert(email+" 로 결제메일 전송\n결제코드 : "+paycode);
-
-/* 실제는 API 호출
-
-fetch("/api/payment/mail",{
-method:"POST",
-body:JSON.stringify({
-email:email,
-payCode:paycode
-})
-})
-
-*/
-
-}
-  
-</script>
   
 </head>
   <style>
@@ -332,6 +283,75 @@ data-paycode="etmpIDQJ9Q">
 </div>
 
 </div>
+
+
+  <script>
+const modal = document.getElementById("payDetailModal");
+
+document.querySelectorAll(".btn-view").forEach(btn=>{
+
+btn.onclick = function(){
+
+document.getElementById("m_payno").value = this.dataset.payno;
+document.getElementById("m_work").value = this.dataset.work;
+document.getElementById("m_amount").value = Number(this.dataset.amount).toLocaleString();
+document.getElementById("m_customer").value = this.dataset.customer;
+document.getElementById("m_email").value = this.dataset.email;
+document.getElementById("m_paycode").value = this.dataset.paycode;
+
+modal.classList.add("active");
+
+}
+
+});
+
+  document.getElementById("modalClose").onclick=()=>{
+modal.classList.remove("active");
+}
+
+document.getElementById("btnClose").onclick=()=>{
+modal.classList.remove("active");
+}
+
+  document.getElementById("btnMail").onclick = function(){
+
+const email = document.getElementById("m_email").value;
+const paycode = document.getElementById("m_paycode").value;
+
+alert(email+" 로 결제메일 전송\n결제코드 : "+paycode);
+
+/* 실제는 API 호출
+
+fetch("/api/payment/mail",{
+method:"POST",
+body:JSON.stringify({
+email:email,
+payCode:paycode
+})
+})
+
+*/
+
+}
+
+    document.addEventListener("click",function(e){
+
+if(!e.target.classList.contains("btn-view")) return;
+
+const btn = e.target;
+
+document.getElementById("m_payno").value = btn.dataset.payno;
+document.getElementById("m_work").value = btn.dataset.work;
+document.getElementById("m_amount").value = Number(btn.dataset.amount).toLocaleString();
+document.getElementById("m_customer").value = btn.dataset.customer;
+document.getElementById("m_email").value = btn.dataset.email;
+document.getElementById("m_paycode").value = btn.dataset.paycode;
+
+document.getElementById("payDetailModal").classList.add("active");
+
+});
+  
+</script>
 
   
 </html>

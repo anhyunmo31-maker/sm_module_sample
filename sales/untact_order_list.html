@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ERP UI - 비대면주문 목록</title>
+
+<link rel="stylesheet" href="../common.css">
+<script defer src="../common.js"></script>
+
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" onclick="location.href='index.html'">
+      <div class="logo">◎</div>
+      <div>SM Module</div>
+    </div>
+    <div id="nav-container"></div>
+    <div class="userbox">H.Q / 안현모</div>
+  </div>
+</header>
+
+<main class="app">
+
+<div class="titlebar">
+  <div class="crumb">주문관리 &gt; 비대면주문 목록</div>
+</div>
+
+<section class="panel">
+
+<div class="panel-head">
+  <div class="panel-title">비대면주문 목록</div>
+  <div class="tools">
+    <button class="btn primary">엑셀다운로드</button>
+  </div>
+</div>
+
+<div class="panel-body">
+
+<!-- 검색영역 -->
+
+<div class="row">
+
+<div class="field select-field">
+<select>
+<option>거래지점</option>
+</select>
+</div>
+
+<div class="field select-field">
+<select>
+<option>목록 15개</option>
+</select>
+</div>
+
+<div class="field">
+<input type="date" value="2026-02-05">
+</div>
+
+<div class="field">
+<input type="date" value="2026-03-04">
+</div>
+
+<div class="field" style="min-width:260px">
+<input type="text" placeholder="주문번호, 고객명, 회사명으로 검색">
+</div>
+
+<button class="btn">검색</button>
+
+</div>
+
+
+<!-- 테이블 -->
+
+<table class="table">
+
+<thead>
+<tr>
+<th>비대면결제번호</th>
+<th>주문번호</th>
+<th>등록일자</th>
+<th>거래지점</th>
+<th>담당자명</th>
+<th>거래처명</th>
+<th>고객명</th>
+<th>금액</th>
+<th>작업명(상품명)</th>
+<th>결제여부</th>
+<th>결제코드</th>
+<th>보기</th>
+</tr>
+</thead>
+
+<tbody>
+
+<!-- 단일 주문 -->
+
+<tr>
+<td>Un260304-0042-00001</td>
+<td>O260227-0040-00013</td>
+<td>2026-03-04</td>
+<td>강남파트</td>
+<td>신은규</td>
+<td>패션플랫폼(주)</td>
+<td>성아현</td>
+<td>203,500</td>
+<td>[선작업매출][비대면] 인쇄비</td>
+<td>결제완료</td>
+<td>etmpIDQJ9Q</td>
+<td><button class="btn success">보기</button></td>
+</tr>
+
+
+<!-- 하나의 결제번호에 2개 주문 예시 -->
+
+<tr>
+<td rowspan="2">Un260303-0008-00007</td>
+<td>O260303-0012-00001</td>
+<td>2026-03-03</td>
+<td>여의도파트</td>
+<td>박대훈</td>
+<td>사회복지법인월드비전</td>
+<td>신양식</td>
+<td>12,000</td>
+<td>월드비전 송파종합사회복지관 2월분</td>
+<td rowspan="2">결제완료</td>
+<td rowspan="2">3cE5TcNoAs</td>
+<td rowspan="2"><button class="btn success">보기</button></td>
+</tr>
+
+<tr>
+<td>O260303-0012-00002</td>
+<td>2026-03-03</td>
+<td>여의도파트</td>
+<td>박대훈</td>
+<td>사회복지법인월드비전</td>
+<td>신양식</td>
+<td>21,000</td>
+<td>월드비전 송파종합사회복지관 2월분 추가</td>
+</tr>
+
+
+<tr>
+<td>Un260303-0041-00002</td>
+<td>O260303-0020-00001</td>
+<td>2026-03-03</td>
+<td>역삼2파트</td>
+<td>강석길</td>
+<td>(주)퍼드브엠서비스</td>
+<td>신동수</td>
+<td>148,500</td>
+<td>[PWC마켓] 현수막 및 배너 제작</td>
+<td>결제완료</td>
+<td>OfMe4l6zjO</td>
+<td><button class="btn success">보기</button></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</main>
+
+</body>
+</html>

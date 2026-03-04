@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ERP UI - 비대면정산</title>
+
+<link rel="stylesheet" href="../common.css">
+<script defer src="../common.js"></script>
+
+<style>
+
+.table-wrap{
+width:100%;
+overflow:auto;
+}
+
+tfoot td{
+background:#f3f4f6;
+font-weight:600;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+<div class="topbar-inner">
+<div class="brand" onclick="location.href='index.html'">
+<div class="logo">◎</div>
+<div>SM Module</div>
+</div>
+<div id="nav-container"></div>
+<div class="userbox">H.Q / 안현모</div>
+</div>
+</header>
+
+
+<main class="app">
+
+<div class="titlebar">
+<div class="crumb">매출관리 &gt; 비대면정산</div>
+</div>
+
+<section class="panel">
+
+<div class="panel-head">
+<div class="panel-title">비대면 정산</div>
+
+<div class="tools">
+<button class="btn success">정산데이터 불러오기</button>
+<button class="btn primary">엑셀다운로드</button>
+</div>
+</div>
+
+<div class="panel-body">
+
+<!-- 검색영역 -->
+
+<div class="row">
+
+<div class="field select-field">
+<select>
+<option>거래지점</option>
+<option>강남파트</option>
+<option>여의도파트</option>
+</select>
+</div>
+
+<div class="field">
+<input type="date" value="2026-02-05">
+</div>
+
+<div class="field">
+<input type="date" value="2026-03-04">
+</div>
+
+<div class="field" style="min-width:260px">
+<input type="text" placeholder="주문번호, 고객명, 회사명으로 검색">
+</div>
+
+<button class="btn">검색</button>
+
+</div>
+
+
+<!-- 테이블 -->
+
+<div class="table-wrap">
+
+<table class="table">
+
+<thead>
+<tr>
+<th>가맹점ID</th>
+<th>지점/파트</th>
+<th>주문ID</th>
+<th>승인날짜시간</th>
+<th>승인번호</th>
+<th>결제수단</th>
+<th>결제금액</th>
+<th>공급가</th>
+<th>부가세</th>
+<th>결제수수료</th>
+<th>환불수수료</th>
+<th>지급금액</th>
+<th>지급일자</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>tarauntact</td>
+<td>강남파트</td>
+<td>Un260223-0042-00013</td>
+<td>2026-02-23 10:27:00</td>
+<td>10179562</td>
+<td>카드</td>
+<td>48,400</td>
+<td>1,645</td>
+<td>165</td>
+<td>1,810</td>
+<td>0</td>
+<td>46,590</td>
+<td>2026-02-27</td>
+</tr>
+
+<tr>
+<td>tarauntact</td>
+<td>을지로파트</td>
+<td>Un260223-0044-00010</td>
+<td>2026-02-23 09:43:00</td>
+<td>72018131</td>
+<td>카드</td>
+<td>461,340</td>
+<td>15,685</td>
+<td>1,569</td>
+<td>17,254</td>
+<td>0</td>
+<td>444,086</td>
+<td>2026-02-27</td>
+</tr>
+
+</tbody>
+
+<tfoot>
+
+<tr>
+<td colspan="6">총합계 (15건)</td>
+<td>3,571,680</td>
+<td>121,431</td>
+<td>12,144</td>
+<td>133,575</td>
+<td>0</td>
+<td>3,438,105</td>
+<td></td>
+</tr>
+
+</tfoot>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</body>
+</html>

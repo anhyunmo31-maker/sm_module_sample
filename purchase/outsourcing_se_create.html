@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>매입관리 > 외주정산등록</title>
+
+<link rel="stylesheet" href="../common.css">
+<script defer src="../common.js"></script>
+
+<style>
+
+.table-wrap{
+width:100%;
+overflow:auto;
+}
+
+.sum-bar{
+margin-top:10px;
+padding:10px;
+background:#f4f6fa;
+border-radius:6px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-weight:600;
+}
+
+.sum-right{
+font-size:16px;
+color:#d23a3a;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+<div class="topbar-inner">
+
+<div class="brand">
+<div class="logo">◎</div>
+<div>SM Module</div>
+</div>
+
+<div id="nav-container"></div>
+
+<div class="userbox">H.Q / 안현모</div>
+
+</div>
+</header>
+
+
+<main class="app">
+
+<div class="titlebar">
+<div class="crumb">매입관리 &gt; 외주정산등록</div>
+</div>
+
+
+<section class="panel">
+
+<div class="panel-head">
+<div class="panel-title">외주정산등록</div>
+</div>
+
+
+<div class="panel-body">
+
+<!-- 조회조건 -->
+
+<div class="row">
+
+<div class="field">
+<input type="date">
+</div>
+
+<div class="field">
+<input type="date">
+</div>
+
+<div class="field select-field">
+<select>
+<option>업체</option>
+<option>A인쇄</option>
+<option>B코팅</option>
+</select>
+</div>
+
+<div class="field select-field">
+<select>
+<option>정산여부</option>
+<option>전체</option>
+<option>미정산</option>
+<option>정산완료</option>
+</select>
+</div>
+
+<div class="field" style="min-width:260px">
+<input type="text" placeholder="주문번호 / 주문명 검색">
+</div>
+
+<button class="btn">조회</button>
+
+</div>
+
+
+<!-- 그리드 -->
+
+<div class="table-wrap">
+
+<table class="table">
+
+<thead>
+
+<tr>
+<th><input type="checkbox" id="checkAll"></th>
+<th>주문번호</th>
+<th>발주번호</th>
+<th>주문명</th>
+<th>작업명</th>
+<th>업체명</th>
+<th>수량</th>
+<th>단가</th>
+<th>금액</th>
+<th>정산여부</th>
+</tr>
+
+</thead>
+
+<tbody id="settleBody">
+
+<tr>
+<td><input type="checkbox" class="rowChk"></td>
+<td>O260303-0040</td>
+<td>PO260303-001</td>
+<td>네오나트론 DC자료집</td>
+<td>표지인쇄</td>
+<td>A인쇄</td>
+<td class="num">1000</td>
+<td class="num">50</td>
+<td class="num amount">50000</td>
+<td>미정산</td>
+</tr>
+
+<tr>
+<td><input type="checkbox" class="rowChk"></td>
+<td>O260303-0040</td>
+<td>PO260303-001</td>
+<td>네오나트론 DC자료집</td>
+<td>본문인쇄</td>
+<td>A인쇄</td>
+<td class="num">1000</td>
+<td class="num">120</td>
+<td class="num amount">120000</td>
+<td>미정산</td>
+</tr>
+
+<tr>
+<td><input type="checkbox" class="rowChk"></td>
+<td>O260303-0040</td>
+<td>PO260303-001</td>
+<td>네오나트론 DC자료집</td>
+<td>코팅</td>
+<td>B코팅</td>
+<td class="num">1000</td>
+<td class="num">30</td>
+<td class="num amount">30000</td>
+<td>미정산</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- 합계 -->
+
+<div class="sum-bar">
+
+<div>
+선택 건수 : <span id="cnt">0</span>
+</div>
+
+<div class="sum-right">
+합계 : <span id="sum">0</span> 원
+</div>
+
+</div>
+
+
+<div style="margin-top:12px; text-align:right">
+
+<button class="btn primary" id="btnSettle">외주정산 생성</button>
+
+</div>
+
+
+</div>
+
+</section>
+
+</main>
+
+
+<script>
+
+const checkAll = document.getElementById("checkAll")
+const rowChk = document.querySelectorAll(".rowChk")
+const sumEl = document.getElementById("sum")
+const cntEl = document.getElementById("cnt")
+
+checkAll.onclick = () => {
+
+rowChk.forEach(c => c.checked = checkAll.checked)
+
+calc()
+
+}
+
+rowChk.forEach(c => {
+
+c.onclick = calc
+
+})
+
+function calc(){
+
+let sum = 0
+let cnt = 0
+
+document.querySelectorAll(".rowChk").forEach((chk,i)=>{
+
+if(chk.checked){
+
+cnt++
+
+const amt = document.querySelectorAll(".amount")[i].innerText
+sum += Number(amt)
+
+}
+
+})
+
+cntEl.innerText = cnt
+sumEl.innerText = sum.toLocaleString()
+
+}
+
+
+document.getElementById("btnSettle").onclick = ()=>{
+
+alert("정산 생성")
+
+}
+
+</script>
+
+
+</body>
+</html>

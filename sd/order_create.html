@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="../common.css">
   <script defer src="../common.js"></script>
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
   <style>
     /* =========================
@@ -743,14 +744,24 @@
           </div>
 
           <div class="oc-field">
-            <div class="oc-label">연락처</div>
+            <div class="oc-label">연락처(핸드폰번호)</div>
             <input class="oc-ctl">
           </div>
 
           <div class="oc-field" style="grid-column:1/-1;">
-            <div class="oc-label">주소</div>
-            <input class="oc-ctl">
+          <div class="oc-label">주소</div>
+        
+          <div class="oc-row">
+            <input class="oc-ctl" id="postcode" placeholder="우편번호" readonly style="max-width:120px;">
+            <button class="oc-mini" type="button" onclick="execDaumPostcode()">검색</button>
           </div>
+        
+          <div></div>
+          <input class="oc-ctl" id="address" placeholder="기본주소" readonly>
+        
+          <div></div>
+          <input class="oc-ctl" id="detailAddress" placeholder="상세주소">
+        </div>
         </div>
       </div>
 

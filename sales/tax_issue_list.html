@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ERP UI - 세금계산서 발행목록</title>
+
+<link rel="stylesheet" href="../common.css">
+<script defer src="../common.js"></script>
+
+<style>
+
+.table-wrap{
+width:100%;
+overflow:auto;
+}
+
+tfoot td{
+background:#f3f4f6;
+font-weight:600;
+}
+
+.empty{
+text-align:center;
+color:#6b7280;
+padding:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="topbar">
+<div class="topbar-inner">
+
+<div class="brand" onclick="location.href='index.html'">
+<div class="logo">◎</div>
+<div>SM Module</div>
+</div>
+
+<div id="nav-container"></div>
+
+<div class="userbox">H.Q / 안현모</div>
+
+</div>
+</header>
+
+
+<main class="app">
+
+<div class="titlebar">
+<div class="crumb">매출관리 &gt; 세금계산서 발행목록</div>
+</div>
+
+
+<section class="panel">
+
+<div class="panel-head">
+
+<div class="panel-title">세금계산서 발행목록</div>
+
+<div class="tools">
+<button class="btn primary">엑셀다운로드</button>
+<button class="btn danger">삭제</button>
+</div>
+
+</div>
+
+
+<div class="panel-body">
+
+<!-- 검색영역 -->
+
+<div class="row">
+
+<div class="field select-field">
+<select>
+<option>전체보기</option>
+<option>강남파트</option>
+<option>여의도파트</option>
+<option>서소문파트</option>
+</select>
+</div>
+
+<div class="field">
+<input type="date" value="2024-11-01">
+</div>
+
+<div class="field">
+<input type="date" value="2024-11-13">
+</div>
+
+<div class="field" style="min-width:260px">
+<input type="text" placeholder="회사명, 공급가액, 세액, 담당자명으로 검색">
+</div>
+
+<button class="btn">검색</button>
+
+</div>
+
+
+<!-- 테이블 -->
+
+<div class="table-wrap">
+
+<table class="table">
+
+<thead>
+<tr>
+<th style="width:120px">지점명</th>
+<th style="width:160px">발행일시</th>
+<th>발행번호</th>
+<th>사업자번호</th>
+<th>회사명</th>
+<th>담당자</th>
+<th>합계액</th>
+<th>공급가액</th>
+<th>세액</th>
+<th>상태</th>
+<th>상태보기</th>
+<th style="width:40px">
+<input type="checkbox">
+</th>
+</tr>
+</thead>
+
+
+<tbody>
+
+<tr>
+<td colspan="12" class="empty">
+검색된 계산서 목록이 없습니다.
+</td>
+</tr>
+
+</tbody>
+
+
+<tfoot>
+
+<tr>
+
+<td colspan="6">
+총합계 (<span id="sum_count">0</span>건)
+</td>
+
+<td id="sum_total">0</td>
+<td id="sum_supply">0</td>
+<td id="sum_vat">0</td>
+
+<td colspan="3"></td>
+
+</tr>
+
+</tfoot>
+
+</table>
+
+</div>
+
+
+</div>
+
+</section>
+
+</main>
+
+
+<script>
+
+function calcSummary(){
+
+const rows = document.querySelectorAll(".table tbody tr");
+
+let total = 0;
+let supply = 0;
+let vat = 0;
+
+rows.forEach(row=>{
+
+let cells = row.children;
+
+if(cells.length < 9) return;
+
+total += Number(cells[6].innerText.replace(/,/g,'')) || 0;
+supply += Number(cells[7].innerText.replace(/,/g,'')) || 0;
+vat += Number(cells[8].innerText.replace(/,/g,'')) || 0;
+
+});
+
+document.getElementById("sum_count").innerText = rows.length;
+document.getElementById("sum_total").innerText = total.toLocaleString();
+document.getElementById("sum_supply").innerText = supply.toLocaleString();
+document.getElementById("sum_vat").innerText = vat.toLocaleString();
+
+}
+
+calcSummary();
+
+</script>
+
+</body>
+</html>

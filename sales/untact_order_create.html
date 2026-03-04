@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ERP UI - 비대면주문등록</title>
+
+<link rel="stylesheet" href="../common.css">
+<script defer src="../common.js"></script>
+
+<style>
+
+/* 모달 */
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:999;
+}
+
+.modal.active{
+display:flex;
+}
+
+.modal-box{
+width:900px;
+background:#fff;
+border-radius:8px;
+box-shadow:0 20px 40px rgba(0,0,0,.25);
+overflow:hidden;
+}
+
+.modal-head{
+background:#3b82c4;
+color:#fff;
+padding:12px 16px;
+font-weight:600;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.modal-body{
+padding:16px;
+}
+
+.modal-footer{
+padding:14px;
+border-top:1px solid #eee;
+display:flex;
+justify-content:center;
+gap:10px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:140px 1fr;
+gap:12px;
+margin-top:16px;
+}
+
+.form-grid input,
+.form-grid textarea{
+width:100%;
+}
+
+textarea{
+height:70px;
+}
+
+.sum-row{
+background:#f5f7fa;
+font-weight:600;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="topbar">
+<div class="topbar-inner">
+<div class="brand" onclick="location.href='index.html'">
+<div class="logo">◎</div>
+<div>SM Module</div>
+</div>
+<div id="nav-container"></div>
+<div class="userbox">H.Q / 안현모</div>
+</div>
+</header>
+
+<main class="app">
+
+<div class="titlebar">
+<div class="crumb">주문관리 &gt; 비대면주문 등록</div>
+</div>
+
+<section class="panel">
+
+<div class="panel-head">
+<div class="panel-title">비대면 주문 등록</div>
+<div class="tools">
+<button class="btn success" id="btnRemote">비대면결제 등록</button>
+</div>
+</div>
+
+<div class="panel-body">
+
+<table class="table">
+<thead>
+<tr>
+<th>#</th>
+<th>지점명</th>
+<th>주문번호/제목</th>
+<th>회사명</th>
+<th>고객명</th>
+<th>주문금액</th>
+<th>미결제금액</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>10545638</td>
+<td>역삼1파트</td>
+<td>[O260227-0040-00013] 한국배터리산업협회 눈마사지기</td>
+<td>한국배터리산업협회</td>
+<td>윤정일</td>
+<td>0</td>
+<td>0</td>
+<td>
+<input type="checkbox"
+class="order-check"
+data-orderno="O260227-0040-00013"
+data-customer="윤정일"
+data-company="한국배터리산업협회"
+data-title="눈마사지기"
+data-amount="0">
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</main>
+
+<!-- 비대면 결제 모달 -->
+
+<div class="modal" id="payModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+비대면 결제 등록
+<span style="cursor:pointer" id="modalClose">✕</span>
+</div>
+
+<div class="modal-body">
+
+<table class="table">
+<thead>
+<tr>
+<th>주문번호</th>
+<th>고객명</th>
+<th>가능금액</th>
+<th>미결제금액</th>
+</tr>
+</thead>
+
+<tbody id="modalOrderBody"></tbody>
+
+<tfoot>
+<tr class="sum-row">
+<td colspan="2">총 합계</td>
+<td id="totalAmount">0원</td>
+<td id="totalRemain">0원</td>
+</tr>
+</tfoot>
+
+</table>
+
+<div class="form-grid">
+
+<label>작업명 *</label>
+<input type="text">
+
+<label>결제금액 *</label>
+<input type="number">
+
+<label>고객명 *</label>
+<input type="text">
+
+<label>주문정보</label>
+<textarea></textarea>
+
+<label>결제이메일 *</label>
+<input type="email">
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn">취소</button>
+<button class="btn primary">등록</button>
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const modal=document.getElementById("payModal");
+const modalBody=document.getElementById("modalOrderBody");
+
+document.getElementById("btnRemote").onclick=()=>{
+
+const checks=document.querySelectorAll(".order-check:checked");
+
+if(checks.length===0){
+alert("주문을 선택하세요");
+return;
+}
+
+modalBody.innerHTML="";
+let total=0;
+
+checks.forEach(el=>{
+
+const amount=Number(el.dataset.amount);
+total+=amount;
+
+modalBody.insertAdjacentHTML("beforeend",`
+<tr>
+<td>${el.dataset.orderno}</td>
+<td>${el.dataset.customer}</td>
+<td>${amount.toLocaleString()}원</td>
+<td>${amount.toLocaleString()}원</td>
+</tr>
+`);
+
+});
+
+document.getElementById("totalAmount").innerText=total.toLocaleString()+"원";
+document.getElementById("totalRemain").innerText=total.toLocaleString()+"원";
+
+modal.classList.add("active");
+
+}
+
+document.getElementById("modalClose").onclick=()=>{
+modal.classList.remove("active");
+}
+
+</script>
+
+</body>
+</html>

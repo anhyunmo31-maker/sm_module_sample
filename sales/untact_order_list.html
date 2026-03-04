@@ -7,13 +7,111 @@
 
 <link rel="stylesheet" href="../common.css">
 <script defer src="../common.js"></script>
+<script>
+const modal = document.getElementById("payDetailModal");
 
+document.querySelectorAll(".btn-view").forEach(btn=>{
+
+btn.onclick = function(){
+
+document.getElementById("m_payno").value = this.dataset.payno;
+document.getElementById("m_work").value = this.dataset.work;
+document.getElementById("m_amount").value = Number(this.dataset.amount).toLocaleString();
+document.getElementById("m_customer").value = this.dataset.customer;
+document.getElementById("m_email").value = this.dataset.email;
+document.getElementById("m_paycode").value = this.dataset.paycode;
+
+modal.classList.add("active");
+
+}
+
+});
+
+  document.getElementById("modalClose").onclick=()=>{
+modal.classList.remove("active");
+}
+
+document.getElementById("btnClose").onclick=()=>{
+modal.classList.remove("active");
+}
+
+  document.getElementById("btnMail").onclick = function(){
+
+const email = document.getElementById("m_email").value;
+const paycode = document.getElementById("m_paycode").value;
+
+alert(email+" 로 결제메일 전송\n결제코드 : "+paycode);
+
+/* 실제는 API 호출
+
+fetch("/api/payment/mail",{
+method:"POST",
+body:JSON.stringify({
+email:email,
+payCode:paycode
+})
+})
+
+*/
+
+}
+  
+</script>
+  
 </head>
   <style>
 
 .table-wrap{
   width:100%;
   overflow-x:auto;
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:999;
+}
+
+.modal.active{
+display:flex;
+}
+
+.modal-box{
+width:700px;
+background:#fff;
+border-radius:8px;
+overflow:hidden;
+}
+
+.modal-head{
+background:#3b82c4;
+color:#fff;
+padding:12px;
+font-weight:600;
+display:flex;
+justify-content:space-between;
+}
+
+.modal-body{
+padding:16px;
+}
+
+.modal-footer{
+padding:16px;
+border-top:1px solid #eee;
+display:flex;
+justify-content:center;
+gap:10px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:120px 1fr;
+gap:10px;
 }
     
   </style>
@@ -163,7 +261,15 @@
 <td>[PWC마켓] 현수막 및 배너 제작</td>
 <td>결제완료</td>
 <td>OfMe4l6zjO</td>
-<td><button class="btn success">보기</button></td>
+<td><button class="btn success btn-view"
+data-payno="Un260304-0042-00001"
+data-work="[선작업매출][비대면] 인쇄비"
+data-amount="203500"
+data-customer="성아현"
+data-email="sah9926@fashionplatform.co.kr"
+data-paycode="etmpIDQJ9Q">
+보기
+</button></td>
 </tr>
 
 </tbody>
@@ -178,4 +284,54 @@
 </main>
 
 </body>
+
+<div class="modal" id="payDetailModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+비대면 결제 상세보기
+<span id="modalClose" style="cursor:pointer">✕</span>
+</div>
+
+<div class="modal-body">
+
+<div class="form-grid">
+
+<label>비대면결제번호</label>
+<input id="m_payno" disabled>
+
+<label>작업명 *</label>
+<input id="m_work">
+
+<label>결제금액</label>
+<input id="m_amount">
+
+<label>주문자명 *</label>
+<input id="m_customer">
+
+<label>주문정보</label>
+<textarea id="m_orderinfo"></textarea>
+
+<label>이메일주소 *</label>
+<input id="m_email">
+
+<label>결제코드</label>
+<input id="m_paycode" disabled>
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn info" id="btnMail">메일전송</button>
+<button class="btn danger">결제취소</button>
+<button class="btn" id="btnClose">돌아가기</button>
+</div>
+
+</div>
+
+</div>
+
+  
 </html>

@@ -99,7 +99,7 @@ padding:20px;
 
 <div class="field select-field">
 <select>
-<option>접수지점</option>
+<option>영업부서</option>
 <option>강남파트</option>
 <option>여의도파트</option>
 </select>
@@ -109,6 +109,7 @@ padding:20px;
 <select>
 <option>상태</option>
 <option>매출확정</option>
+<option>정산완료</option>
 <option>발송완료</option>
 </select>
 </div>
@@ -139,7 +140,7 @@ padding:20px;
 <tr>
 <th>#</th>
 <th>접수일</th>
-<th>지점</th>
+<th>영업부서</th>
 <th>작업제목</th>
 <th>회사명</th>
 <th>수주금액</th>
@@ -190,7 +191,7 @@ padding:20px;
 <td>2026-03-03</td>
 
 <td>
-<button class="btn info btn-po">발주서</button>
+<button class="btn-order">발주서</button>
 </td>
 
 </tr>
@@ -208,45 +209,174 @@ padding:20px;
 </main>
 
 
+<!-- 발주서 모달 (주문등록에서 그대로 복사) -->
+<div class="oc-modal" id="orderModal">
+  <div class="oc-modal-box">
+    <div class="oc-modal-head">
+      <div>발주서 작성</div>
+      <button id="closeOrderModal">✕</button>
+    </div>
 
-<!-- 발주서 팝업 -->
+    <div class="oc-modal-body">
 
-<div class="modal" id="poModal">
+     <div class="oc-modal-body">
 
-<div class="modal-box">
+      <!-- 기본정보 -->
+      <div class="oc-work-form" style="margin-bottom:20px;">
+        <div class="oc-field">
+          <div class="oc-label">수주일</div>
+          <input class="oc-ctl" id="modalProductName">
+        </div>
 
-<div class="modal-head">
-발주서 출력
-<span id="poClose" style="cursor:pointer">✕</span>
+        <div class="oc-field">
+          <div class="oc-label">제품명</div>
+          <input class="oc-ctl" id="modalQty" type="number">
+        </div>
+
+        <div class="oc-field">
+          <div class="oc-label">규격</div>
+          <input class="oc-ctl" placeholder="규격">
+        </div>
+
+        <div class="oc-field">
+          <div class="oc-label">수량</div>
+          <input class="oc-ctl" placeholder="수량">
+        </div>
+
+        <div class="oc-field">
+          <div class="oc-label">영업담당자</div>
+          <input class="oc-ctl" placeholder="영업담당자">
+        </div>
+
+        <div class="oc-field">
+          <div class="oc-label">납품일</div>
+          <input class="oc-ctl" placeholder="ex)20260101">
+        </div>
+        
+        <div class="oc-field" style="grid-column:1/-1;">
+            <div class="oc-label">작업주의사항</div>
+            <input class="oc-ctl">
+          </div>
+      </div>
+
+      <!-- 작업사양 (디테일정보 테이블 복사) -->
+      <div class="oc-grid">
+        <table class="oc-table">
+          <thead>
+          <tr>
+            <th rowspan="2" style="width:120px;">구분</th>
+            <th rowspan="2" style="width:120px;">구성</th>
+            <th rowspan="2" style="width:120px;">작업명</th>
+            <th rowspan="2" style="width:120px;">페이지</th>
+            <th colspan="2" style="width:200px;">인쇄도수</th>
+            <th rowspan="2" style="width:160px;">비고</th>
+            <th rowspan="2" style="width:120px;">업체명</th>
+            <th rowspan="2" style="width:80px;">관리</th>
+          </tr>
+          
+          <tr>
+            <th style="width:100px;">전</th>
+            <th style="width:100px;">후</th>
+          </tr>
+          </thead>
+          <tbody id="orderDetailBody"></tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:10px;">
+        <button class="oc-tiny" type="button" id="btnAddOrderDetail">작업행 추가</button>
+      </div>
+
+      <!-- 배송정보 -->
+      <div style="margin-top:30px;">
+        <div style="font-weight:900; margin-bottom:10px;">배송정보</div>
+
+        <div class="oc-work-form">
+          <div class="oc-field">
+            <div class="oc-label">배송방법</div>
+            <select class="oc-ctl">
+              <option>택배</option>
+              <option>퀵</option>
+              <option>POD배송</option>
+              <option>직접수령</option>
+            </select>
+          </div>
+          
+          <div class="oc-field">
+            <div class="oc-label">받는사람</div>
+            <input class="oc-ctl">
+          </div>
+
+          <div class="oc-field">
+            <div class="oc-label">연락처(핸드폰번호)</div>
+            <input class="oc-ctl">
+          </div>
+
+          <div class="oc-field" style="grid-column:1/-1;">
+          <div class="oc-label">주소</div>
+        
+          <div class="oc-row">
+            <input class="oc-ctl" id="postcode" placeholder="우편번호" readonly style="max-width:120px;">
+            <button class="oc-mini" type="button" onclick="execDaumPostcode()">검색</button>
+          </div>
+        
+          <div></div>
+          <input class="oc-ctl" id="address" placeholder="기본주소" readonly>
+        
+          <div></div>
+          <input class="oc-ctl" id="detailAddress" placeholder="상세주소">
+        </div>
+        </div>
+      </div>
+
+      <div class="oc-grid">
+  <table class="oc-table">
+    <thead>
+      <tr>
+        <th style="width:25%">작성자</th>
+        <th style="width:25%">작성시간</th>
+        <th style="width:25%">최종수정자</th>
+        <th style="width:25%">최종수정시간</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:center;">안현모</td>
+        <td style="text-align:center;">-</td>
+        <td style="text-align:center;">-</td>
+        <td style="text-align:center;">-</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
-<div class="modal-body">
+      <!-- 버튼 -->
+      <div style="margin-top:30px; text-align:right;">
+        <button class="oc-btn ghost" id="closeOrderModal2">취소</button>
+        <button class="oc-btn primary" id="saveOrderSheet">저장</button>
+      </div>
 
-<h3>외주 발주서</h3>
+    </div>
 
-<p>발주번호 : PO-20260303-001</p>
-
-<p>거래처 : (주)한국바이오</p>
-
-<p>작업명 : 네오나트론 DC자료집</p>
-
-<p>발주금액 : 55,504원</p>
-
-<p>납기일 : 2026-03-03</p>
-
-<br>
-
-<button class="btn primary">PDF 출력</button>
-
+    </div>
+  </div>
 </div>
-
-</div>
-
-</div>
-
 
 
 <script>
+
+  document.addEventListener("click", function(e){
+
+const btn = e.target.closest(".btn-order");
+if(!btn) return;
+
+document.getElementById("orderModal").classList.add("active");
+
+});
+
+document.getElementById("closeOrderModal").onclick = () =>{
+document.getElementById("orderModal").classList.remove("active");
+};
 
 document.addEventListener("click",function(e){
 

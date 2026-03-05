@@ -244,9 +244,17 @@
             <option value="매출등록">매출등록</option>
           </select>
 
+          <select class="ctl" id="status">
+            <option value="">작업처 (전체)</option>
+            <option value="외주">외주</option>
+            <option value="패키지">패키지</option>
+            <option value="P&D">P&D</option>
+            <option value="구매">구매</option>3
+            <option value="POD">POD</option>
+          </select>
+
           <div class="btns">
             <button class="btn ghost" id="btnExcel">엑셀다운로드</button>
-            <button class="btn success" id="btnConfirm">매출등록</button>
           </div>
 
         </div>
@@ -266,9 +274,6 @@
               <th class="w-user">작업처</th>
               <th class="w-amt">금액</th>
               <th class="w-status">상태</th>
-              <th class="w-mng" style="text-align:center;">
-                <input type="checkbox" id="chkAll" title="전체 선택">
-              </th>
             </tr>
           </thead>
           <tbody id="tbody">
@@ -394,9 +399,6 @@
         <td class="w-job">${r.job}</td>
         <td class="w-amt">${fmt(r.amount)}</td>
         <td class="w-status">${badge(r.status)}</td>
-        <td class="w-mng" style="text-align:center;">
-          <input type="checkbox" class="rowChk" data-id="${r.id}">
-        </td>
       `;
       tbody.appendChild(tr);
     });

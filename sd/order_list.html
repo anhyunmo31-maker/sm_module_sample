@@ -263,6 +263,7 @@
               <th class="w-cust">고객명</th>
               <th class="w-branch">접수지점</th>
               <th class="w-user">접수자</th>
+              <th class="w-user">작업처</th>
               <th class="w-amt">금액</th>
               <th class="w-status">상태</th>
               <th class="w-mng" style="text-align:center;">
@@ -291,6 +292,7 @@
       customer: "정유진",
       branch: "서초로2파트",
       owner: "주인돈",
+      job : "외주",
       amount: 168190,
       status: "발송완료",
     },
@@ -302,6 +304,7 @@
       customer: "권아람",
       branch: "강남파트",
       owner: "최성현",
+      job : "외주",
       amount: 15400,
       status: "매출확정",
     },
@@ -313,6 +316,7 @@
       customer: "노슬기",
       branch: "강남파트",
       owner: "최성현",
+      job : "패키지",
       amount: 493350,
       status: "발송완료",
     },
@@ -324,6 +328,7 @@
       customer: "이효진",
       branch: "을지로파트",
       owner: "이지섭",
+      job : "P&D",
       amount: 126000,
       status: "매출확정",
     },
@@ -335,6 +340,7 @@
       customer: "이효준",
       branch: "역삼1파트",
       owner: "김기선",
+      job : "외주",
       amount: 198000,
       status: "매출확정",
     },
@@ -346,6 +352,7 @@
       customer: "정유진",
       branch: "서초로2파트",
       owner: "주인돈",
+      job : "외주",
       amount: 765380,
       status: "매출확정",
     }
@@ -384,6 +391,7 @@
         <td class="w-cust">${r.customer}</td>
         <td class="w-branch">${r.branch}</td>
         <td class="w-user">${r.owner}</td>
+        <td class="w-job">${r.job}</td>
         <td class="w-amt">${fmt(r.amount)}</td>
         <td class="w-status">${badge(r.status)}</td>
         <td class="w-mng" style="text-align:center;">

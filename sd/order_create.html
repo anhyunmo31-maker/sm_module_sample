@@ -1043,6 +1043,25 @@ document.getElementById("btnAddOrderDetail").onclick = () => {
   orderModal.classList.add("active");
 };
 
+  document.getElementById("btnOrderSheet2").onclick = () => {
+
+  document.getElementById("modalProductName").value = work.name;
+  document.getElementById("modalQty").value = work.qtyB;
+
+  // work.items → orderDetails 변환
+  orderDetails = work.items.map(it => ({
+    type: it.type,
+    page: it.code,
+    front: it.qtyA,
+    back: 0,
+    paper: it.name,
+    etc: it.rmk || ""
+  }));
+
+  renderOrderDetails();
+  orderModal.classList.add("active");
+};
+
   const orderModal = document.getElementById("orderModal");
 
 document.getElementById("closeOrderModal").onclick = () => {

@@ -801,9 +801,30 @@ tabs.forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab)));
 document.getElementById("goWork").onclick = () => openTab("work");
 document.getElementById("backOrder").onclick = () => openTab("order");
 
+  /* ================= 기존 work 유지 ================= */
+let work = {
+  name: "",
+  memo: "",
+  qtyB: 1,
+  items: [{
+    type:"용지",
+    code:"",
+    name:"",
+    rmk:"",
+    qtyA:1,
+    priceB:0
+  }],
+  ship:0,
+  disc:0
+};
+  
 /* ================= 상태 ================= */
-let works = [];
-let currentWorkIdx = -1;
+let works = [work];
+let currentWorkIdx = 0;
+
+  function syncWork(){
+  work = works[currentWorkIdx];
+}
 
 /* ================= DOM ================= */
 const workNameEl = document.getElementById("workName");
@@ -827,7 +848,8 @@ function getWork(){
 
 /* ================= 작업 추가 ================= */
 document.getElementById("btnAddWork").onclick = () => {
-  works.push({
+
+  const newWork = {
     name: "",
     memo: "",
     qtyB: 1,
@@ -841,9 +863,12 @@ document.getElementById("btnAddWork").onclick = () => {
     }],
     ship:0,
     disc:0
-  });
+  };
 
+  works.push(newWork);
   currentWorkIdx = works.length - 1;
+
+  syncWork();          // 🔥 핵심
   renderWorkList();
   renderWorkDetail();
 };
@@ -868,6 +893,7 @@ function renderWorkList(){
 
     div.onclick = () => {
       currentWorkIdx = idx;
+      syncWork();
       renderWorkList();
       renderWorkDetail();
     };
@@ -875,7 +901,8 @@ function renderWorkList(){
     div.querySelector(".oc-del").onclick = (e) => {
       e.stopPropagation();
       works.splice(idx,1);
-      currentWorkIdx = works.length ? 0 : -1;
+       currentWorkIdx = 0;
+      syncWork();
       renderWorkList();
       renderWorkDetail();
     };

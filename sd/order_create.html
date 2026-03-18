@@ -185,10 +185,9 @@
 
     /* Work tab */
     .oc-work-layout{
-      display:block;
-      grid-template-columns: 280px 1fr;
+      display:grid;
+      grid-template-columns: 260px 1fr;
       gap:14px;
-      align-items:start;
     }
 
     .oc-side{
@@ -557,7 +556,19 @@
       <!-- TAB 2: 작업정보 -->
       <div id="tab-work" class="oc-hidden">
         <div class="oc-work-layout">
+        <!-- 좌측 작업 리스트 -->
+<section class="oc-side">
+  <div class="oc-side-head">
+    <button class="oc-side-btn" id="btnAddWork">
+      <span class="oc-plus">+</span>
+      작업 추가
+    </button>
+  </div>
 
+  <div class="oc-work-list" id="workList">
+    <!-- JS로 생성 -->
+  </div>
+</section>
           
           <section class="oc-main">
             <div class="oc-main-head">
@@ -819,6 +830,77 @@
 </div>
 
 <script>
+
+let works = [JSON.parse(JSON.stringify(work))];
+let currentWorkIdx = 0;
+function renderWorkList(){
+  const list = document.getElementById("workList");
+  list.innerHTML = "";
+
+  works.forEach((w, idx) => {
+    const div = document.createElement("div");
+    div.className = "oc-work-item" + (idx === currentWorkIdx ? " active" : "");
+
+    div.innerHTML = `
+      <div>
+        <div class="oc-work-name">${w.name || "작업명 없음"}</div>
+        <div class="oc-work-meta">${w.qtyB || 1}부</div>
+      </div>
+      <button class="oc-del" type="button">✕</button>
+    `;
+
+    // 선택
+    div.onclick = () => {
+      currentWorkIdx = idx;
+      work = works[idx];
+      renderWorkDetail();
+      renderWorkList();
+    };
+
+    // 삭제
+    div.querySelector(".oc-del").onclick = (e) => {
+      e.stopPropagation();
+      if (works.length === 1) {
+        alert("작업은 최소 1개 필요합니다.");
+        return;
+      }
+      works.splice(idx, 1);
+      currentWorkIdx = 0;
+      work = works[0];
+      renderWorkDetail();
+      renderWorkList();
+    };
+
+    list.appendChild(div);
+  });
+}
+
+  document.getElementById("btnAddWork").onclick = () => {
+  const newWork = {
+    name: "",
+    memo: "",
+    qtyB: 1,
+    items: [{
+      type:"용지",
+      code:"",
+      name:"",
+      rmk:"",
+      qtyA:1,
+      priceB:0
+    }],
+    ship:0,
+    disc:0
+  };
+
+  works.push(newWork);
+  currentWorkIdx = works.length - 1;
+  work = newWork;
+
+  renderWorkDetail();
+  renderWorkList();
+};
+
+  
 // ===== Tabs =====
 const tabs = document.querySelectorAll(".oc-tab");
 const tabOrder = document.getElementById("tab-order");

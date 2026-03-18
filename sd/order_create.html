@@ -558,8 +558,9 @@
       <div id="tab-work" class="oc-hidden">
         <div class="oc-work-layout">
 
-          
+          <button class="oc-tiny" id="btnAddWork">작업 추가</button>
           <section class="oc-main">
+            <div id="workList"></div>
             <div class="oc-main-head">
               <div class="oc-main-title" id="workTitle">작업 상세</div>
               <div style="display:flex; gap:8px;">
@@ -819,6 +820,29 @@
 </div>
 
 <script>
+
+  document.getElementById("btnAddWork").onclick = () => {
+  works.push({
+    name: "",
+    memo: "",
+    qtyB: 1,
+    items: [{
+      type: "용지",
+      code: "",
+      name: "",
+      rmk: "",
+      qtyA: 1,
+      priceB: 0
+    }],
+    ship: 0,
+    disc: 0
+  });
+
+  currentWorkIdx = works.length - 1;
+  renderWorkList();
+  renderWorkDetail();
+};
+  
 // ===== Tabs =====
 const tabs = document.querySelectorAll(".oc-tab");
 const tabOrder = document.getElementById("tab-order");
@@ -848,20 +872,8 @@ const sumPay  = document.getElementById("sumPay");
 
 const money = (n) => (Math.round(n)).toLocaleString("ko-KR") + "원";
 
-let work = {
-  name: "",
-  memo: "",
-  qtyB: 1,
-  items: [{
-  type: "표지",
-  code:"",
-  name:"",
-  qtyA:1,
-  priceB:0
-}],
-  ship: 0,
-  disc: 0
-};
+let works = [];
+let currentWorkIdx = 0;
 
 function renderWorkDetail(){
   workTitleEl.textContent = "작업 상세";

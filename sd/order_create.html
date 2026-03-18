@@ -1000,8 +1000,8 @@ function renderOrderDetails(){
     inputs[3].oninput = () => row.page2 = inputs[3].value;
     inputs[4].oninput = () => row.front = Number(inputs[4].value);
     inputs[5].oninput = () => row.back = Number(inputs[5].value);
-    inputs[6].oninput = () => row.etc = inputs[7].value;
-    inputs[7].oninput = () => row.partner = inputs[8].value;
+    inputs[6].oninput = () => row.etc = inputs[6].value;
+    inputs[7].oninput = () => row.partner = inputs[7].value;
 
     tr.querySelector("button").onclick = () => {
       orderDetails.splice(idx,1);

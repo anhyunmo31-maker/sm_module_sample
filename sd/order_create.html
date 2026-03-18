@@ -555,82 +555,116 @@
       </div>
 
       <!-- TAB 2: 작업정보 -->
-<div id="tab-work" class="oc-hidden">
+      <div id="tab-work" class="oc-hidden">
+        <div class="oc-work-layout">
 
-  <div class="oc-work-layout">
-
-    <!-- 좌측 작업 리스트 -->
-    <section class="oc-side">
-      <div class="oc-side-head">
-        <button class="oc-side-btn" id="btnAddWork">
-          <span class="oc-plus">+</span> 작업 추가
-        </button>
-      </div>
-      <div class="oc-work-list" id="workList"></div>
-    </section>
-
-    <!-- 우측 작업 상세 -->
-    <section class="oc-main">
-
-      <div class="oc-main-head">
-        <div class="oc-main-title">작업 상세</div>
-        <div style="display:flex; gap:8px;">
-          <button class="oc-tiny" id="btnAddItem">품목행 추가</button>
-          <button class="oc-tiny" id="btnClearItems">품목 초기화</button>
-   
-          <button class="oc-tiny" type="button" id="btnOrderSheet">외주발주서</button>
-          <button class="oc-tiny" type="button" id="btnOrderSheet2">P&D발주서</button>
-        </div>
-      </div>
-
-      <div class="oc-main-body">
-
-        <div class="oc-work-form">
-          <div class="oc-field">
-            <div class="oc-label">작업명</div>
-            <input class="oc-ctl" id="workName">
-          </div>
-
-          <div class="oc-field">
-            <div class="oc-label">제작부수</div>
-            <input class="oc-ctl" id="qtyB" type="number" value="1">
-          </div>
-        </div>
-
-        <!-- 품목 -->
-        <div class="oc-grid">
-          <table class="oc-table">
-            <thead>
-              <tr>
-                <th>구분</th>
-                <th>구성</th>
-                <th>작업명</th>
-                <th>수량</th>
-                <th>단가</th>
-                <th>소계</th>
-                <th>삭제</th>
-              </tr>
-            </thead>
-            <tbody id="itemBody"></tbody>
-          </table>
-        </div>
-
-        <!-- 합계 -->
-        <div class="oc-summary">
-          <div></div>
-          <div class="oc-sum-right">
-            <div class="oc-sum-row">
-              <span>작업금액</span>
-              <strong id="sumWork">0원</strong>
+          
+          <section class="oc-main">
+            <div class="oc-main-head">
+              <div class="oc-main-title" id="workTitle">작업 상세</div>
+              <div style="display:flex; gap:8px;">
+                <button class="oc-tiny" type="button" id="btnAddItem">품목행 추가</button>
+                <button class="oc-tiny" type="button" id="btnClearItems">품목 초기화</button>
+                <button class="oc-tiny" type="button" id="btnOrderSheet">외주발주서</button>
+                <button class="oc-tiny" type="button" id="btnOrderSheet2">P&D발주서</button>
+              </div>
             </div>
-          </div>
+
+            <div class="oc-main-body">
+
+              <div class="oc-work-form">
+                <div class="oc-field">
+                  <div class="oc-label oc-req">작업처</div>
+                  <select class="oc-ctl" id="paper">
+                    <option>외주</option>
+                    <option>패키지</option>
+                    <option>P&D팀</option>
+                    <option>직접구매</option>
+                  </select>
+                </div>
+
+                <div class="oc-field">
+                  <div class="oc-label oc-req">제작부수(B)</div>
+                  <div class="oc-row">
+                    <input class="oc-ctl" id="qtyB" type="number" min="1" value="1" />
+                    <div style="font-weight:900; color:#374151;">부</div>
+                  </div>
+                </div>
+
+                <div class="oc-field">
+                  <div class="oc-label oc-req">작업명</div>
+                  <input class="oc-ctl" id="workName" placeholder="작업명" />
+                </div>
+
+                <div class="oc-field">
+                  <div class="oc-label">파일첨부</div>
+                  <input class="oc-ctl" type="file" />
+                </div>
+
+                <div class="oc-field" style="grid-column:1 / -1;">
+                  <div class="oc-label">기타사항</div>
+                  <textarea class="oc-ctl oc-textarea" id="workMemo" placeholder="기타사항"></textarea>
+                </div>
+              </div>
+
+              <div class="oc-grid">
+                <table class="oc-table" aria-label="품목 그리드">
+                  <thead>
+                    <tr>
+                      <th style="width:130px;">구분</th>
+                      <th style="width:130px;">구성</th>
+                      <th style="width:130px;">작업명</th>
+                      <th style="width:110px;">비고</th>
+                      <th style="width:110px;">수량(a)</th>
+                      <th style="width:110px;">단가(b)</th>
+                      <th style="width:140px;">소계(a×b)</th>
+                      <th style="width:90px;">관리</th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemBody"></tbody>
+                </table>
+              </div>
+
+              <div class="oc-summary">
+                <div></div>
+                <div class="oc-sum-right">
+                  <div class="oc-sum-row">
+                    <span>작업금액(C=A×B)</span>
+                    <strong id="sumWork">0원</strong>
+                  </div>
+                  <div class="oc-sum-row">
+                    <span>배송비(E)</span>
+                    <strong id="sumDesign">0원</strong>
+                  </div>
+                  <div class="oc-sum-row">
+                    <span>디자인비(F)</span>
+                    <strong id="sumdes">0원</strong>
+                  </div>
+                  <div class="oc-sum-row">
+                    <span>할인(H)</span>
+                    <strong id="sumDisc">0원</strong>
+                  </div>
+                  <div class="oc-sum-row total">
+                    <span>결제금액(G-H)</span>
+                    <strong id="sumPay">0원</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="oc-actions">
+                <div>
+                  <button class="oc-btn ghost" type="button" id="backOrder">이전</button>
+                </div>
+                <div style="display:flex; gap:10px;">
+                  <button class="oc-btn success" type="button" onclick="alert('프로토타입: 등록(미정)')">등록</button>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
         </div>
-
       </div>
-    </section>
-
-  </div>
-</div>
 
     </div>
   </section>
@@ -785,8 +819,7 @@
 </div>
 
 <script>
-
- /* ================= Tabs ================= */
+// ===== Tabs =====
 const tabs = document.querySelectorAll(".oc-tab");
 const tabOrder = document.getElementById("tab-order");
 const tabWork  = document.getElementById("tab-work");
@@ -801,32 +834,9 @@ tabs.forEach(t => t.addEventListener("click", () => openTab(t.dataset.tab)));
 document.getElementById("goWork").onclick = () => openTab("work");
 document.getElementById("backOrder").onclick = () => openTab("order");
 
-  /* ================= 기존 work 유지 ================= */
-let work = {
-  name: "",
-  memo: "",
-  qtyB: 1,
-  items: [{
-    type:"용지",
-    code:"",
-    name:"",
-    rmk:"",
-    qtyA:1,
-    priceB:0
-  }],
-  ship:0,
-  disc:0
-};
-  
-/* ================= 상태 ================= */
-let works = [work];
-let currentWorkIdx = 0;
 
-  function syncWork(){
-  work = works[currentWorkIdx];
-}
-
-/* ================= DOM ================= */
+// ===== 작업 단일 구조 =====
+const workTitleEl = document.getElementById("workTitle");
 const workNameEl = document.getElementById("workName");
 const workMemoEl = document.getElementById("workMemo");
 const qtyBEl = document.getElementById("qtyB");
@@ -836,97 +846,25 @@ const sumWork = document.getElementById("sumWork");
 const sumDisc = document.getElementById("sumDisc");
 const sumPay  = document.getElementById("sumPay");
 
-const orderModal = document.getElementById("orderModal");
-const orderDetailBody = document.getElementById("orderDetailBody");
-
-/* ================= util ================= */
 const money = (n) => (Math.round(n)).toLocaleString("ko-KR") + "원";
 
-function getWork(){
-  return works[currentWorkIdx];
-}
-
-/* ================= 작업 추가 ================= */
-document.getElementById("btnAddWork").onclick = () => {
-
-  const newWork = {
-    name: "",
-    memo: "",
-    qtyB: 1,
-    items: [{
-      type:"용지",
-      code:"",
-      name:"",
-      rmk:"",
-      qtyA:1,
-      priceB:0
-    }],
-    ship:0,
-    disc:0
-  };
-
-  works.push(newWork);
-  currentWorkIdx = works.length - 1;
-
-  syncWork();          // 🔥 핵심
-  renderWorkList();
-  renderWorkDetail();
+let work = {
+  name: "",
+  memo: "",
+  qtyB: 1,
+  items: [{
+  type: "표지",
+  code:"",
+  name:"",
+  qtyA:1,
+  priceB:0
+}],
+  ship: 0,
+  disc: 0
 };
 
-/* ================= 작업 리스트 ================= */
-function renderWorkList(){
-  const list = document.getElementById("workList");
-  if(!list) return;
-
-  list.innerHTML = "";
-
-  works.forEach((w, idx) => {
-    const div = document.createElement("div");
-    div.className = "oc-work-item" + (idx === currentWorkIdx ? " active" : "");
-
-    div.innerHTML = `
-      <div>
-        <div class="oc-work-name">${w.name || "작업 " + (idx+1)}</div>
-      </div>
-      <button class="oc-del">×</button>
-    `;
-
-    div.onclick = () => {
-      currentWorkIdx = idx;
-      syncWork();
-      renderWorkList();
-      renderWorkDetail();
-    };
-
-    div.querySelector(".oc-del").onclick = (e) => {
-      e.stopPropagation();
-      works.splice(idx,1);
-       currentWorkIdx = 0;
-      syncWork();
-      renderWorkList();
-      renderWorkDetail();
-    };
-
-    list.appendChild(div);
-  });
-}
-
-/* ================= 작업 상세 ================= */
 function renderWorkDetail(){
-
-  if(currentWorkIdx < 0 || !works.length){
-    itemBody.innerHTML = "";
-    workNameEl.value = "";
-    workMemoEl.value = "";
-    qtyBEl.value = 1;
-    sumWork.textContent = "0원";
-    sumDisc.textContent = "0원";
-    sumPay.textContent  = "0원";
-    return;
-  }
-
-  const work = getWork();
-
+  workTitleEl.textContent = "작업 상세";
   workNameEl.value = work.name;
   workMemoEl.value = work.memo;
   qtyBEl.value = work.qtyB;
@@ -934,70 +872,63 @@ function renderWorkDetail(){
   itemBody.innerHTML = "";
 
   work.items.forEach((it, idx) => {
-
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td>
-        <select class="oc-cell">
-          <option value="용지" ${it.type==="용지"?"selected":""}>용지</option>
-          <option value="인쇄" ${it.type==="인쇄"?"selected":""}>인쇄</option>
-          <option value="후가공" ${it.type==="후가공"?"selected":""}>후가공</option>
-          <option value="제본" ${it.type==="제본"?"selected":""}>제본</option>
-        </select>
-      </td>
-      <td><input class="oc-cell" value="${it.code}" placeholder="구성"></td>
-      <td><input class="oc-cell" value="${it.name}" placeholder="작업명"></td>
-      <td><input class="oc-cell" value="${it.rmk}" placeholder="비고"></td>
-      <td><input class="oc-cell oc-amt" type="number" value="${it.qtyA}"></td>
-      <td><input class="oc-cell oc-amt" type="number" value="${it.priceB}"></td>
-      <td class="oc-amt">0원</td>
-      <td><button class="oc-tiny">삭제</button></td>
-    `;
+  <td>
+    <select class="oc-cell">
+      <option value="용지" ${it.type === "용지" ? "selected" : ""}>용지</option>
+      <option value="인쇄" ${it.type === "인쇄" ? "selected" : ""}>인쇄</option>
+      <option value="후가공" ${it.type === "후가공" ? "selected" : ""}>후가공</option>
+      <option value="제본" ${it.type === "제본" ? "selected" : ""}>제본</option>
+    </select>
+  </td>
+  <td><input class="oc-cell" value="${it.code}" placeholder="표지/본문등"></td>
+  <td><input class="oc-cell" value="${it.name}" placeholder="작업명"></td>
+  <td><input class="oc-cell" value="${it.rmk}" placeholder="비고"></td>
+  <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA}"></td>
+  <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB}"></td>
+  <td class="oc-amt">0원</td>
+  <td><button class="oc-tiny" type="button">삭제</button></td>
+`;
 
-    const select = tr.querySelector("select");
-    const inputs = tr.querySelectorAll("input");
+    const selectType = tr.querySelector("select");
+const inputs = tr.querySelectorAll("input");
 
-    const qtyInput = inputs[3];
-    const priceInput = inputs[4];
-    const subTd = tr.children[6];
+const qtyInput = inputs[3];     // 수량
+const priceInput = inputs[4];   // 단가
+const subTd = tr.children[6];   // 소계
 
-    function calc(){
+    function recalcRow(){
       const a = Number(qtyInput.value || 0);
       const b = Number(priceInput.value || 0);
-      subTd.textContent = money(a*b);
+      subTd.textContent = money(a * b);
       recalcSummary();
     }
 
-    select.onchange = () => it.type = select.value;
-    inputs[0].oninput = () => it.code = inputs[0].value;
-    inputs[1].oninput = () => it.name = inputs[1].value;
-    inputs[2].oninput = () => it.rmk  = inputs[2].value;
-    inputs[3].oninput = () => { it.qtyA = Number(inputs[3].value); calc(); };
-    inputs[4].oninput = () => { it.priceB = Number(inputs[4].value); calc(); };
+   selectType.onchange = () => work.items[idx].type = selectType.value;
+inputs[0].oninput = () => work.items[idx].code = inputs[0].value;
+inputs[1].oninput = () => work.items[idx].name = inputs[1].value;
+inputs[2].oninput = () => work.items[idx].rmk  = inputs[2].value;
 
     tr.querySelector("button").onclick = () => {
-      if(work.items.length === 1){
-        alert("품목은 최소 1개 필요");
+      if (work.items.length === 1) {
+        alert("품목은 최소 1개 필요합니다.");
         return;
       }
-      work.items.splice(idx,1);
+      work.items.splice(idx, 1);
       renderWorkDetail();
     };
 
     itemBody.appendChild(tr);
-    calc();
+    recalcRow();
   });
 
   recalcSummary();
 }
 
-/* ================= 합계 ================= */
 function recalcSummary(){
-  const work = getWork();
-  if(!work) return;
-
-  const A = work.items.reduce((sum, it)=>sum+(it.qtyA*it.priceB),0);
+  const A = work.items.reduce((sum, it) => sum + (it.qtyA * it.priceB), 0);
   const C = A * work.qtyB;
   const pay = Math.max(0, C + work.ship - work.disc);
 
@@ -1006,69 +937,99 @@ function recalcSummary(){
   sumPay.textContent  = money(pay);
 }
 
-/* ================= 이벤트 ================= */
-workNameEl.oninput = () => {
-  const w = getWork();
-  if(!w) return;
-  w.name = workNameEl.value;
-  renderWorkList();
-};
-
-workMemoEl.oninput = () => {
-  const w = getWork();
-  if(!w) return;
-  w.memo = workMemoEl.value;
-};
-
-qtyBEl.oninput = () => {
-  const w = getWork();
-  if(!w) return;
-  w.qtyB = Math.max(1, Number(qtyBEl.value));
-  recalcSummary();
-};
-
+// ===== 버튼 이벤트 =====
 document.getElementById("btnAddItem").onclick = () => {
-  const w = getWork();
-  if(!w) return;
-
-  w.items.push({
-    type:"용지",
-    code:"",
-    name:"",
-    rmk:"",
-    qtyA:1,
-    priceB:0
-  });
-
+  work.items.push({
+  type: "표지",
+  code: "",
+  name: "",
+  qtyA: 1,
+  priceB: 0
+});
   renderWorkDetail();
 };
 
 document.getElementById("btnClearItems").onclick = () => {
-  const w = getWork();
-  if(!w) return;
-
-  w.items = [{
-    type:"용지",
-    code:"",
-    name:"",
-    rmk:"",
-    qtyA:1,
-    priceB:0
-  }];
-
+  work.items = [{
+  type:"용지",
+  code:"",
+  name:"",
+  rmk:"",
+  qtyA:1,
+  priceB:0
+}];
   renderWorkDetail();
 };
 
-/* ================= 발주서 ================= */
+workNameEl.oninput = () => work.name = workNameEl.value;
+workMemoEl.oninput = () => work.memo = workMemoEl.value;
+qtyBEl.oninput = () => {
+  work.qtyB = Math.max(1, Number(qtyBEl.value));
+  recalcSummary();
+};
+
+renderWorkDetail();
+
+  const orderDetailBody = document.getElementById("orderDetailBody");
+
 let orderDetails = [];
 
-document.getElementById("btnOrderSheet").onclick = () => {
-  const work = getWork();
-  if(!work) return;
+function renderOrderDetails(){
+  orderDetailBody.innerHTML = "";
+
+  orderDetails.forEach((row, idx) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td><input class="oc-cell" value="${row.type || ""}"></td>
+      <td><input class="oc-cell" value="${row.page || ""}"></td>
+      <td><input class="oc-cell" value="${row.page1 || ""}"></td>
+      <td><input class="oc-cell" value="${row.page2 || ""}"></td>
+      <td><input class="oc-cell oc-amt" type="number" value="${row.front || 0}"></td>
+      <td><input class="oc-cell oc-amt" type="number" value="${row.back || 0}"></td>
+      <td><input class="oc-cell" value="${row.etc || ""}"></td>
+      <td><input class="oc-cell" value="${row.partner || ""}"></td>
+      <td><button class="oc-tiny" type="button">삭제</button></td>
+    `;
+
+    const inputs = tr.querySelectorAll("input");
+
+    inputs[0].oninput = () => row.type = inputs[0].value;
+    inputs[1].oninput = () => row.page = inputs[1].value;
+    inputs[2].oninput = () => row.page1 = inputs[2].value;
+    inputs[3].oninput = () => row.page2 = inputs[3].value;
+    inputs[4].oninput = () => row.front = Number(inputs[4].value);
+    inputs[5].oninput = () => row.back = Number(inputs[5].value);
+    inputs[6].oninput = () => row.etc = inputs[7].value;
+    inputs[7].oninput = () => row.partner = inputs[8].value;
+
+    tr.querySelector("button").onclick = () => {
+      orderDetails.splice(idx,1);
+      renderOrderDetails();
+    };
+
+    orderDetailBody.appendChild(tr);
+  });
+}
+
+document.getElementById("btnAddOrderDetail").onclick = () => {
+  orderDetails.push({
+    type:"",
+    page:"",
+    front:0,
+    back:0,
+    paper:"",
+    etc:""
+  });
+  renderOrderDetails();
+};
+
+  document.getElementById("btnOrderSheet").onclick = () => {
 
   document.getElementById("modalProductName").value = work.name;
   document.getElementById("modalQty").value = work.qtyB;
 
+  // work.items → orderDetails 변환
   orderDetails = work.items.map(it => ({
     type: it.type,
     page: it.code,
@@ -1082,57 +1043,50 @@ document.getElementById("btnOrderSheet").onclick = () => {
   orderModal.classList.add("active");
 };
 
-document.getElementById("btnOrderSheet2").onclick = () => {
-  document.getElementById("btnOrderSheet").click();
+  document.getElementById("btnOrderSheet2").onclick = () => {
+
+  document.getElementById("modalProductName").value = work.name;
+  document.getElementById("modalQty").value = work.qtyB;
+
+  // work.items → orderDetails 변환
+  orderDetails = work.items.map(it => ({
+    type: it.type,
+    page: it.code,
+    front: it.qtyA,
+    back: 0,
+    paper: it.name,
+    etc: it.rmk || ""
+  }));
+
+  renderOrderDetails();
+  orderModal.classList.add("active");
 };
 
-function renderOrderDetails(){
-  orderDetailBody.innerHTML = "";
+  const orderModal = document.getElementById("orderModal");
 
-  orderDetails.forEach((row, idx) => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td><input class="oc-cell" value="${row.type}"></td>
-      <td><input class="oc-cell" value="${row.page}"></td>
-      <td><input class="oc-cell oc-amt" type="number" value="${row.front}"></td>
-      <td><input class="oc-cell oc-amt" type="number" value="${row.back}"></td>
-      <td><input class="oc-cell" value="${row.etc}"></td>
-      <td><input class="oc-cell" value="${row.partner||""}"></td>
-      <td><button class="oc-tiny">삭제</button></td>
-    `;
-
-    tr.querySelector("button").onclick = () => {
-      orderDetails.splice(idx,1);
-      renderOrderDetails();
-    };
-
-    orderDetailBody.appendChild(tr);
-  });
-}
-
-/* ================= 모달 ================= */
 document.getElementById("closeOrderModal").onclick = () => {
   orderModal.classList.remove("active");
 };
+
 document.getElementById("closeOrderModal2").onclick = () => {
   orderModal.classList.remove("active");
 };
 
-/* ================= 주소 ================= */
-function execDaumPostcode() {
+  function execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function(data) {
+
+      // 우편번호
       document.getElementById("postcode").value = data.zonecode;
+
+      // 기본주소
       document.getElementById("address").value = data.roadAddress || data.jibunAddress;
+
+      // 상세주소로 포커스
       document.getElementById("detailAddress").focus();
     }
   }).open();
 }
-
-/* ================= 초기 ================= */
-renderWorkList();
-renderWorkDetail();
 
   
 </script>

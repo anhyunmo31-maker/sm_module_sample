@@ -577,6 +577,9 @@
         <div style="display:flex; gap:8px;">
           <button class="oc-tiny" id="btnAddItem">품목행 추가</button>
           <button class="oc-tiny" id="btnClearItems">품목 초기화</button>
+   
+          <button class="oc-tiny" type="button" id="btnOrderSheet">외주발주서</button>
+          <button class="oc-tiny" type="button" id="btnOrderSheet2">P&D발주서</button>
         </div>
       </div>
 
@@ -783,7 +786,7 @@
 
 <script>
 
- /* ================= 기본 ================= */
+ /* ================= Tabs ================= */
 const tabs = document.querySelectorAll(".oc-tab");
 const tabOrder = document.getElementById("tab-order");
 const tabWork  = document.getElementById("tab-work");
@@ -803,7 +806,6 @@ let works = [];
 let currentWorkIdx = -1;
 
 /* ================= DOM ================= */
-const workList = document.getElementById("workList");
 const workNameEl = document.getElementById("workName");
 const workMemoEl = document.getElementById("workMemo");
 const qtyBEl = document.getElementById("qtyB");
@@ -813,9 +815,12 @@ const sumWork = document.getElementById("sumWork");
 const sumDisc = document.getElementById("sumDisc");
 const sumPay  = document.getElementById("sumPay");
 
-const money = (n) => (Math.round(n)).toLocaleString("ko-KR") + "원";
+const orderModal = document.getElementById("orderModal");
+const orderDetailBody = document.getElementById("orderDetailBody");
 
 /* ================= util ================= */
+const money = (n) => (Math.round(n)).toLocaleString("ko-KR") + "원";
+
 function getWork(){
   return works[currentWorkIdx];
 }
@@ -823,7 +828,7 @@ function getWork(){
 /* ================= 작업 추가 ================= */
 document.getElementById("btnAddWork").onclick = () => {
   works.push({
-    name: "새 작업",
+    name: "",
     memo: "",
     qtyB: 1,
     items: [{
@@ -839,14 +844,16 @@ document.getElementById("btnAddWork").onclick = () => {
   });
 
   currentWorkIdx = works.length - 1;
-
   renderWorkList();
   renderWorkDetail();
 };
 
 /* ================= 작업 리스트 ================= */
 function renderWorkList(){
-  workList.innerHTML = "";
+  const list = document.getElementById("workList");
+  if(!list) return;
+
+  list.innerHTML = "";
 
   works.forEach((w, idx) => {
     const div = document.createElement("div");
@@ -859,25 +866,21 @@ function renderWorkList(){
       <button class="oc-del">×</button>
     `;
 
-    // 선택
     div.onclick = () => {
       currentWorkIdx = idx;
       renderWorkList();
       renderWorkDetail();
     };
 
-    // 삭제
     div.querySelector(".oc-del").onclick = (e) => {
       e.stopPropagation();
       works.splice(idx,1);
-
       currentWorkIdx = works.length ? 0 : -1;
-
       renderWorkList();
       renderWorkDetail();
     };
 
-    workList.appendChild(div);
+    list.appendChild(div);
   });
 }
 
@@ -916,9 +919,9 @@ function renderWorkDetail(){
           <option value="제본" ${it.type==="제본"?"selected":""}>제본</option>
         </select>
       </td>
-      <td><input class="oc-cell" value="${it.code}"></td>
-      <td><input class="oc-cell" value="${it.name}"></td>
-      <td><input class="oc-cell" value="${it.rmk}"></td>
+      <td><input class="oc-cell" value="${it.code}" placeholder="구성"></td>
+      <td><input class="oc-cell" value="${it.name}" placeholder="작업명"></td>
+      <td><input class="oc-cell" value="${it.rmk}" placeholder="비고"></td>
       <td><input class="oc-cell oc-amt" type="number" value="${it.qtyA}"></td>
       <td><input class="oc-cell oc-amt" type="number" value="${it.priceB}"></td>
       <td class="oc-amt">0원</td>
@@ -1028,6 +1031,77 @@ document.getElementById("btnClearItems").onclick = () => {
 
   renderWorkDetail();
 };
+
+/* ================= 발주서 ================= */
+let orderDetails = [];
+
+document.getElementById("btnOrderSheet").onclick = () => {
+  const work = getWork();
+  if(!work) return;
+
+  document.getElementById("modalProductName").value = work.name;
+  document.getElementById("modalQty").value = work.qtyB;
+
+  orderDetails = work.items.map(it => ({
+    type: it.type,
+    page: it.code,
+    front: it.qtyA,
+    back: 0,
+    paper: it.name,
+    etc: it.rmk || ""
+  }));
+
+  renderOrderDetails();
+  orderModal.classList.add("active");
+};
+
+document.getElementById("btnOrderSheet2").onclick = () => {
+  document.getElementById("btnOrderSheet").click();
+};
+
+function renderOrderDetails(){
+  orderDetailBody.innerHTML = "";
+
+  orderDetails.forEach((row, idx) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td><input class="oc-cell" value="${row.type}"></td>
+      <td><input class="oc-cell" value="${row.page}"></td>
+      <td><input class="oc-cell oc-amt" type="number" value="${row.front}"></td>
+      <td><input class="oc-cell oc-amt" type="number" value="${row.back}"></td>
+      <td><input class="oc-cell" value="${row.etc}"></td>
+      <td><input class="oc-cell" value="${row.partner||""}"></td>
+      <td><button class="oc-tiny">삭제</button></td>
+    `;
+
+    tr.querySelector("button").onclick = () => {
+      orderDetails.splice(idx,1);
+      renderOrderDetails();
+    };
+
+    orderDetailBody.appendChild(tr);
+  });
+}
+
+/* ================= 모달 ================= */
+document.getElementById("closeOrderModal").onclick = () => {
+  orderModal.classList.remove("active");
+};
+document.getElementById("closeOrderModal2").onclick = () => {
+  orderModal.classList.remove("active");
+};
+
+/* ================= 주소 ================= */
+function execDaumPostcode() {
+  new daum.Postcode({
+    oncomplete: function(data) {
+      document.getElementById("postcode").value = data.zonecode;
+      document.getElementById("address").value = data.roadAddress || data.jibunAddress;
+      document.getElementById("detailAddress").focus();
+    }
+  }).open();
+}
 
 /* ================= 초기 ================= */
 renderWorkList();

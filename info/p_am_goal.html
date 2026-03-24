@@ -7,8 +7,140 @@
 
   <link rel="stylesheet" href="../common.css">
   <script defer src="../common.js"></script>
+  <script>
+// 모달 열기
+function openModal() {
+  document.getElementById("goalModal").style.display = "flex";
+}
 
+// 모달 닫기
+function closeModal() {
+  document.getElementById("goalModal").style.display = "none";
+}
+
+// 버튼 연결
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.querySelector(".goal-header .btn:last-child");
+  btn.addEventListener("click", openModal);
+
+  generateYear();
+  generateTable();
+});
+
+// 연도 생성
+function generateYear(){
+  const select = document.getElementById("modalYear");
+  const year = new Date().getFullYear();
+
+  for(let i=year-5; i<=year+3; i++){
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = i + "년";
+    if(i === year) opt.selected = true;
+    select.appendChild(opt);
+  }
+}
+
+// 테이블 생성
+function generateTable(){
+  const tbody = document.getElementById("goalTableBody");
+
+  for(let i=1; i<=12; i++){
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${i}월</td>
+      <td><input type="number" class="totalInput"></td>
+      <td><input type="number" class="innerInput"></td>
+    `;
+
+    tbody.appendChild(tr);
+  }
+
+  // 이벤트 연결
+  document.querySelectorAll("input").forEach(el=>{
+    el.addEventListener("input", calcSum);
+  });
+}
+
+// 합계 계산
+function calcSum(){
+  let total = 0;
+  let inner = 0;
+
+  document.querySelectorAll(".totalInput").forEach(el=>{
+    total += Number(el.value || 0);
+  });
+
+  document.querySelectorAll(".innerInput").forEach(el=>{
+    inner += Number(el.value || 0);
+  });
+
+  document.getElementById("sumTotal").innerText = total.toLocaleString();
+  document.getElementById("sumInner").innerText = inner.toLocaleString();
+}
+
+    
+  </script>
+  
   <style>
+
+    .modal{
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.4);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+.modal-content{
+  width:700px;
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-header{
+  background:#1f6fb2;
+  color:#fff;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  font-weight:bold;
+}
+
+.modal-body{
+  padding:15px;
+}
+
+.modal-top{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.modal-footer{
+  margin-top:10px;
+  text-align:center;
+}
+
+.close{
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.modal table input{
+  width:100%;
+  border:none;
+  text-align:right;
+}
 
     .goal-container{
   display:flex;
@@ -323,5 +455,59 @@ td:first-child{
     </div>
   </section>
 </main>
+  <!-- 모달 -->
+<div id="goalModal" class="modal">
+  <div class="modal-content">
+
+    <!-- 헤더 -->
+    <div class="modal-header">
+      <span>지점목표등록</span>
+      <button class="close" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- 내용 -->
+    <div class="modal-body">
+
+      <!-- 상단 -->
+      <div class="modal-top">
+        <select>
+          <option>지점선택</option>
+          <option>강남파트</option>
+          <option>역삼파트</option>
+        </select>
+
+        <select id="modalYear"></select>
+      </div>
+
+      <!-- 테이블 -->
+      <table>
+        <thead>
+          <tr>
+            <th>월</th>
+            <th>전체목표</th>
+            <th>내부생산목표</th>
+          </tr>
+        </thead>
+        <tbody id="goalTableBody">
+          <!-- JS로 생성 -->
+        </tbody>
+        <tfoot>
+          <tr class="total">
+            <td>합계</td>
+            <td id="sumTotal">0</td>
+            <td id="sumInner">0</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <!-- 버튼 -->
+      <div class="modal-footer">
+        <button class="btn">저장</button>
+        <button class="btn secondary" onclick="closeModal()">닫기</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 </body>
 </html>

@@ -366,7 +366,7 @@ td:first-child{
 
     <div style="flex:1"></div>
 
-    <button class="btn">지점 목표 등록</button>
+    <button class="btn">목표 등록</button>
   </div>
 
   <!-- 테이블 영역 -->
@@ -461,7 +461,7 @@ td:first-child{
 
     <!-- 헤더 -->
     <div class="modal-header">
-      <span>지점목표등록</span>
+      <span>목표등록</span>
       <button class="close" onclick="closeModal()">✕</button>
     </div>
 
@@ -471,11 +471,16 @@ td:first-child{
       <!-- 상단 -->
       <div class="modal-top">
         <select>
-          <option>지점선택</option>
+          <option>부서선택</option>
           <option>강남파트</option>
           <option>역삼파트</option>
         </select>
-
+        <select>
+          <option>담당자선택</option>
+          <option>안현모</option>
+          <option>서덕현</option>
+          <option>신석호</option>
+        </select>
         <select id="modalYear"></select>
       </div>
 
@@ -484,8 +489,9 @@ td:first-child{
         <thead>
           <tr>
             <th>월</th>
-            <th>전체목표</th>
+            <th>전체목표(disabled)</th>
             <th>내부생산목표</th>
+            <th>외부생산목표</th>
           </tr>
         </thead>
         <tbody id="goalTableBody">
@@ -496,6 +502,7 @@ td:first-child{
             <td>합계</td>
             <td id="sumTotal">0</td>
             <td id="sumInner">0</td>
+            <td id="sumOut">0</td>
           </tr>
         </tfoot>
       </table>

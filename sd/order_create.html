@@ -936,6 +936,7 @@ function renderWorkList(){
     }],
     ship:0,
     disc:0
+    status: "DRAFT"
   };
 
   works.push(newWork);
@@ -1268,11 +1269,7 @@ document.getElementById("closeOrderModal2").onclick = () => {
 }
 renderWorkList();
 
-    const isLocked = work.status === "CONFIRMED";
 
-document.querySelectorAll("#itemBody input, #itemBody select").forEach(el=>{
-  el.disabled = isLocked;
-});
   
 </script>
 </body>

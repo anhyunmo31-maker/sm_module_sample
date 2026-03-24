@@ -869,11 +869,7 @@
   renderWorkList();
 };
 
-  const isLocked = work.status === "CONFIRMED";
 
-document.querySelectorAll("#itemBody input, #itemBody select").forEach(el=>{
-  el.disabled = isLocked;
-});
 
 function renderWorkList(){
   const list = document.getElementById("workList");
@@ -1252,6 +1248,12 @@ document.getElementById("closeOrderModal2").onclick = () => {
   }).open();
 }
 renderWorkList();
+
+    const isLocked = work.status === "CONFIRMED";
+
+document.querySelectorAll("#itemBody input, #itemBody select").forEach(el=>{
+  el.disabled = isLocked;
+});
   
 </script>
 </body>

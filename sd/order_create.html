@@ -1001,15 +1001,26 @@ inputs[0].oninput = () => work.items[idx].code = inputs[0].value;
 inputs[1].oninput = () => work.items[idx].name = inputs[1].value;
 inputs[2].oninput = () => work.items[idx].rmk  = inputs[2].value;
 
-    tr.querySelector("button").onclick = () => {
-      if (work.items.length === 1) {
-        alert("품목은 최소 1개 필요합니다.");
-        return;
-      }
-      work.items.splice(idx, 1);
-      renderWorkDetail();
-    };
+    const btnCopy = tr.querySelector(".btn-copy");
+const btnDel  = tr.querySelector(".btn-del");
 
+// 삭제
+btnDel.onclick = () => {
+  if (work.items.length === 1) {
+    alert("품목은 최소 1개 필요합니다.");
+    return;
+  }
+  work.items.splice(idx, 1);
+  renderWorkDetail();
+};
+
+// 복사
+btnCopy.onclick = () => {
+  const copyItem = JSON.parse(JSON.stringify(work.items[idx]));
+  work.items.splice(idx + 1, 0, copyItem);
+  renderWorkDetail();
+};
+    
     itemBody.appendChild(tr);
     recalcRow();
   });
@@ -1100,19 +1111,19 @@ const btnDel  = tr.querySelector(".btn-del");
 
 // ✅ 삭제
 btnDel.onclick = () => {
-  if (work.items.length === 1) {
-    alert("품목은 최소 1개 필요합니다.");
+  if (orderDetails.length === 1) {
+    alert("작업행은 최소 1개 필요합니다.");
     return;
   }
-  work.items.splice(idx, 1);
-  renderWorkDetail();
+  orderDetails.splice(idx, 1);
+  renderOrderDetails();
 };
 
 // ✅ 복사
 btnCopy.onclick = () => {
-  const copyItem = JSON.parse(JSON.stringify(work.items[idx]));
-  work.items.splice(idx + 1, 0, copyItem); // 아래에 삽입
-  renderWorkDetail();
+  const copyItem = JSON.parse(JSON.stringify(orderDetails[idx]));
+  orderDetails.splice(idx + 1, 0, copyItem);
+  renderOrderDetails();
 };
 
     orderDetailBody.appendChild(tr);

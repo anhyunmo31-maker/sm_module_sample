@@ -855,15 +855,20 @@
 
 <script>
 
-  document.getElementById("btnConfirm").onclick = () => {
+document.getElementById("btnConfirm").onclick = () => {
+
   if (work.status === "CONFIRMED") {
-    alert("이미 확정된 작업입니다.");
-    return;
+
+    if (!confirm("확정을 해제하시겠습니까?")) return;
+
+    work.status = "DRAFT";
+
+  } else {
+
+    if (!confirm("이 작업을 확정하시겠습니까?")) return;
+
+    work.status = "CONFIRMED";
   }
-
-  if (!confirm("이 작업을 확정하시겠습니까?")) return;
-
-  work.status = "CONFIRMED";
 
   renderWorkDetail();
   renderWorkList();
@@ -1068,6 +1073,19 @@ btnCopy.onclick = () => {
   });
 
   recalcSummary();
+  const isLocked = work.status === "CONFIRMED";
+
+document.querySelectorAll("#itemBody input, #itemBody select").forEach(el=>{
+  el.disabled = isLocked;
+});
+
+workNameEl.disabled = isLocked;
+workMemoEl.disabled = isLocked;
+qtyBEl.disabled = isLocked;
+document.getElementById("paper").disabled = isLocked;
+
+const btn = document.getElementById("btnConfirm");
+btn.textContent = isLocked ? "확정해제" : "확정";
 }
 
 function recalcSummary(){

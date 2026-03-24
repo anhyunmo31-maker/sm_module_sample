@@ -52,6 +52,7 @@ function generateTable(){
       <td>${i}월</td>
       <td><input type="number" class="totalInput"></td>
       <td><input type="number" class="innerInput"></td>
+      <td><input type="number" class="outInput"></td>
     `;
 
     tbody.appendChild(tr);
@@ -76,8 +77,13 @@ function calcSum(){
     inner += Number(el.value || 0);
   });
 
+  document.querySelectorAll(".outInput").forEach(el=>{
+    inner += Number(el.value || 0);
+  });
+
   document.getElementById("sumTotal").innerText = total.toLocaleString();
   document.getElementById("sumInner").innerText = inner.toLocaleString();
+  document.getElementById("sumOut").innerText = inner.toLocaleString();
 }
 
     

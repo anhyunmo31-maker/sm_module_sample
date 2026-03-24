@@ -213,13 +213,18 @@ td:first-child{
 
   <!-- 상단 필터 -->
   <div class="goal-header">
-    <select>
-      <option>전체보기</option>
-    </select>
-    <input type="text" value="2024년">
-    <input type="text" value="2024년">
-    <button class="btn">검색</button>
-    <label><input type="checkbox" checked> 목표관리 Open</label>
+  <!-- 부서 선택 -->
+  <select id="deptSelect">
+    <option value="">전체보기</option>
+    <option value="GANGNAM">강남파트</option>
+    <option value="YEOKSAM">역삼파트</option>
+    <option value="JAMSIL">잠실파트</option>
+  </select>
+
+  <!-- 연도 선택 -->
+  <select id="yearSelect"></select>
+
+  <button class="btn">검색</button>
 
     <div style="flex:1"></div>
 

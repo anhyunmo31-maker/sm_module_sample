@@ -9,6 +9,73 @@
   <script defer src="../common.js"></script>
 
   <style>
+
+    .goal-container{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.goal-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.goal-grid{
+  display:flex;
+  gap:16px;
+}
+
+.goal-card{
+  flex:1;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
+}
+
+.goal-title{
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+th, td{
+  border:1px solid #e5e7eb;
+  padding:6px;
+  text-align:right;
+}
+
+th{
+  background:#f3f4f6;
+  text-align:center;
+}
+
+td:first-child{
+  text-align:center;
+}
+
+.total{
+  background:#6b7280;
+  color:#fff;
+  font-weight:900;
+}
+
+.btn.small{
+  margin-top:8px;
+  height:30px;
+  font-size:12px;
+  padding:0 10px;
+}
+    
     .titlebar{
       background:#1f6fb2;
       color:#fff;
@@ -142,27 +209,102 @@
         <div class="panel-title">파트 목표 입력</div>
       </div>
     </div>
+<div class="goal-container">
 
+  <!-- 상단 필터 -->
+  <div class="goal-header">
+    <select>
+      <option>전체보기</option>
+    </select>
+    <input type="text" value="2024년">
+    <input type="text" value="2024년">
+    <button class="btn">검색</button>
+    <label><input type="checkbox" checked> 목표관리 Open</label>
+
+    <div style="flex:1"></div>
+
+    <button class="btn">지점 목표 등록</button>
+  </div>
+
+  <!-- 테이블 영역 -->
+  <div class="goal-grid">
+
+    <!-- LEFT -->
+    <div class="goal-card">
+      <div class="goal-title">[2024년 목표관리] 현대TFT</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>월</th>
+            <th>전체목표</th>
+            <th>내부생산목표</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1월</td><td>0</td><td>0</td></tr>
+          <tr><td>2월</td><td>0</td><td>0</td></tr>
+          <tr><td>3월</td><td>107,800,000</td><td>96,800,000</td></tr>
+          <tr><td>4월</td><td>15,400,000</td><td>4,400,000</td></tr>
+          <tr><td>5월</td><td>0</td><td>0</td></tr>
+          <tr><td>6월</td><td>0</td><td>0</td></tr>
+          <tr><td>7월</td><td>0</td><td>0</td></tr>
+          <tr><td>8월</td><td>0</td><td>0</td></tr>
+          <tr><td>9월</td><td>0</td><td>0</td></tr>
+          <tr><td>10월</td><td>0</td><td>0</td></tr>
+          <tr><td>11월</td><td>0</td><td>0</td></tr>
+          <tr><td>12월</td><td>0</td><td>0</td></tr>
+          <tr class="total">
+            <td>합계</td>
+            <td>123,200,000</td>
+            <td>101,200,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="btn small">수정</button>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="goal-card">
+      <div class="goal-title">[2024년 목표관리] 생산팀(POD)</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>월</th>
+            <th>전체목표</th>
+            <th>내부생산목표</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1월</td><td>3,300,000</td><td>3,300,000</td></tr>
+          <tr><td>2월</td><td>5,500,000</td><td>5,500,000</td></tr>
+          <tr><td>3월</td><td>2,200,000</td><td>2,200,000</td></tr>
+          <tr><td>4월</td><td>2,200,000</td><td>2,200,000</td></tr>
+          <tr><td>5월</td><td>14,300,000</td><td>11,000,000</td></tr>
+          <tr><td>6월</td><td>14,300,000</td><td>11,000,000</td></tr>
+          <tr><td>7월</td><td>2,200,000</td><td>2,200,000</td></tr>
+          <tr><td>8월</td><td>11,000,000</td><td>11,000,000</td></tr>
+          <tr><td>9월</td><td>11,000,000</td><td>9,900,000</td></tr>
+          <tr><td>10월</td><td>9,900,000</td><td>5,500,000</td></tr>
+          <tr><td>11월</td><td>11,000,000</td><td>5,500,000</td></tr>
+          <tr><td>12월</td><td>9,900,000</td><td>5,500,000</td></tr>
+          <tr class="total">
+            <td>합계</td>
+            <td>96,800,000</td>
+            <td>74,800,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="btn small">수정</button>
+    </div>
+
+  </div>
+</div>
     <div class="panel-body">
-      <div class="empty-wrap">
-        <div class="empty-card">
-          <div class="empty-top">
-            <div class="icon">🧩</div>
-            <div>
-              <div class="badge">PROTOTYPE · 준비중</div>
-              <h2 class="empty-title">화면 정의가 아직 미정입니다</h2>
-              <p class="empty-desc">
-                현재는 UI 프로토타입 단계로, 상세 방식이 확정되면
-                이 영역에 추가될 예정입니다.
-              </p>
-            </div>
-          </div>
-
-          <div class="empty-actions">
-            <button class="btn secondary" onclick="location.href='../index.html'">홈으로</button>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </section>
 </main>

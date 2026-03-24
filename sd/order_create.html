@@ -855,6 +855,25 @@
 
 <script>
 
+  document.getElementById("btnConfirm").onclick = () => {
+  if (work.status === "CONFIRMED") {
+    alert("이미 확정된 작업입니다.");
+    return;
+  }
+
+  if (!confirm("이 작업을 확정하시겠습니까?")) return;
+
+  work.status = "CONFIRMED";
+
+  renderWorkDetail();
+  renderWorkList();
+};
+
+  const isLocked = work.status === "CONFIRMED";
+
+document.querySelectorAll("#itemBody input, #itemBody select").forEach(el=>{
+  el.disabled = isLocked;
+});
 
 function renderWorkList(){
   const list = document.getElementById("workList");

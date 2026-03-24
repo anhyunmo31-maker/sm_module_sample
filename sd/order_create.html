@@ -978,7 +978,8 @@ function renderWorkDetail(){
   <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA}"></td>
   <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.priceB}"></td>
   <td class="oc-amt">0원</td>
-  <td><button class="oc-tiny" type="button">삭제</button></td>
+  <td><button class="oc-tiny btn-copy" type="button">복사</button>
+  <button class="oc-tiny btn-del" type="button">삭제</button></td>
 `;
 
     const selectType = tr.querySelector("select");
@@ -1078,7 +1079,8 @@ function renderOrderDetails(){
       <td><input class="oc-cell oc-amt" type="number" value="${row.back || 0}"></td>
       <td><input class="oc-cell" value="${row.etc || ""}"></td>
       <td><input class="oc-cell" value="${row.partner || ""}"></td>
-      <td><button class="oc-tiny" type="button">삭제</button></td>
+      <td><button class="oc-tiny btn-copy" type="button">복사</button>
+  <button class="oc-tiny btn-del" type="button">삭제</button></td>
     `;
 
     const inputs = tr.querySelectorAll("input");
@@ -1092,10 +1094,25 @@ function renderOrderDetails(){
     inputs[6].oninput = () => row.etc = inputs[6].value;
     inputs[7].oninput = () => row.partner = inputs[7].value;
 
-    tr.querySelector("button").onclick = () => {
-      orderDetails.splice(idx,1);
-      renderOrderDetails();
-    };
+    const btnCopy = tr.querySelector(".btn-copy");
+const btnDel  = tr.querySelector(".btn-del");
+
+// ✅ 삭제
+btnDel.onclick = () => {
+  if (work.items.length === 1) {
+    alert("품목은 최소 1개 필요합니다.");
+    return;
+  }
+  work.items.splice(idx, 1);
+  renderWorkDetail();
+};
+
+// ✅ 복사
+btnCopy.onclick = () => {
+  const copyItem = JSON.parse(JSON.stringify(work.items[idx]));
+  work.items.splice(idx + 1, 0, copyItem); // 아래에 삽입
+  renderWorkDetail();
+};
 
     orderDetailBody.appendChild(tr);
   });

@@ -1086,6 +1086,7 @@ document.getElementById("paper").disabled = isLocked;
 
 const btn = document.getElementById("btnConfirm");
 btn.textContent = isLocked ? "확정해제" : "확정";
+document.getElementById("btnOrderSheet").disabled = (work.status !== "CONFIRMED");
 }
 
 function recalcSummary(){

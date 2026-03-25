@@ -600,7 +600,7 @@
                 <button class="oc-tiny" type="button" id="btnAddItem">품목행 추가</button>
                 <button class="oc-tiny" type="button" id="btnClearItems">품목 초기화</button>
                 <button class="oc-tiny" type="button" id="btnOrderSheet2">외주발주서</button>
-                <button class="oc-tiny" type="button" id="btnOrderSheet2">P&D발주서</button>
+                <!-- <button class="oc-tiny" type="button" id="btnOrderSheet2">P&D발주서</button> -->
                 <button class="oc-tiny" id="btnConfirm">확정</button>
               </div>
             </div>
@@ -1087,7 +1087,7 @@ document.getElementById("paper").disabled = isLocked;
 
 const btn = document.getElementById("btnConfirm");
 btn.textContent = isLocked ? "확정해제" : "확정";
-document.getElementById("btnOrderSheet").disabled = (work.status !== "CONFIRMED");
+document.getElementById("btnOrderSheet2").disabled = (work.status !== "CONFIRMED");
 }
 
 function recalcSummary(){
@@ -1204,24 +1204,24 @@ document.getElementById("btnAddOrderDetail").onclick = () => {
   renderOrderDetails();
 };
 
-  document.getElementById("btnOrderSheet").onclick = () => {
+//   document.getElementById("btnOrderSheet").onclick = () => {
 
-  document.getElementById("modalProductName").value = work.name;
-  document.getElementById("modalQty").value = work.qtyB;
+//   document.getElementById("modalProductName").value = work.name;
+//   document.getElementById("modalQty").value = work.qtyB;
 
-  // work.items → orderDetails 변환
-  orderDetails = work.items.map(it => ({
-    type: it.type,
-    page: it.code,
-    front: it.qtyA,
-    back: 0,
-    paper: it.name,
-    etc: it.rmk || ""
-  }));
+//   // work.items → orderDetails 변환
+//   orderDetails = work.items.map(it => ({
+//     type: it.type,
+//     page: it.code,
+//     front: it.qtyA,
+//     back: 0,
+//     paper: it.name,
+//     etc: it.rmk || ""
+//   }));
 
-  renderOrderDetails();
-  orderModal.classList.add("active");
-};
+//   renderOrderDetails();
+//   orderModal.classList.add("active");
+// };
 
   document.getElementById("btnOrderSheet2").onclick = () => {
 

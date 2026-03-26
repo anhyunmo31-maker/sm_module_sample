@@ -1037,9 +1037,14 @@ function renderWorkDetail(){
       <option value="인쇄" ${it.type === "인쇄" ? "selected" : ""}>인쇄</option>
       <option value="후가공" ${it.type === "후가공" ? "selected" : ""}>후가공</option>
       <option value="제본" ${it.type === "제본" ? "selected" : ""}>제본</option>
+      <option value="직접구매" ${it.type === "직접구매" ? "selected" : ""}>직접구매</option>
     </select>
   </td>
-  <td><input class="oc-cell" value="${it.code}" placeholder="표지/본문등"></td>
+  <td>
+    <input class="oc-cell"
+      value="${it.code}"
+      placeholder="${it.type === "직접구매" ? "업체명" : "표지/본문등"}">
+  </td>
   <td><input class="oc-cell" value="${it.name}" placeholder="작업명"></td>
   <td><input class="oc-cell" value="${it.rmk}" placeholder="비고"></td>
   <td><input class="oc-cell oc-amt" type="number" min="0" value="${it.qtyA}"></td>
@@ -1063,7 +1068,10 @@ const subTd = tr.children[6];   // 소계
       recalcSummary();
     }
 
-   selectType.onchange = () => work.items[idx].type = selectType.value;
+selectType.onchange = () => {
+  work.items[idx].type = selectType.value;
+  renderWorkDetail();
+};
 inputs[0].oninput = () => work.items[idx].code = inputs[0].value;
 inputs[1].oninput = () => work.items[idx].name = inputs[1].value;
 inputs[2].oninput = () => work.items[idx].rmk  = inputs[2].value;

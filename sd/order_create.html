@@ -777,7 +777,7 @@
           <thead>
           <tr>
             <th rowspan="2" style="width:120px;">구분</th>
-            <th rowspan="2" style="width:120px;">구성</th>
+            <th rowspan="2" id="configHeader" style="width:120px;">구성</th>
             <th rowspan="2" style="width:120px;">작업명</th>
             <th rowspan="2" style="width:120px;">페이지</th>
             <th colspan="2" style="width:200px;">인쇄도수</th>
@@ -1115,6 +1115,15 @@ document.getElementById("paper").disabled = isLocked;
 const btn = document.getElementById("btnConfirm");
 btn.textContent = isLocked ? "확정해제" : "확정";
 // document.getElementById("btnOrderSheet2").disabled = (work.status !== "CONFIRMED");
+function updateHeader(){
+  const header = document.getElementById("configHeader");
+
+  const hasDirect = work.items.some(it => it.type === "직접구매");
+
+  header.textContent = hasDirect ? "업체명" : "구성";
+}
+
+  updateHeader();
 }
 
 function recalcSummary(){

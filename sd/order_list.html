@@ -478,40 +478,11 @@ function syncCheckAllState(){
 
   return rows.filter(r => ids.includes(r.id));
 }
-function toggleConfirm(){
-  const selected = getSelectedRows();
 
-  if(!selected.length){
-    alert("선택된 주문이 없습니다.");
-    return;
-  }
 
-  // 유효성 체크
-  const invalid = selected.filter(r => 
-    r.status !== "주문대기" && r.status !== "주문확정"
-  );
-
-  if(invalid.length){
-    alert("주문대기 / 주문확정 상태만 처리 가능합니다.");
-    return;
-  }
-
-  // 상태 토글
-  selected.forEach(r => {
-    if(r.status === "주문대기"){
-      r.status = "주문확정";
-    } else if(r.status === "주문확정"){
-      r.status = "주문대기";
-    }
-  });
-
-  alert("처리 완료");
-  render(rows);
-}
-
-  document
-  .getElementById("btnToggleConfirm")
-  .addEventListener("click", toggleConfirm);
+function btnToggleConfirm(){
+  alert("주문대기 / 주문확정 상태만 처리 가능합니다.");
+  
 </script>
 </body>
 </html>

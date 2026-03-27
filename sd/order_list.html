@@ -254,6 +254,9 @@
           </select>
 
           <div class="btns">
+            <button class="btn success" id="btnToggleConfirm">
+              확정/취소
+            </button>
             <button class="btn ghost" id="btnExcel">엑셀다운로드</button>
           </div>
 
@@ -265,6 +268,9 @@
         <table aria-label="주문목록 그리드">
           <thead>
             <tr>
+              <th class="num">
+                <input type="checkbox" id="chkAll">
+              </th>
               <th class="num">#</th>
               <th class="w-ord">주문번호 / 제목</th>
               <th class="w-company">회사명</th>
@@ -287,6 +293,8 @@
 </main>
 
 <script>
+
+
   // ===== 샘플 데이터(프로토타입) =====
   const rows = [
     {
@@ -387,6 +395,10 @@
     list.forEach(r => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
+      <tr>
+        <td class="num">
+          <input type="checkbox" class="rowChk" data-id="${r.id}">
+        </td>
         <td class="num">${r.id}</td>
         <td class="w-ord">
           <a class="ord-link" href="#" onclick="return false;">[${r.ordno}]</a>
@@ -460,6 +472,46 @@ function syncCheckAllState(){
   });
   syncCheckAllState();
 
+   function getSelectedRows(){
+  const ids = [...document.querySelectorAll(".rowChk:checked")]
+    .map(chk => Number(chk.dataset.id));
+
+  return rows.filter(r => ids.includes(r.id));
+}
+function toggleConfirm(){
+  const selected = getSelectedRows();
+
+  if(!selected.length){
+    alert("선택된 주문이 없습니다.");
+    return;
+  }
+
+  // 유효성 체크
+  const invalid = selected.filter(r => 
+    r.status !== "주문대기" && r.status !== "주문확정"
+  );
+
+  if(invalid.length){
+    alert("주문대기 / 주문확정 상태만 처리 가능합니다.");
+    return;
+  }
+
+  // 상태 토글
+  selected.forEach(r => {
+    if(r.status === "주문대기"){
+      r.status = "주문확정";
+    } else if(r.status === "주문확정"){
+      r.status = "주문대기";
+    }
+  });
+
+  alert("처리 완료");
+  render(rows);
+}
+
+  document
+  .getElementById("btnToggleConfirm")
+  .addEventListener("click", toggleConfirm);
 </script>
 </body>
 </html>

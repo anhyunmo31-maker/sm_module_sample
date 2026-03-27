@@ -894,6 +894,11 @@ document.getElementById("poClose").onclick = ()=>{
 document.getElementById("poModal").classList.remove("active");
 }
 
+ function toggleDevMemo(){
+  const body = document.querySelector(".dev-memo-body");
+  body.style.display = body.style.display === "block" ? "none" : "block";
+}
+
 </script>
 
 </body>

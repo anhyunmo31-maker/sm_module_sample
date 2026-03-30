@@ -6,6 +6,104 @@
   <title>ERP UI - 카드매출목록</title>
   <link rel="stylesheet" href="../common.css">
   <script defer src="../common.js"></script>
+  <style>
+
+/* 🔹 테이블 영역 */
+.table-wrap{
+  width:100%;
+  overflow-x:auto;
+}
+
+/* 🔹 테이블 기본 */
+.table{
+  min-width:1400px;
+  border-collapse:collapse;
+}
+
+/* 🔹 헤더 */
+.table thead th{
+  position:sticky;
+  top:0;
+  background:#f8fafc;
+  z-index:2;
+  font-weight:700;
+  border-bottom:2px solid #e5e7eb;
+}
+
+/* 🔹 셀 공통 */
+.table th,
+.table td{
+  padding:10px 12px;
+  border-bottom:1px solid #eee;
+  white-space:nowrap;
+  font-size:13px;
+}
+
+/* 🔹 hover */
+.table tbody tr:hover{
+  background:#f9fbff;
+}
+
+/* 🔹 금액 정렬 */
+.table td:nth-child(10),
+.table td:nth-child(11){
+  text-align:right;
+  font-weight:600;
+}
+
+/* 🔹 카드번호 */
+.table td:nth-child(13){
+  letter-spacing:1px;
+  font-family:monospace;
+}
+
+/* 🔹 승인번호 */
+.table td:nth-child(14){
+  font-family:monospace;
+}
+
+/* 🔹 총금액 강조 */
+.table td:nth-child(11){
+  color:#1f6fb2;
+}
+
+/* 🔹 rowspan 정렬 보정 */
+.table td[rowspan]{
+  vertical-align:middle;
+  background:#fafafa;
+}
+
+/* 🔹 검색 영역 간격 정리 */
+.row{
+  margin-bottom:10px;
+  align-items:center;
+}
+
+/* 🔹 input / select 높이 맞추기 */
+.field input,
+.field select{
+  height:32px;
+}
+
+/* 🔹 버튼 살짝 개선 */
+.btn{
+  height:32px;
+  padding:0 12px;
+  font-size:13px;
+}
+
+/* 🔹 엑셀 버튼 강조 */
+.btn.primary{
+  background:#1f6fb2;
+  border:none;
+  color:#fff;
+}
+
+.btn.primary:hover{
+  background:#195a91;
+}
+
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -49,7 +147,7 @@
         <div class="field" style="min-width:260px"><input type="text" placeholder="거래처명, 회사명으로 검색" style="width:100%"></div>
         <button class="btn">검색</button>
       </div>
-
+<div class="table-wrap">
       <table class="table">
         <thead>
           <tr>
@@ -139,6 +237,7 @@
   </tr>
 </tbody>
       </table>
+</div>
     </div>
   </section>
 </main>

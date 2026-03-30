@@ -38,31 +38,49 @@
 .table-wrap{
   border:1px solid #e6ebf2;
   border-radius:12px;
-  overflow:auto;
+  overflow:hidden;   /* 스크롤 제거 */
   background:#fff;
 }
 
 table{
   width:100%;
   border-collapse:collapse;
-  font-size:13px;
+  table-layout:fixed;   /* 화면 안에 맞춤 */
+  font-size:12px;
 }
 
 thead th{
   background:#f3f4f6;
-  padding:8px;
+  padding:7px 4px;
   border-bottom:1px solid #e6ebf2;
   white-space:nowrap;
+  text-align:center;
 }
 
 tbody td{
-  padding:8px;
+  padding:7px 4px;
   border-bottom:1px solid #f0f2f5;
   text-align:center;
+  vertical-align:middle;
+  word-break:keep-all;
 }
 
 tbody tr:hover{
   background:#f9fbff;
+}
+
+td.left{
+  text-align:left;
+}
+
+td.money{
+  text-align:right;
+  white-space:nowrap;
+}
+
+td.group-cell{
+  background:#fafcff;
+  font-weight:700;
 }
 
 /* 하단 합계 */
@@ -104,6 +122,29 @@ tbody tr:hover{
   height:100px;
   font-size:12px;
 }
+
+/* 컬럼 폭 */
+.col-po{width:8%;}
+.col-se{width:8%;}
+.col-ord{width:10%;}
+.col-seq{width:3%;}
+.col-work1{width:8%;}
+.col-date{width:6%;}
+.col-qty{width:4%;}
+.col-sales-dept{width:6%;}
+.col-sales-user{width:6%;}
+.col-po-dept{width:5%;}
+.col-po-user{width:5%;}
+.col-work2{width:6%;}
+.col-unit{width:5%;}
+.col-amt{width:6%;}
+.col-outsourcing{width:7%;}
+.col-sales{width:7%;}
+
+@media (max-width: 1400px){
+  table{font-size:11px;}
+  thead th, tbody td{padding:6px 3px;}
+}
 </style>
 </head>
 
@@ -122,7 +163,7 @@ tbody tr:hover{
 
 <main class="app">
 
-<div class="titlebar">매입마감 > 외주정산현황</div>
+<div class="titlebar">매입마감 &gt; 외주정산현황</div>
 
 <section class="panel">
 <div class="panel-body">
@@ -156,96 +197,109 @@ tbody tr:hover{
 <!-- 테이블 -->
 <div class="table-wrap">
 <table>
-<thead>
-<tr>
-<th>No</th>
-<th>발주번호</th>
-<th>정산번호</th>
-<th>주문번호</th>
-<th>순번</th>
-<th>작업명</th>
-<th>정산일자</th>
-<th>수량</th>
-<th>영업부서</th>
-<th>영업담당자</th>
-<th>발주부서</th>
-<th>발주자</th>
-<th>작업명</th>
-<th>단가</th>
-<th>금액</th>
-<th>외주총금액</th>
-<th>매출액</th>
-</tr>
-</thead>
+  <colgroup>
+    <col class="col-po">
+    <col class="col-se">
+    <col class="col-ord">
+    <col class="col-seq">
+    <col class="col-work1">
+    <col class="col-date">
+    <col class="col-qty">
+    <col class="col-sales-dept">
+    <col class="col-sales-user">
+    <col class="col-po-dept">
+    <col class="col-po-user">
+    <col class="col-work2">
+    <col class="col-unit">
+    <col class="col-amt">
+    <col class="col-outsourcing">
+    <col class="col-sales">
+  </colgroup>
 
-<tbody>
-<tr>
-<td>1</td>
-<td>PO202603160001</td>
-<td>SE202603160001</td>
-<td>OR202603190032</td>
-<td>1</td>
-<td>작업명1(erp기준세부품목명)</td>
-<td>2026-03-16</td>
-<td>21</td>
-<td>강남파트</td>
-<td>송두석</td>
-<td>생산팀</td>
-<td>임경규</td>
-<td>실크인쇄</td>
-<td>50,000</td>
-<td>1,050,000</td>
-<td>1,050,000</td>
-<td>1,500,000</td>
-</tr>
+  <thead>
+    <tr>
+      <th>발주번호</th>
+      <th>정산번호</th>
+      <th>주문번호</th>
+      <th>순번</th>
+      <th>작업명</th>
+      <th>정산일자</th>
+      <th>수량</th>
+      <th>영업부서</th>
+      <th>영업담당자</th>
+      <th>발주부서</th>
+      <th>발주자</th>
+      <th>작업명</th>
+      <th>단가</th>
+      <th>금액</th>
+      <th>외주총금액</th>
+      <th>매출액</th>
+    </tr>
+  </thead>
 
-<tr>
-<td>2</td>
-<td>PO202603160002</td>
-<td>SE202603160001</td>
-<td>OR202603090025</td>
-<td>1</td>
-<td>작업명2(erp기준세부품목명)</td>
-<td>2026-03-12</td>
-<td>30</td>
-<td>강남파트</td>
-<td>최성혁</td>
-<td>생산팀</td>
-<td>노신기</td>
-<td>비닐내지</td>
-<td>19,000</td>
-<td>570,000</td>
-<td>570,000</td>
-<td>800,000</td> 
-</tr>
+  <tbody>
+    <!-- 1번 그룹 : 주문번호-순번이 1건뿐이라 그냥 단일 표시 -->
+    <tr>
+      <td>PO202603160001</td>
+      <td>SE202603160001</td>
+      <td>OR202603190032</td>
+      <td>1</td>
+      <td class="left">작업명1(erp기준세부품목명)</td>
+      <td>2026-03-16</td>
+      <td>21</td>
+      <td>강남파트</td>
+      <td>송두석</td>
+      <td>생산팀</td>
+      <td>임경규</td>
+      <td>실크인쇄</td>
+      <td class="money">50,000</td>
+      <td class="money">1,050,000</td>
+      <td class="money group-cell">1,050,000</td>
+      <td class="money group-cell">1,500,000</td>
+    </tr>
 
-<tr>
-<td>3</td>
-<td>PO202603160003</td>
-<td>SE202603160002</td>
-<td>OR202603090025</td>
-<td>1</td>
-<td>작업명2(erp기준세부품목명)</td>
-<td>2026-03-12</td>
-<td>1</td>
-<td>강남파트</td>
-<td>최성혁</td>
-<td>생산팀</td>
-<td>노신기</td>
-<td>후가공</td>
-<td>400,000</td>
-<td>400,000</td>
-<td>400,000</td>
-<td>800,000</td> 
-</tr>
-</tbody>
+    <!-- 2번 그룹 : 같은 주문번호+순번이 2건이라 외주총금액/매출액은 rowspan -->
+    <tr>
+      <td>PO202603160002</td>
+      <td>SE202603160001</td>
+      <td rowspan="2" class="group-cell">OR202603090025</td>
+      <td rowspan="2" class="group-cell">1</td>
+      <td class="left">작업명2(erp기준세부품목명)</td>
+      <td>2026-03-12</td>
+      <td>30</td>
+      <td>강남파트</td>
+      <td>최성혁</td>
+      <td>생산팀</td>
+      <td>노신기</td>
+      <td>비닐내지</td>
+      <td class="money">19,000</td>
+      <td class="money">570,000</td>
+      <td rowspan="2" class="money group-cell">970,000</td>
+      <td rowspan="2" class="money group-cell">800,000</td>
+    </tr>
+
+    <tr>
+      <td>PO202603160003</td>
+      <td>SE202603160002</td>
+      <td class="left">작업명2(erp기준세부품목명)</td>
+      <td>2026-03-12</td>
+      <td>1</td>
+      <td>강남파트</td>
+      <td>최성혁</td>
+      <td>생산팀</td>
+      <td>노신기</td>
+      <td>후가공</td>
+      <td class="money">400,000</td>
+      <td class="money">400,000</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 
 <!-- 합계 -->
 <div class="summary-bar">
   <div>총 건수: <strong>2건</strong></div>
-  <div>외주금액 합계: <strong>1,620,000</strong></div>
+  <div>외주금액 합계: <strong>2,020,000</strong></div>
 </div>
 
 <!-- 개발메모 -->

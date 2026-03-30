@@ -55,24 +55,84 @@
         <thead>
           <tr>
             <th style="width:60px">#</th>
-            <th>선매출번호</th>
-            <th>등록일자</th>
-            <th>부서명</th>
-            <th>부서담당자</th>
+            <th>매출번호</th>
+            <th>매출일자</th>
+            <th>영업부서</th>
+            <th>영업담당자</th>
             <th>거래처명</th>
-            <th>사업자번호</th>
             <th>거래처담당자</th>
-            <th>금액</th>
-            <th>차감주문번호</th>
+            <th>사업자번호</th>
+            <th>선매출금액</th>
+            <th>선매출잔액</th>
             <th>비고</th>
-            <th>결제구분</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td colspan="7" style="color:#6b7280;">선매출입력과 <-> 차감 주문번호는 1:1, 1:n인경우 선매출입력은 다르게구성 + 주문에서의 금액이 10,000원인데 선매출금액은 9,000원일때 등 경우의수 체크필요 .</td>
-          </tr>
-        </tbody>
+       <tbody>
+
+  <!-- 1️⃣ 선매출만 존재 (아직 차감 안됨) -->
+  <tr>
+    <td>1</td>
+    <td>PRE20260330001</td>
+    <td>2026-03-30</td>
+    <td>강남파트</td>
+    <td>이수현</td>
+    <td>ABC마케팅</td>
+    <td>김지훈</td>
+    <td>123-45-67890</td>
+    <td style="text-align:right;">1,000,000</td>
+    <td style="text-align:right;">1,000,000</td>
+    <td>비대면 카드 선결제</td>
+  </tr>
+
+  <!-- 2️⃣ 부분 차감 (1:1) -->
+  <tr>
+    <td>2</td>
+    <td>PRE20260330002</td>
+    <td>2026-03-30</td>
+    <td>시청파트</td>
+    <td>김민수</td>
+    <td>글로벌애드</td>
+    <td>박지은</td>
+    <td>222-33-44444</td>
+    <td style="text-align:right;">900,000</td>
+    <td style="text-align:right;color:#d97706;">300,000</td>
+    <td>ORD20260325015 차감 (600,000)</td>
+  </tr>
+
+  <!-- 3️⃣ 여러 주문으로 차감 (1:N) -->
+  <tr>
+    <td>3</td>
+    <td>PRE20260330003</td>
+    <td>2026-03-30</td>
+    <td>강남파트</td>
+    <td>박민수</td>
+    <td>테크솔루션</td>
+    <td>최지훈</td>
+    <td>555-66-77777</td>
+    <td style="text-align:right;">2,000,000</td>
+    <td style="text-align:right;color:#dc2626;">0</td>
+    <td>
+      ORD20260326001 (1,000,000)<br>
+      ORD20260326002 (1,000,000)
+    </td>
+  </tr>
+
+  <!-- 4️⃣ 주문금액 > 선매출 (부족 케이스) -->
+  <tr>
+    <td>4</td>
+    <td>PRE20260330004</td>
+    <td>2026-03-30</td>
+    <td>서소문파트</td>
+    <td>정다은</td>
+    <td>미디어랩</td>
+    <td>한유진</td>
+    <td>888-99-00000</td>
+    <td style="text-align:right;">900,000</td>
+    <td style="text-align:right;color:#dc2626;">0</td>
+    <td>ORD20260327001 (1,000,000) → 100,000 추가결제 필요</td>
+  </tr>
+
+</tbody>
       </table>
     </div>
   </section>

@@ -356,6 +356,17 @@
         <input placeholder="결제명" class="ctl"><br><br>
         <input placeholder="결제금액" class="ctl" id="salesAmt"><br><br>
         <input placeholder="거래처" class="ctl"><br><br>
+        <div style="margin-top:10px;">
+    <button class="btn ghost" onclick="openPrepay()">선매출차감조회</button>
+
+    <div id="prepayArea" style="margin-top:10px;"></div>
+
+    <div style="text-align:right; margin-top:6px;">
+      차감금액 : <b id="prepayTotal">0</b> 원
+    </div>
+  </div>
+
+  <br>
         <select class="ctl">
           <option>카드</option>
           <option>현금</option>

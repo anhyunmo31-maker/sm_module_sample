@@ -254,6 +254,9 @@
           </select>
 
           <div class="btns">
+            <button class="btn primary" id="btnSalesCreate">
+  매출등록
+</button>
             <button class="btn success" id="btnToggleConfirm">
               확정/취소
             </button>
@@ -291,6 +294,45 @@
     </div>
   </section>
 </main>
+  <div class="modal" id="salesModal">
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <div>매출등록</div>
+      <button onclick="closeSalesModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- 선택 주문 -->
+      <div style="margin-bottom:12px; font-weight:900;">선택 주문</div>
+      <div id="salesOrderList"></div>
+
+      <!-- 합계 -->
+      <div style="margin-top:10px; text-align:right;">
+        총합계 : <b id="salesTotal">0</b> 원
+      </div>
+
+      <!-- 입력 -->
+      <div style="margin-top:20px;">
+        <input placeholder="결제명" class="ctl"><br><br>
+        <input placeholder="결제금액" class="ctl" id="salesAmt"><br><br>
+        <input placeholder="거래처" class="ctl"><br><br>
+        <select class="ctl">
+          <option>카드</option>
+          <option>현금</option>
+        </select>
+      </div>
+
+      <!-- 버튼 -->
+      <div style="margin-top:20px; text-align:right;">
+        <button class="btn ghost" onclick="closeSalesModal()">취소</button>
+        <button class="btn primary">등록</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script>
 
@@ -479,6 +521,32 @@ function syncCheckAllState(){
   return rows.filter(r => ids.includes(r.id));
 }
 
+  document.getElementById("btnSalesCreate").onclick = () => {
+  const selected = getSelectedRows();
+
+  if(!selected.length){
+    alert("선택된 주문이 없습니다.");
+    return;
+  }
+
+  let html = "";
+  let total = 0;
+
+  selected.forEach(r=>{
+    html += `<div>${r.ordno} - ${r.amount.toLocaleString()}</div>`;
+    total += r.amount;
+  });
+
+  document.getElementById("salesOrderList").innerHTML = html;
+  document.getElementById("salesTotal").innerText = total.toLocaleString();
+  document.getElementById("salesAmt").value = total;
+
+  document.getElementById("salesModal").classList.add("active");
+};
+
+function closeSalesModal(){
+  document.getElementById("salesModal").classList.remove("active");
+}
 
 function btnToggleConfirm(){
   alert("주문대기 / 주문확정 상태만 처리 가능합니다.");

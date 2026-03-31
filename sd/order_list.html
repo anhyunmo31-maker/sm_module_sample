@@ -494,6 +494,11 @@
       `;
       tbody.appendChild(tr);
     });
+      // ✅ 이거 추가 (핵심)
+  document.querySelectorAll(".rowChk").forEach(chk => {
+    chk.addEventListener("change", syncCheckAllState);
+  });
+}
   }
 
   function doSearch(){

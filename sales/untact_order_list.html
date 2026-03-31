@@ -130,8 +130,9 @@ gap:10px;
 
 <thead>
 <tr>
-<th>비대면결제번호</th>
-<th>주문번호</th>
+<th>매출번호</th>
+<th>결제명</th>
+<th>주문번호-순번</th>
 <th>등록일자</th>
 <th>영업담당부서</th>
 <th>영업담당자</th>
@@ -150,8 +151,9 @@ gap:10px;
 <!-- 단일 주문 -->
 
 <tr>
-<td>Un260304-0042-00001</td>
-<td>O260227-0040-00013</td>
+<td>BILL2026033100001</td>
+<td>패션플랫폼결제건</td>
+<td>GOR2026030400001-1</td>
 <td>2026-03-04</td>
 <td>강남파트</td>
 <td>신은규</td>
@@ -159,8 +161,8 @@ gap:10px;
 <td>성아현</td>
 <td>203,500</td>
 <td>[선작업매출][비대면] 인쇄비</td>
-<td>결제완료</td>
-<td>etmpIDQJ9Q</td>
+<td>결제대기</td>
+<td></td>
 <td><button class="btn success btn-view">보기</button></td>
 </tr>
 
@@ -168,8 +170,9 @@ gap:10px;
 <!-- 하나의 결제번호에 2개 주문 예시 -->
 
 <tr>
-<td rowspan="2">Un260303-0008-00007</td>
-<td>O260303-0012-00001</td>
+<td rowspan="2">BILL2026033100001</td>
+<td rowspan="2">법인결제건 2개</td>
+<td>GOR2026030300002-1</td>
 <td>2026-03-03</td>
 <td>여의도파트</td>
 <td>박대훈</td>
@@ -183,7 +186,7 @@ gap:10px;
 </tr>
 
 <tr>
-<td>O260303-0012-00002</td>
+<td>GOR2026030300002-2</td>
 <td>2026-03-03</td>
 <td>여의도파트</td>
 <td>박대훈</td>
@@ -193,29 +196,6 @@ gap:10px;
 <td>월드비전 송파종합사회복지관 2월분 추가</td>
 </tr>
 
-
-<tr>
-<td>Un260303-0041-00002</td>
-<td>O260303-0020-00001</td>
-<td>2026-03-03</td>
-<td>역삼2파트</td>
-<td>강석길</td>
-<td>(주)퍼드브엠서비스</td>
-<td>신동수</td>
-<td>148,500</td>
-<td>[PWC마켓] 현수막 및 배너 제작</td>
-<td>결제완료</td>
-<td>OfMe4l6zjO</td>
-<td><button class="btn success btn-view"
-data-payno="Un260304-0042-00001"
-data-work="[선작업매출][비대면] 인쇄비"
-data-amount="203500"
-data-customer="성아현"
-data-email="sah9926@fashionplatform.co.kr"
-data-paycode="etmpIDQJ9Q">
-보기
-</button></td>
-</tr>
 
 </tbody>
 

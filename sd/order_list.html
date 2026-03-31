@@ -385,6 +385,35 @@
 
 <script>
 
+  const prepays = [
+  {no:"PRE001", remain:50000},
+  {no:"PRE002", remain:120000},
+];
+
+  function openPrepay(){
+  let html = "";
+
+  prepays.forEach(p=>{
+    html += `
+      <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+        <span>${p.no} (잔액 ${p.remain.toLocaleString()})</span>
+        <input type="number" 
+               placeholder="차감금액"
+               data-no="${p.no}"
+               data-remain="${p.remain}"
+               class="prepayInput"
+               style="width:100px;">
+      </div>
+    `;
+  });
+
+  document.getElementById("prepayArea").innerHTML = html;
+
+  // 입력 이벤트
+  document.querySelectorAll(".prepayInput").forEach(inp=>{
+    inp.addEventListener("input", calcPrepay);
+  });
+}
 
   // ===== 샘플 데이터(프로토타입) =====
   const rows = [

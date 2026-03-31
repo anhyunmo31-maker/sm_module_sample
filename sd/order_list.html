@@ -415,6 +415,30 @@
   });
 }
 
+  function calcPrepay(){
+  let total = 0;
+
+  document.querySelectorAll(".prepayInput").forEach(inp=>{
+    let val = Number(inp.value || 0);
+    const max = Number(inp.dataset.remain);
+
+    // 🔥 잔액 초과 방지
+    if(val > max){
+      val = max;
+      inp.value = max;
+    }
+
+    total += val;
+  });
+
+  document.getElementById("prepayTotal").innerText = total.toLocaleString();
+
+  // 🔥 최종 결제금액 자동 반영
+  const origin = Number(document.getElementById("salesTotal").innerText.replace(/,/g,""));
+  document.getElementById("salesAmt").value = origin - total;
+}
+
+  
   // ===== 샘플 데이터(프로토타입) =====
   const rows = [
     {

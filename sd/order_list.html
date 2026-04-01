@@ -411,15 +411,6 @@
 
 <script>
 
-  document.getElementById("salesTotalText").innerText = total.toLocaleString() + " 원";
-document.getElementById("finalAmt").innerText = total.toLocaleString() + " 원";
-
-  document.getElementById("prepayTotal").innerText = total.toLocaleString() + " 원";
-
-const origin = Number(document.getElementById("salesTotal").innerText.replace(/,/g,""));
-
-document.getElementById("finalAmt").innerText = (origin - total).toLocaleString() + " 원";
-
   const prepays = [
   {no:"PRE001", remain:50000},
   {no:"PRE002", remain:120000},

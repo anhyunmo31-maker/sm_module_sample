@@ -342,37 +342,63 @@
 
     <div class="modal-body">
 
-      <!-- 선택 주문 -->
-      <div style="margin-bottom:12px; font-weight:900;">선택 주문</div>
-      <div id="salesOrderList"></div>
+     <div style="margin-top:20px; display:grid; gap:14px;">
 
-      <!-- 합계 -->
-      <div style="margin-top:10px; text-align:right;">
-        총합계 : <b id="salesTotal">0</b> 원
-      </div>
+  <!-- 결제정보 -->
+  <div>
+    <div style="font-weight:900; margin-bottom:6px;">결제명</div>
+    <input class="ctl" id="salesTitle" placeholder="예: 비대면 결제 / 선매출 차감">
+  </div>
 
-      <!-- 입력 -->
-      <div style="margin-top:20px;">
-        <input placeholder="결제명" class="ctl"><br><br>
-        <input placeholder="결제금액" class="ctl" id="salesAmt"><br><br>
-        <input placeholder="거래처" class="ctl"><br><br>
-        <div style="margin-top:10px;">
-    <button class="btn ghost" onclick="openPrepay()">선매출차감조회</button>
+  <div>
+    <div style="font-weight:900; margin-bottom:6px;">거래처</div>
+    <input class="ctl" placeholder="거래처명">
+  </div>
+
+  <!-- 💰 금액 박스 -->
+  <div style="border:1px solid #e5e7eb; border-radius:10px; padding:12px; background:#f9fafb;">
+
+    <div style="display:flex; justify-content:space-between;">
+      <span>총 주문금액</span>
+      <b id="salesTotalText">0 원</b>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; margin-top:6px;">
+      <span>선매출 차감</span>
+      <b id="prepayTotal">0 원</b>
+    </div>
+
+    <div style="border-top:1px dashed #ddd; margin:10px 0;"></div>
+
+    <div style="display:flex; justify-content:space-between; font-size:16px;">
+      <span><b>최종 결제금액</b></span>
+      <b id="finalAmt">0 원</b>
+    </div>
+
+  </div>
+
+  <!-- 💳 선매출 -->
+  <div style="border:1px solid #e5e7eb; border-radius:10px; padding:12px;">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <b>선매출 차감</b>
+      <button class="btn ghost" onclick="openPrepay()">조회</button>
+    </div>
 
     <div id="prepayArea" style="margin-top:10px;"></div>
 
-    <div style="text-align:right; margin-top:6px;">
-      차감금액 : <b id="prepayTotal">0</b> 원
-    </div>
   </div>
 
-  <br>
-        <select class="ctl">
-          <option>카드</option>
-          <option>현금</option>
-        </select>
-      </div>
+  <!-- 결제수단 -->
+  <div>
+    <div style="font-weight:900; margin-bottom:6px;">결제수단</div>
+    <select class="ctl">
+      <option>카드</option>
+      <option>현금</option>
+    </select>
+  </div>
 
+</div>
       <!-- 버튼 -->
       <div style="margin-top:20px; text-align:right;">
         <button class="btn ghost" onclick="closeSalesModal()">취소</button>
@@ -384,6 +410,15 @@
 </div>
 
 <script>
+
+  document.getElementById("salesTotalText").innerText = total.toLocaleString() + " 원";
+document.getElementById("finalAmt").innerText = total.toLocaleString() + " 원";
+
+  document.getElementById("prepayTotal").innerText = total.toLocaleString() + " 원";
+
+const origin = Number(document.getElementById("salesTotal").innerText.replace(/,/g,""));
+
+document.getElementById("finalAmt").innerText = (origin - total).toLocaleString() + " 원";
 
   const prepays = [
   {no:"PRE001", remain:50000},

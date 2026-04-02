@@ -637,6 +637,9 @@ padding:20px;
 
 <thead>
 <tr>
+ <th class="num">
+                <input type="checkbox" id="chkAll">
+              </th>
 <th>#</th>
 <th>접수일</th>
 <th>영업부서</th>
@@ -883,6 +886,28 @@ padding:20px;
 
 
 <script>
+
+  const chkAll = document.getElementById("chkAll");
+
+function bindCheckAll(){
+  if(!chkAll) return;
+
+  chkAll.onchange = () => {
+    document.querySelectorAll(".rowChk").forEach(chk => {
+      chk.checked = chkAll.checked;
+    });
+  };
+}
+
+function syncCheckAllState(){
+  const checks = [...document.querySelectorAll(".rowChk")];
+  if(!checks.length || !chkAll) return;
+  const allChecked = checks.every(c => c.checked);
+  const anyChecked = checks.some(c => c.checked);
+
+  chkAll.indeterminate = anyChecked && !allChecked;
+  chkAll.checked = allChecked;
+}
 
  document.getElementById("btnConfirm").onclick = () => {
 alert("체크후 상태 확정/확정취소 ");

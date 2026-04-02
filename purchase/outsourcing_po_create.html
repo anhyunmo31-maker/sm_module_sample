@@ -623,6 +623,10 @@ padding:20px;
 
 <button class="btn">검색</button>
 
+    <button class="btn primary" id="btnConfirm">
+  발주확정/취소
+</button>
+ 
 </div>
 
 
@@ -879,6 +883,25 @@ padding:20px;
 
 
 <script>
+
+ document.getElementById("btnConfirm").onclick = () => {
+alert("체크후 상태 확정/확정취소 ");
+  // if (work.status === "CONFIRMED") {
+
+  //   if (!confirm("확정을 해제하시겠습니까?")) return;
+
+  //   work.status = "DRAFT";
+
+  // } else {
+
+  //   if (!confirm("이 작업을 확정하시겠습니까?")) return;
+
+  //   work.status = "CONFIRMED";
+  // }
+
+
+};
+ 
 
   document.addEventListener("click", function(e){
 

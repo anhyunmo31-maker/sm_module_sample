@@ -106,6 +106,9 @@ color:#d23a3a;
  <div class="btns">
             <button class="btn ghost" id="btnExcel2">엑셀다운로드</button>
           </div>
+  <button class="btn primary" id="btnConfirm">
+  정산확정/취소
+</button>
   
 </div>
 
@@ -235,6 +238,24 @@ color:#d23a3a;
 
 
 <script>
+
+   document.getElementById("btnConfirm").onclick = () => {
+alert("체크후 상태 확정/확정취소 ");
+  // if (work.status === "CONFIRMED") {
+
+  //   if (!confirm("확정을 해제하시겠습니까?")) return;
+
+  //   work.status = "DRAFT";
+
+  // } else {
+
+  //   if (!confirm("이 작업을 확정하시겠습니까?")) return;
+
+  //   work.status = "CONFIRMED";
+  // }
+
+
+};
 
 const checkAll = document.getElementById("checkAll")
 const rowChk = document.querySelectorAll(".rowChk")

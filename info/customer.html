@@ -248,19 +248,18 @@
     }
 
     list.forEach(r => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-      <td class="num">${r.no}</td>
-      <td>${r.gubun}</td>
-      <td>${r.biz}</td>
-      <td><a class="link" href="#" onclick="return false;">${r.corp}</a></td>
-      <td>${r.customer}</td>
-      <td>${r.phone || ""}</td>
-      <td>${r.registrar}</td>
-      <td>${r.regDt}</td>
-    `;
-      tbody.appendChild(tr);
-    });
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td class="num">${r.no}</td>
+    <td><a class="link" href="#" onclick="return false;">${r.corp}</a></td>
+    <td>${r.customer}</td>
+    <td>${r.dept}</td>
+    <td>${r.position}</td>
+    <td>${r.email}</td>
+    <td>${r.phone || ""}</td>
+  `;
+  tbody.appendChild(tr);
+});
   }
 
   function doSearch(){

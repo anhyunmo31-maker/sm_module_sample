@@ -190,12 +190,12 @@
             <tr>
               <th class="num">#</th>
               <th>구분</th>
-              <th>사업자</th>
               <th>거래처명</th>
-              <th>고객명</th>
+              <th>거래처담당자</th>
+              <th>부서</th>
+              <th>직책</th>
+              <th>이메일</th>
               <th>연락처</th>
-              <th>등록자</th>
-              <th>등록일</th>
             </tr>
           </thead>
           <tbody id="tbody">
@@ -215,21 +215,21 @@
 <script>
   // 조회 눌렀을 때 보여줄 "예시 결과" (프로토타입용)
   const sampleRows = [
-  { no: 51622, gubun:"사업자", biz:"176-81-02056", corp:"제이에스티나", customer:"홍길동", phone:"1", registrar:"주인돈", regDt:"2026-01-30 14:43" },
-  { no: 51621, gubun:"사업자", biz:"280-82-00617", corp:"라인플러스 주식회사", customer:"배소현", phone:"", registrar:"김규수", regDt:"2026-01-30 12:49" },
-  { no: 51620, gubun:"사업자", biz:"309-87-01299", corp:"영진약품 주식회사", customer:"김나연",  phone:"", registrar:"주인돈", regDt:"2026-01-27 17:12" },
-  { no: 51619, gubun:"사업자", biz:"621-81-10769", corp:"시립서울청소년센터", customer:"안세은", phone:"", registrar:"정호동", regDt:"2026-01-27 10:07" },
-  { no: 51618, gubun:"사업자", biz:"124-83-00269", corp:"삼성화재해상보험(주)", customer:"김홍진",  phone:"", registrar:"김민주", regDt:"2026-01-27 08:54" },
-  { no: 51617, gubun:"사업자", biz:"104-81-57667", corp:"서울교육대학교", customer:"전찬용", phone:"", registrar:"강석길", regDt:"2026-01-26 10:45" },
-  { no: 51616, gubun:"사업자", biz:"120-10-30791", corp:"핀인사이트", customer:"강우진",  phone:"", registrar:"주대덕", regDt:"2026-01-23 14:02" },
-  { no: 51615, gubun:"사업자", biz:"209-82-62007", corp:"라이나생명보험(주)", customer:"김민영",  phone:"", registrar:"조문형", regDt:"2026-01-23 12:51" },
-  { no: 51614, gubun:"사업자", biz:"513-81-17175", corp:"레벨스_인크(영업소)", customer:"김서연",phone:"1", registrar:"송두석", regDt:"2026-01-23 09:42" },
-  { no: 51613, gubun:"사업자", biz:"215-81-36619", corp:"주식회사 그레이바랩", customer:"이범기", phone:"1", registrar:"송두석", regDt:"2026-01-20 14:10" },
-  { no: 51612, gubun:"사업자", biz:"120-87-06065", corp:"(주) 썰트리온", customer:"정재영", phone:"1", registrar:"송두석", regDt:"2026-01-20 09:00" },
-  { no: 51611, gubun:"사업자", biz:"205-88-01505", corp:"주식회사 포스코인재창조원", customer:"공승규", phone:"", registrar:"최민학", regDt:"2026-01-19 09:09" },
-  { no: 51610, gubun:"사업자", biz:"461-87-00512", corp:"하나캐피탈(주)", customer:"손정연", phone:"", registrar:"강석길", regDt:"2026-01-15 09:47" },
-  { no: 51609, gubun:"사업자", biz:"559-86-03065", corp:"한스바이오메드(주)", customer:"윤지환",  phone:"1", registrar:"송두석", regDt:"2026-01-14 09:25" },
-  { no: 51608, gubun:"사업자", biz:"215-81-99999", corp:"에이블현대호텔앤리조트 주식회사", customer:"김경진",  phone:"", registrar:"정호동", regDt:"2026-01-12 09:36" }
+  { no: 51622, corp:"제이에스티나", customer:"홍길동", dept:"영업팀", position:"대리", email:"hong@test.com", phone:"010-1234-5678" },
+  { no: 51621, corp:"라인플러스 주식회사", customer:"배소현", dept:"마케팅팀", position:"사원", email:"bae@test.com", phone:"010-2345-6789" },
+  { no: 51620, corp:"영진약품 주식회사", customer:"김나연", dept:"구매팀", position:"과장", email:"kimny@test.com", phone:"010-3456-7890" },
+  { no: 51619, corp:"시립서울청소년센터", customer:"안세은", dept:"운영팀", position:"대리", email:"ahn@test.com", phone:"010-4567-8901" },
+  { no: 51618, corp:"삼성화재해상보험(주)", customer:"김홍진", dept:"보험영업팀", position:"차장", email:"khj@test.com", phone:"010-5678-9012" },
+  { no: 51617, corp:"서울교육대학교", customer:"전찬용", dept:"행정팀", position:"주임", email:"jeon@test.com", phone:"010-6789-0123" },
+  { no: 51616, corp:"핀인사이트", customer:"강우진", dept:"개발팀", position:"팀장", email:"kang@test.com", phone:"010-7890-1234" },
+  { no: 51615, corp:"라이나생명보험(주)", customer:"김민영", dept:"CS팀", position:"사원", email:"kmy@test.com", phone:"010-8901-2345" },
+  { no: 51614, corp:"레벨스_인크(영업소)", customer:"김서연", dept:"영업1팀", position:"대리", email:"ksy@test.com", phone:"010-9012-3456" },
+  { no: 51613, corp:"주식회사 그레이바랩", customer:"이범기", dept:"기획팀", position:"과장", email:"lee@test.com", phone:"010-0123-4567" },
+  { no: 51612, corp:"(주) 썰트리온", customer:"정재영", dept:"연구소", position:"책임연구원", email:"jung@test.com", phone:"010-1111-2222" },
+  { no: 51611, corp:"주식회사 포스코인재창조원", customer:"공승규", dept:"교육팀", position:"차장", email:"gong@test.com", phone:"010-2222-3333" },
+  { no: 51610, corp:"하나캐피탈(주)", customer:"손정연", dept:"금융영업팀", position:"대리", email:"son@test.com", phone:"010-3333-4444" },
+  { no: 51609, corp:"한스바이오메드(주)", customer:"윤지환", dept:"영업팀", position:"사원", email:"yoon@test.com", phone:"010-4444-5555" },
+  { no: 51608, corp:"에이블현대호텔앤리조트 주식회사", customer:"김경진", dept:"운영팀", position:"과장", email:"kkj@test.com", phone:"010-5555-6666" }
 ];
 
 
